@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Alarm" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <!-- Экран тревоги: тот же белый, но без анимации появления —
+         он должен возникать мгновенно, а не выезжать. -->
+    <style name="Theme.Alarm.FullScreen" parent="Theme.Alarm">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+</resources>

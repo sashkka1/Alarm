@@ -1,0 +1,25 @@
+<!-- Блокировка: замок. Перенесено из макета Claude Design.
+
+     Цвета заданы явно, без android:tint: в меню замок светлый с акцентной
+     скважиной — ровно как в макете. В шапке страницы поверх накладывается
+     сплошной акцентный тинт, и получается второй вариант из макета, где
+     скважина сливается с корпусом. Один файл на оба вида. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M7,10.5h10a2,2 0 0 1 2,2v6a2,2 0 0 1 -2,2h-10a2,2 0 0 1 -2,-2v-6a2,2 0 0 1 2,-2z"
+        android:strokeColor="#ECE5E0"
+        android:strokeWidth="2" />
+    <path
+        android:pathData="M8,10.5V8a4,4 0 0 1 8,0v2.5"
+        android:strokeColor="#ECE5E0"
+        android:strokeWidth="2" />
+    <path
+        android:pathData="M12,14v3"
+        android:strokeColor="#C24A32"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+</vector>

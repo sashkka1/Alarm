@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Будильник, силуэт из прежней иконки. Чёрный поверх красного фона.
+         Опущен ниже (translateY), чтобы освободить место под высокую полосу опасности сверху. -->
+    <group
+        android:scaleX="2.15"
+        android:scaleY="2.15"
+        android:translateX="28"
+        android:translateY="40">
+        <path
+            android:fillColor="#000000"
+            android:pathData="M12,4C7.58,4 4,7.58 4,12s3.58,8 8,8 8,-3.58 8,-8 -3.58,-8 -8,-8zM12.5,12.2l3.2,1.9 -0.75,1.23 -3.95,-2.33L11,7h1.5v5.2z" />
+        <path
+            android:fillColor="#000000"
+            android:pathData="M7.88,3.39L6.6,1.86 2,5.71l1.29,1.53 4.59,-3.85zM22,5.72l-4.6,-3.86 -1.29,1.53 4.6,3.86L22,5.72z" />
+    </group>
+</vector>

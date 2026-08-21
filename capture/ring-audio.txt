@@ -1,0 +1,1328 @@
+﻿Events log: audio services lifecycle
+08-12 20:53:20:343 AudioService()
+08-12 20:53:20:368 Controller start task complete
+
+Message handler (watch for unhandled messages):
+  Handler (com.android.server.audio.AudioService$AudioHandler) {64ab77a} @ 107281934
+    Looper (AudioService, tid 191) {4caca21}
+      (MessageQueue is using Concurrent implementation)
+      State: android.os.MessageQueue$StateNode@f277921
+      PriorityQueue Messages: 
+      AsyncPriorityQueue Messages: 
+      (Total messages: 1, polling=true, quitting=false)
+      Dump time: 2026-08-14 13:20:15.089 GMT+03:00
+      Package: system_server
+      Current looper: Looper (AudioService, tid=2605)
+
+
+Fun with Flags:
+	com.android.media.audio.as_device_connection_failure:false
+	android.media.audio.autoPublicVolumeApiHardening:true
+	android.media.audio.automaticBtDeviceType - EOL
+	android.media.audio.featureSpatialAudioHeadtrackingLowLatency:true
+	android.media.audio.focusFreezeTestApi:true
+	com.android.media.audio.audioserverPermissions:true
+	com.android.media.audio.disablePrescaleAbsoluteVolume:true
+	com.android.media.audio.setStreamVolumeOrder - EOL
+	android.media.audio.ringtoneUserUriCheck:false
+	android.media.audio.roForegroundAudioControl:true
+	android.media.audio.scoManagedByAudio:false
+	com.android.media.audio.absVolumeIndexFix - EOL
+	com.android.media.audio.vgsVssSyncMuteOrder - EOL
+	com.android.media.audio.replaceStreamBtSco:true
+	com.android.media.audio.equalScoLeaVcIndexRange:true
+	com.android.media.audio.ringMyCar:false
+	android.media.audio.Flags.concurrentAudioRecordBypassPermission:false
+	android.media.audio.Flags.cacheGetStreamMinMaxVolume:false
+	android.media.audio.Flags.cacheGetStreamVolume:false
+	com.android.media.audio.optimizeBtDeviceSwitch:false
+Events log: Hardening enforcement
+08-12 21:25:00:868 AudioHardening background playback would be muted for com.sasha.alarm (10436), level: full
+08-13 09:20:36:461 AudioHardening focus request for req 1 ignored for ru.yandex.music (10321), android.media.AudioManager@cadfcd7nb0@e6859c4, level: partial
+08-13 09:20:37:492 AudioHardening background playback would be muted for ru.yandex.music (10321), level: partial
+08-13 09:20:41:474 AudioHardening focus request for req 1 ignored for ru.yandex.music (10321), android.media.AudioManager@cadfcd7nb0@e6859c4, level: partial
+08-13 09:20:46:487 AudioHardening focus request for req 1 ignored for ru.yandex.music (10321), android.media.AudioManager@cadfcd7nb0@e6859c4, level: partial
+
+MediaFocusControl dump time: 13:20:15
+
+Audio Focus stack entries (last is top of stack):
+  source:android.os.BinderProxy@88161e4 -- pack: com.northcube.sleepcycle -- client: android.media.AudioManager@709c3a4com.northcube.sleepcycle.util.ExoAudioPlayer@b7c1574 -- gain: GAIN -- flags:  -- loss: none -- notified: false -- limbofalse -- uid: 10375 -- attr: AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null -- sdk:35
+
+
+No external focus policy
+
+
+
+ Notify on duck:  true
+
+ In ring or call: false
+
+
+
+Events log: focus commands as seen by MediaFocusControl
+08-13 21:51:32:301 abandonAudioFocus() from uid/pid 1000/2288 clientId=AudioFocus_For_Phone_Ring_And_Calls callingPack=com.android.server.telecom
+08-13 22:10:41:938 requestAudioFocus() from uid/pid 10321/20237 AA=USAGE_MEDIA/CONTENT_TYPE_MUSIC clientId=android.media.AudioManager@3be0e38nb0@7914e11 callingPack=ru.yandex.music req=1 flags=0x1 sdk=36
+08-13 22:26:02:347 abandonAudioFocus() from uid/pid 10321/20237 clientId=android.media.AudioManager@3be0e38nb0@7914e11 callingPack=ru.yandex.music
+08-13 22:26:03:777 requestAudioFocus() from uid/pid 10321/20237 AA=USAGE_MEDIA/CONTENT_TYPE_MUSIC clientId=android.media.AudioManager@3be0e38nb0@7914e11 callingPack=ru.yandex.music req=1 flags=0x1 sdk=36
+08-13 22:33:40:980 abandonAudioFocus() from uid/pid 10292/21214 clientId=android.media.AudioManager@b4c67e3X.8uH@3c195e0 callingPack=com.instagram.android
+08-13 22:33:57:328 abandonAudioFocus() from uid/pid 10292/21214 clientId=android.media.AudioManager@b4c67e3X.8uH@3c195e0 callingPack=com.instagram.android
+08-13 22:33:57:467 abandonAudioFocus() from uid/pid 10292/21214 clientId=android.media.AudioManager@b4c67e3X.66f@4625a75 callingPack=com.instagram.android
+08-13 22:33:57:565 requestAudioFocus() from uid/pid 10292/21214 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@b4c67e3X.66f@4625a75 callingPack=com.instagram.android req=4 flags=0x0 sdk=36
+08-13 22:33:57:572 focus owner: android.media.AudioManager@3be0e38nb0@7914e11 in uid: 10321 pack: ru.yandex.music code: -2 event: handleLoss
+08-13 22:34:00:384 abandonAudioFocus() from uid/pid 10292/21214 clientId=android.media.AudioManager@b4c67e3X.66f@4625a75 callingPack=com.instagram.android
+08-13 22:34:00:405 focus owner: android.media.AudioManager@3be0e38nb0@7914e11 in uid: 10321 pack: ru.yandex.music code: 1 event: handleGain
+08-13 22:34:01:733 abandonAudioFocus() from uid/pid 10292/21214 clientId=android.media.AudioManager@b4c67e3X.8uH@3c195e0 callingPack=com.instagram.android
+08-13 22:41:34:206 abandonAudioFocus() from uid/pid 10321/20237 clientId=android.media.AudioManager@3be0e38nb0@7914e11 callingPack=ru.yandex.music
+08-13 23:16:51:633 requestAudioFocus() from uid/pid 1000/3119 AA=USAGE_NOTIFICATION/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@e75155 callingPack=com.android.systemui req=3 flags=0x0 sdk=36
+08-13 23:16:52:793 abandonAudioFocus() from uid/pid 1000/3119 clientId=android.media.AudioManager@e75155 callingPack=com.android.systemui
+08-14 08:10:43:929 requestAudioFocus() from uid/pid 10375/27829 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@c8e573acom.northcube.sleepcycle.util.ExoAudioPlayer@e992f54 callingPack=com.northcube.sleepcycle req=1 flags=0x0 sdk=35
+08-14 08:11:01:621 abandonAudioFocus() from uid/pid 10375/27829 clientId=android.media.AudioManager@c8e573acom.northcube.sleepcycle.util.ExoAudioPlayer@e992f54 callingPack=com.northcube.sleepcycle
+08-14 08:26:17:557 requestAudioFocus() from uid/pid 10271/6090 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@f7f4cbb callingPack=com.android.deskclock req=2 flags=0x0 sdk=35
+08-14 08:26:25:900 abandonAudioFocus() from uid/pid 10271/6090 clientId=android.media.AudioManager@f7f4cbb callingPack=com.android.deskclock
+08-14 08:41:29:896 requestAudioFocus() from uid/pid 10271/6090 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@f7f4cbb callingPack=com.android.deskclock req=2 flags=0x0 sdk=35
+08-14 08:41:41:116 abandonAudioFocus() from uid/pid 10271/6090 clientId=android.media.AudioManager@f7f4cbb callingPack=com.android.deskclock
+08-14 09:39:33:863 abandonAudioFocus() from uid/pid 10292/25942 clientId=android.media.AudioManager@9b60fbaX.8uH@f2b8e6b callingPack=com.instagram.android
+08-14 09:39:33:885 abandonAudioFocus() from uid/pid 10292/25942 clientId=android.media.AudioManager@9b60fbaX.66f@4f19947 callingPack=com.instagram.android
+08-14 09:39:35:260 requestAudioFocus() from uid/pid 10292/25942 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@9b60fbaX.66f@4f19947 callingPack=com.instagram.android req=4 flags=0x0 sdk=36
+08-14 09:39:36:621 abandonAudioFocus() from uid/pid 10292/25942 clientId=android.media.AudioManager@9b60fbaX.66f@4f19947 callingPack=com.instagram.android
+08-14 09:44:09:597 requestAudioFocus() from uid/pid 10287/12679 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@64b05f2X.1DoT@4ed7443 callingPack=com.zhiliaoapp.musically req=2 flags=0x0 sdk=36
+08-14 09:48:08:278 requestAudioFocus() from uid/pid 10287/12679 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@64b05f2X.1DoT@4ed7443 callingPack=com.zhiliaoapp.musically req=2 flags=0x0 sdk=36
+08-14 10:04:49:144 abandonAudioFocus() from uid/pid 10287/12679 clientId=android.media.AudioManager@64b05f2X.1DoT@4ed7443 callingPack=com.zhiliaoapp.musically
+08-14 10:05:53:826 abandonAudioFocus() from uid/pid 10292/24808 clientId=android.media.AudioManager@90b0896X.8uH@548c17 callingPack=com.instagram.android
+08-14 10:09:17:098 requestAudioFocus() from uid/pid 10287/26282 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@4ae0e4dX.1DoT@305bd02 callingPack=com.zhiliaoapp.musically req=2 flags=0x0 sdk=36
+08-14 10:17:29:335 abandonAudioFocus() from uid/pid 10287/26282 clientId=android.media.AudioManager@4ae0e4dX.1DoT@305bd02 callingPack=com.zhiliaoapp.musically
+08-14 11:26:35:156 abandonAudioFocus() from uid/pid 10292/27913 clientId=android.media.AudioManager@f5cc96dX.8uH@72f29a2 callingPack=com.instagram.android
+08-14 11:26:59:403 abandonAudioFocus() from uid/pid 10292/27913 clientId=android.media.AudioManager@f5cc96dX.8uH@72f29a2 callingPack=com.instagram.android
+08-14 12:14:39:150 requestAudioFocus() from uid/pid 10271/31727 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@f7f4cbb callingPack=com.android.deskclock req=2 flags=0x0 sdk=35
+08-14 12:14:42:799 abandonAudioFocus() from uid/pid 10271/31727 clientId=android.media.AudioManager@f7f4cbb callingPack=com.android.deskclock
+08-14 12:14:48:482 requestAudioFocus() from uid/pid 10287/32710 AA=USAGE_MEDIA/CONTENT_TYPE_UNKNOWN clientId=android.media.AudioManager@4d29c03X.1DoT@6878780 callingPack=com.zhiliaoapp.musically req=2 flags=0x0 sdk=36
+08-14 12:37:54:720 abandonAudioFocus() from uid/pid 10287/32710 clientId=android.media.AudioManager@4d29c03X.1DoT@6878780 callingPack=com.zhiliaoapp.musically
+08-14 13:06:56:667 requestAudioFocus() from uid/pid 1000/3119 AA=USAGE_NOTIFICATION/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@a80824a callingPack=com.android.systemui req=3 flags=0x0 sdk=36
+08-14 13:06:58:099 abandonAudioFocus() from uid/pid 1000/3119 clientId=android.media.AudioManager@a80824a callingPack=com.android.systemui
+08-14 13:10:00:822 requestAudioFocus() from uid/pid 10375/4882 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@30ff3f1com.northcube.sleepcycle.util.ExoAudioPlayer@88c7d26 callingPack=com.northcube.sleepcycle req=1 flags=0x0 sdk=35
+08-14 13:10:09:660 abandonAudioFocus() from uid/pid 10375/4882 clientId=android.media.AudioManager@30ff3f1com.northcube.sleepcycle.util.ExoAudioPlayer@88c7d26 callingPack=com.northcube.sleepcycle
+08-14 13:15:00:694 requestAudioFocus() from uid/pid 10375/4882 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@f68bcecom.northcube.sleepcycle.util.ExoAudioPlayer@4e10f2a callingPack=com.northcube.sleepcycle req=1 flags=0x0 sdk=35
+08-14 13:15:00:957 requestAudioFocus() from uid/pid 1000/3119 AA=USAGE_NOTIFICATION/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@c5ff86a callingPack=com.android.systemui req=3 flags=0x0 sdk=36
+08-14 13:15:03:531 abandonAudioFocus() from uid/pid 1000/3119 clientId=android.media.AudioManager@c5ff86a callingPack=com.android.systemui
+08-14 13:15:05:636 requestAudioFocus() from uid/pid 1000/3119 AA=USAGE_NOTIFICATION/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@762873b callingPack=com.android.systemui req=3 flags=0x0 sdk=36
+08-14 13:15:06:239 abandonAudioFocus() from uid/pid 1000/3119 clientId=android.media.AudioManager@762873b callingPack=com.android.systemui
+08-14 13:15:07:149 abandonAudioFocus() from uid/pid 10375/4882 clientId=android.media.AudioManager@f68bcecom.northcube.sleepcycle.util.ExoAudioPlayer@4e10f2a callingPack=com.northcube.sleepcycle
+08-14 13:20:01:098 requestAudioFocus() from uid/pid 10375/4882 AA=USAGE_ALARM/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@709c3a4com.northcube.sleepcycle.util.ExoAudioPlayer@b7c1574 callingPack=com.northcube.sleepcycle req=1 flags=0x0 sdk=35
+08-14 13:20:01:261 requestAudioFocus() from uid/pid 1000/3119 AA=USAGE_NOTIFICATION/CONTENT_TYPE_SONIFICATION clientId=android.media.AudioManager@6dd1ca6 callingPack=com.android.systemui req=3 flags=0x0 sdk=36
+08-14 13:20:04:037 abandonAudioFocus() from uid/pid 1000/3119 clientId=android.media.AudioManager@6dd1ca6 callingPack=com.android.systemui
+Multi Audio Focus enabled :false
+
+Stream volumes (device: index)
+- STREAM_VOICE_CALL:
+   Muted: false
+   Muted Internally: false
+   Min: 1
+   Max: 11
+   streamVolume:7
+   Current: 1 (earpiece): 7, 2 (speaker): 6, 10 (bt_sco): 7, 20 (bt_sco_hs): 7, 80 (bt_a2dp): 8, 40000000 (default): 8
+   Devices: earpiece(1)
+   Volume Group: AUDIO_STREAM_VOICE_CALL
+
+- STREAM_SYSTEM (aliased to: STREAM_RING):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:5
+   Current: 1 (earpiece): 5, 2 (speaker): 5, 80 (bt_a2dp): 5, 40000000 (default): 4
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_SYSTEM
+
+- STREAM_RING:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:6
+   Current: 1 (earpiece): 5, 2 (speaker): 6, 80 (bt_a2dp): 5, 40000000 (default): 5
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_RING
+
+- STREAM_MUSIC:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:4
+   Current: 1 (earpiece): 5, 2 (speaker): 4, 80 (bt_a2dp): 9, 20000000 (ble_headset): 5, 40000000 (default): 5
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_MUSIC
+
+- STREAM_ALARM:
+   Muted: false
+   Muted Internally: false
+   Min: 1 w/o perm:3
+   Max: 15
+   streamVolume:15
+   Current: 1 (earpiece): 12, 2 (speaker): 15, 80 (bt_a2dp): 12, 40000000 (default): 12
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_ALARM
+
+- STREAM_NOTIFICATION (aliased to: STREAM_RING):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:6
+   Current: 1 (earpiece): 5, 2 (speaker): 6, 80 (bt_a2dp): 5, 40000000 (default): 5
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_NOTIFICATION
+
+- STREAM_SYSTEM_ENFORCED (aliased to: STREAM_RING):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:15
+   Current: 1 (earpiece): 15, 2 (speaker): 15, 80 (bt_a2dp): 15, 40000000 (default): 15
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_ENFORCED_AUDIBLE
+
+- STREAM_DTMF (aliased to: STREAM_RING):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:5
+   Current: 1 (earpiece): 4, 2 (speaker): 5, 10 (bt_sco): 4, 20 (bt_sco_hs): 4, 80 (bt_a2dp): 4, 40000000 (default): 4
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_DTMF
+
+- STREAM_TTS (aliased to: STREAM_MUSIC):
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:9
+   Current: 1 (earpiece): 5, 2 (speaker): 9, 80 (bt_a2dp): 9, 20000000 (ble_headset): 4, 40000000 (default): 4
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_TTS
+
+- STREAM_ACCESSIBILITY (aliased to: STREAM_MUSIC):
+   Muted: false
+   Muted Internally: false
+   Min: 1
+   Max: 15
+   streamVolume:4
+   Current: 1 (earpiece): 5, 2 (speaker): 4, 80 (bt_a2dp): 8, 20000000 (ble_headset): 5, 40000000 (default): 5
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_ACCESSIBILITY
+
+- STREAM_ASSISTANT:
+   Muted: false
+   Muted Internally: false
+   Min: 0
+   Max: 15
+   streamVolume:10
+   Current: 1 (earpiece): 10, 2 (speaker): 10, 80 (bt_a2dp): 10, 40000000 (default): 10
+   Devices: speaker(2)
+   Volume Group: AUDIO_STREAM_ASSISTANT
+
+
+- mute affected streams = 0x6f
+
+- user mutable streams = 0x2e
+
+Volume Groups (device: index)
+- VOLUME GROUP AUDIO_STREAM_PATCH:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 5
+   Devices: speaker
+   Streams: UNKNOWN_STREAM_13 
+- VOLUME GROUP AUDIO_STREAM_REROUTING:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 5
+   Devices: speaker
+   Streams: UNKNOWN_STREAM_12 
+- VOLUME GROUP AUDIO_STREAM_ACCESSIBILITY:
+   Muted: false
+   Min: 1
+   Max: 15
+   Current: 1 (earpiece): 5, 2 (speaker): 4, 80 (bt_a2dp): 8, 20000000 (ble_headset): 5, 40000000 (default): 5
+   Devices: speaker
+   Streams: STREAM_ACCESSIBILITY 
+- VOLUME GROUP AUDIO_STREAM_TTS:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 1 (earpiece): 5, 2 (speaker): 9, 80 (bt_a2dp): 9, 20000000 (ble_headset): 5, 40000000 (default): 4
+   Devices: speaker
+   Streams: STREAM_TTS 
+- VOLUME GROUP AUDIO_STREAM_DTMF:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 1 (earpiece): 9, 2 (speaker): 5, 10 (bt_sco): 9, 20 (bt_sco_hs): 9, 80 (bt_a2dp): 5, 40000000 (default): 4
+   Devices: speaker
+   Streams: STREAM_DTMF 
+- VOLUME GROUP AUDIO_STREAM_ENFORCED_AUDIBLE:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 2 (speaker): 15, 40000000 (default): 15
+   Devices: speaker
+   Streams: STREAM_SYSTEM_ENFORCED 
+- VOLUME GROUP AUDIO_STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 11
+   Current: 1 (earpiece): 7, 2 (speaker): 6, 10 (bt_sco): 7, 40000000 (default): 8
+   Devices: earpiece
+   Streams: STREAM_VOICE_CALL 
+- VOLUME GROUP AUDIO_STREAM_NOTIFICATION:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 2 (speaker): 6, 40000000 (default): 5
+   Devices: speaker
+   Streams: STREAM_NOTIFICATION 
+- VOLUME GROUP AUDIO_STREAM_ALARM:
+   Muted: false
+   Min: 1
+   Max: 15
+   Current: 2 (speaker): 15, 40000000 (default): 12
+   Devices: speaker
+   Streams: STREAM_ALARM 
+- VOLUME GROUP AUDIO_STREAM_MUSIC:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 2 (speaker): 4, 80 (bt_a2dp): 9, 20000000 (ble_headset): 5, 40000000 (default): 5
+   Devices: speaker
+   Streams: STREAM_MUSIC 
+- VOLUME GROUP AUDIO_STREAM_RING:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 2 (speaker): 6, 40000000 (default): 5
+   Devices: speaker
+   Streams: STREAM_RING 
+- VOLUME GROUP AUDIO_STREAM_SYSTEM:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 1 (earpiece): 5, 2 (speaker): 5, 80 (bt_a2dp): 5, 40000000 (default): 4
+   Devices: speaker
+   Streams: STREAM_SYSTEM 
+- VOLUME GROUP AUDIO_STREAM_VOICE_CALL:
+   Muted: false
+   Min: 1
+   Max: 11
+   Current: 1 (earpiece): 7, 2 (speaker): 6, 10 (bt_sco): 7, 40000000 (default): 8
+   Devices: earpiece
+   Streams: STREAM_VOICE_CALL 
+- VOLUME GROUP AUDIO_STREAM_ASSISTANT:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 10
+   Devices: speaker
+   Streams: STREAM_ASSISTANT 
+- VOLUME GROUP AUDIO_STREAM_CALL_ASSISTANT:
+   Muted: false
+   Min: 0
+   Max: 15
+   Current: 40000000 (default): 5
+   Devices: speaker
+   Streams: UNKNOWN_STREAM_14 
+
+Ringer mode: 
+- mode (internal) = NORMAL
+- mode (external) = NORMAL
+- zen mode:ZEN_MODE_OFF
+- ringer mode affected streams = 0x12e (STREAM_SYSTEM,STREAM_RING,STREAM_MUSIC,STREAM_NOTIFICATION,STREAM_DTMF)
+- ringer mode muted streams = 0x0
+- delegate = ZenModeHelper
+
+Audio mode: 
+- Requested mode = MODE_NORMAL
+- Actual mode = MODE_NORMAL
+- Mode owner: 
+   None
+- Mode owner stack: 
+   Empty
+
+Audio routes:
+  mMainType=0x0
+  mBluetoothName=null
+
+Other state:
+  mUseVolumeGroupAliases=false
+  mVolumeController=VolumeController(android.os.BinderProxy@706b620,mVisible=false)
+  mEnableCsd=false
+  mSafeMediaVolumeState=SAFE_MEDIA_VOLUME_INACTIVE
+  mSafeMediaVolumeIndex=100
+  mSafeMediaVolumeIndex[4]=100
+  mSafeMediaVolumeIndex[8]=100
+  mSafeMediaVolumeIndex[128]=100
+  mSafeMediaVolumeIndex[256]=100
+  mSafeMediaVolumeIndex[67108864]=100
+  mSafeMediaVolumeIndex[536870912]=100
+  mSafeMediaVolumeIndex[536870914]=100
+  mSafeMediaVolumeDbfs=0.0
+  mMusicActiveMs=930271
+  mMcc=257
+  mPendingVolumeCommand=null
+
+Events log: CSD updates
+
+  sIndependentA11yVolume=false
+  mCameraSoundForced=true
+  mHasVibrator=true
+  mVolumePolicy=VolumePolicy[volumeDownToEnterSilent=true,volumeUpToExitSilent=false,doNotDisturbWhenSilent=false,vibrateToSilentDebounce=400]
+  mAvrcpAbsVolSupported=false
+  mBtScoOnByApp=false
+  mIsSingleVolume=false
+  mUseFixedVolume=false
+  mNotifAliasRing=true
+  mFixedVolumeDevices=0x800,0x200000
+  mFullVolumeDevices=0x40000,0x40001
+  absolute volume devices=
+  adjust-only absolute volume devices=
+  pre-scale for bluetooth absolute volume = disabled
+  mExtVolumeController=null
+  mHdmiAudioSystemClient=null
+  mHdmiPlaybackClient=null
+  mHdmiTvClient=null
+  mHdmiSystemAudioSupported=false
+  mHdmiCecVolumeControlEnabled=false
+  mIsCallScreeningModeSupported=false
+  mOpenSoundAssist=false
+  mIgnrMusicFocusReq=false
+  mMuteMusicAtSilent=true
+
+As.MmFeatureConfig isMmFeatureConfig: 0
+ReduceMmLoading perception Enable: false
+NoisyDetection perception Enable: false
+VideoBackgroundAwareness perception Enable: false
+SetMpamSchemata perception Enable: false
+MeetingReduceLoading perception Enable: false
+Aon perception Enable: false
+MeetingPowerPolicy perception Enable: false
+MmHighLoadingHelper perception Enable: false
+VideoRefreshRateControl perception Enable: false
+RecordingDeviceHelper perception Enable: false
+PenAwareMicRouter perception Enable: false
+As.MmFeatureConfig dumpsys end
+
+
+Audio Effect Status
+Current active effect: dolby
+Spatializer status: close
+Current device: speaker
+Device -> Effect map: {}
+Dolby current params: [profile: 0, port: 0, deviceId: default_internal_speaker]
+Events log: Audio Effect Changes
+08-13 22:10:13:827 Current effect: dolby, spatializer enabled: false
+08-13 22:10:13:828 Current effect: dolby, spatializer enabled: false
+08-13 22:10:13:838 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:403 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:408 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:410 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:477 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:498 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:500 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:512 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:532 Current effect: dolby, spatializer enabled: false
+08-13 22:10:34:538 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:736 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:739 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:745 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:808 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:809 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:824 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:862 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:862 Current effect: dolby, spatializer enabled: false
+08-13 22:10:36:880 Current effect: dolby, spatializer enabled: false
+08-13 22:10:37:241 Current effect: dolby, spatializer enabled: false
+08-13 22:41:38:816 Current effect: dolby, spatializer enabled: false
+08-13 22:41:38:824 Current effect: dolby, spatializer enabled: false
+08-13 22:41:38:956 Current effect: dolby, spatializer enabled: false
+08-13 22:41:38:961 Current effect: dolby, spatializer enabled: false
+08-13 22:41:38:968 Current effect: dolby, spatializer enabled: false
+08-13 22:41:38:973 Current effect: dolby, spatializer enabled: false
+08-13 22:41:39:320 Current effect: dolby, spatializer enabled: false
+08-13 22:41:39:470 Current effect: dolby, spatializer enabled: false
+
+
+  mic mute FromSwitch=false FromRestrictions=false FromApi=false from system=false
+  mMasterMute=false
+  No accessibility service Uids.
+  Assistant service UIDs:
+  - 10166
+  supportsBluetoothVariableLatency=false
+  isBluetoothVariableLatencyEnabled=true
+
+Audio policies:
+android.media.audiopolicy.AudioPolicyConfig:
+0 AudioMix, reg:32:ap:0
+ Uid Device Affinities:
+ UserId Device Affinities:
+ Proxy:
+   is focus policy= false
+   media projection= null
+
+Events log: dynamic policy events (logged when command received by AudioService)
+08-12 20:53:21:546 registerAudioPolicy for android.media.audiopolicy.AudioPolicy$1@6329b1d u/pid:1000/2288 with config:reg:32:ap:0
+08-13 09:19:29:281 registerAudioPolicy for android.os.BinderProxy@17b1118 u/pid:1002/30221 with config:reg:32:ap:1
+08-13 10:03:56:882 unregisterAudioPolicy for android.os.BinderProxy@17b1118
+08-13 18:04:16:607 registerAudioPolicy for android.os.BinderProxy@99ea8b8 u/pid:1002/7133 with config:reg:32:ap:2
+08-13 18:04:29:407 unregisterAudioPolicy for android.os.BinderProxy@99ea8b8
+08-13 18:04:30:660 registerAudioPolicy for android.os.BinderProxy@484edcf u/pid:1002/7739 with config:reg:32:ap:3
+08-13 18:57:22:960 unregisterAudioPolicy for android.os.BinderProxy@484edcf
+08-13 22:09:48:736 registerAudioPolicy for android.os.BinderProxy@e00c707 u/pid:1002/20353 with config:reg:32:ap:4
+08-13 22:41:40:122 unregisterAudioPolicy for android.os.BinderProxy@e00c707
+
+PlaybackActivityMonitor dump time: 13:20:15
+
+  playback listeners:
+ PlayMonitorClient:S uid:1000 pid:2288
+ PlayMonitorClient:S uid:1000 pid:2288
+ PlayMonitorClient:S uid:1000 pid:2288
+ PlayMonitorClient:S uid:1000 pid:2288
+ PlayMonitorClient:S uid:1000 pid:8099
+ PlayMonitorClient:S uid:10145 pid:31935
+
+
+
+  players:
+  AudioPlaybackConfiguration piid:351 deviceIds:[] type:android.media.SoundPool u/pid:1000/2288 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:359 deviceIds:[] type:android.media.SoundPool u/pid:10148/2813 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:367 deviceIds:[] type:android.media.SoundPool u/pid:1000/3119 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:383 deviceIds:[] type:android.media.SoundPool u/pid:1027/4828 state:idle attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null sessionId:0 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x0, sampleRate=0}
+  AudioPlaybackConfiguration piid:6151 deviceIds:[3] type:android.media.AudioTrack u/pid:10375/4882 state:started attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null sessionId:5545 mutedState:none  FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+
+  ducked players piids:
+
+  faded out players piids:
+
+  muted player piids due to call/ring:
+
+  banned uids:
+
+
+  volume players:
+
+Events log: player volume change event
+08-13 16:24:33:420 getPlayerVolume: return volume 1.0f
+08-13 21:51:32:302 getPlayerVolume: return volume 1.0f
+08-13 21:51:32:303 getPlayerVolume: return volume 1.0f
+
+
+
+  muted players (piids) awaiting device connection:
+
+
+  current piid to portId map:
+  piid: 6151 portId: 779
+
+
+Events log: playback activity as reported through PlayerBase
+08-14 12:34:39:102 releasing player piid:5887, uid:10287
+08-14 12:34:39:151 player piid:5895 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:34:39:153 player piid:5895 event:started
+08-14 12:34:39:161 player piid:5895 event:device updated deviceIds:[3]
+08-14 12:34:39:700 new player piid:5903 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5297
+08-14 12:34:39:701 port updated portId:[743] mapped to player piid:5903
+08-14 12:34:39:702 player piid:5903 event:paused
+08-14 12:34:50:303 player piid:5903 event:started
+08-14 12:34:50:319 player piid:5895 event:paused
+08-14 12:34:50:363 player piid:5903 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:34:50:369 player piid:5903 event:started
+08-14 12:34:50:370 player piid:5895 event:stopped
+08-14 12:34:50:373 releasing player piid:5895, uid:10287
+08-14 12:34:50:386 player piid:5903 event:device updated deviceIds:[3]
+08-14 12:34:50:920 new player piid:5911 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5305
+08-14 12:34:50:922 port updated portId:[744] mapped to player piid:5911
+08-14 12:34:50:922 player piid:5911 event:paused
+08-14 12:34:53:924 player piid:5911 event:started
+08-14 12:34:53:943 player piid:5903 event:paused
+08-14 12:34:53:987 player piid:5911 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:34:53:991 player piid:5911 event:started
+08-14 12:34:53:996 player piid:5903 event:stopped
+08-14 12:34:53:999 releasing player piid:5903, uid:10287
+08-14 12:34:54:011 player piid:5911 event:device updated deviceIds:[3]
+08-14 12:34:54:526 new player piid:5919 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5313
+08-14 12:34:54:527 port updated portId:[745] mapped to player piid:5919
+08-14 12:34:54:527 player piid:5919 event:paused
+08-14 12:34:55:231 player piid:5919 event:started
+08-14 12:34:55:251 player piid:5911 event:paused
+08-14 12:34:55:256 player piid:5911 event:stopped
+08-14 12:34:55:259 releasing player piid:5911, uid:10287
+08-14 12:34:55:288 player piid:5919 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:34:55:292 player piid:5919 event:started
+08-14 12:34:55:310 player piid:5919 event:device updated deviceIds:[3]
+08-14 12:34:55:830 new player piid:5927 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5321
+08-14 12:34:55:831 port updated portId:[746] mapped to player piid:5927
+08-14 12:34:55:831 player piid:5927 event:paused
+08-14 12:34:56:486 player piid:5927 event:started
+08-14 12:34:56:491 player piid:5919 event:paused
+08-14 12:34:56:496 player piid:5919 event:stopped
+08-14 12:34:56:496 releasing player piid:5919, uid:10287
+08-14 12:34:56:550 player piid:5927 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:34:56:553 player piid:5927 event:started
+08-14 12:34:56:592 player piid:5927 event:device updated deviceIds:[3]
+08-14 12:34:56:809 new player piid:5935 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5329
+08-14 12:34:56:810 port updated portId:[747] mapped to player piid:5935
+08-14 12:34:56:811 player piid:5935 event:paused
+08-14 12:35:18:872 player piid:5935 event:started
+08-14 12:35:18:903 player piid:5927 event:paused
+08-14 12:35:18:946 player piid:5935 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:35:18:950 player piid:5935 event:started
+08-14 12:35:18:959 player piid:5927 event:stopped
+08-14 12:35:18:963 releasing player piid:5927, uid:10287
+08-14 12:35:18:974 player piid:5935 event:device updated deviceIds:[3]
+08-14 12:35:19:500 new player piid:5943 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5337
+08-14 12:35:19:501 port updated portId:[748] mapped to player piid:5943
+08-14 12:35:19:501 player piid:5943 event:paused
+08-14 12:35:29:335 player piid:5943 event:started
+08-14 12:35:29:358 player piid:5935 event:paused
+08-14 12:35:29:368 player piid:5935 event:stopped
+08-14 12:35:29:371 releasing player piid:5935, uid:10287
+08-14 12:35:29:406 player piid:5943 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:35:29:408 player piid:5943 event:started
+08-14 12:35:29:414 player piid:5943 event:device updated deviceIds:[3]
+08-14 12:35:29:928 new player piid:5951 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5345
+08-14 12:35:29:928 port updated portId:[749] mapped to player piid:5951
+08-14 12:35:29:929 player piid:5951 event:paused
+08-14 12:35:35:086 player piid:5951 event:started
+08-14 12:35:35:107 player piid:5943 event:paused
+08-14 12:35:35:111 player piid:5943 event:stopped
+08-14 12:35:35:113 releasing player piid:5943, uid:10287
+08-14 12:35:35:166 player piid:5951 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:35:35:169 player piid:5951 event:started
+08-14 12:35:35:183 player piid:5951 event:device updated deviceIds:[3]
+08-14 12:35:35:694 new player piid:5959 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5353
+08-14 12:35:35:695 port updated portId:[750] mapped to player piid:5959
+08-14 12:35:35:695 player piid:5959 event:paused
+08-14 12:35:47:875 player piid:5951 event:paused
+08-14 12:35:47:888 player piid:5959 event:started
+08-14 12:35:47:912 player piid:5951 event:stopped
+08-14 12:35:47:913 releasing player piid:5951, uid:10287
+08-14 12:35:47:963 player piid:5959 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:35:47:975 player piid:5959 event:started
+08-14 12:35:47:991 player piid:5959 event:device updated deviceIds:[3]
+08-14 12:35:48:509 new player piid:5967 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5361
+08-14 12:35:48:512 port updated portId:[751] mapped to player piid:5967
+08-14 12:35:48:515 player piid:5967 event:paused
+08-14 12:35:49:707 player piid:5959 event:paused
+08-14 12:35:49:935 player piid:5967 event:started
+08-14 12:35:49:948 player piid:5959 event:stopped
+08-14 12:35:49:951 releasing player piid:5959, uid:10287
+08-14 12:35:49:990 player piid:5967 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:35:49:992 player piid:5967 event:started
+08-14 12:35:50:010 player piid:5967 event:device updated deviceIds:[3]
+08-14 12:35:50:556 new player piid:5975 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5369
+08-14 12:35:50:557 port updated portId:[752] mapped to player piid:5975
+08-14 12:35:50:558 player piid:5975 event:paused
+08-14 12:36:01:865 player piid:5975 event:started
+08-14 12:36:01:866 player piid:5967 event:paused
+08-14 12:36:01:885 player piid:5967 event:stopped
+08-14 12:36:01:886 releasing player piid:5967, uid:10287
+08-14 12:36:01:893 player piid:5975 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:01:898 player piid:5975 event:started
+08-14 12:36:01:923 player piid:5975 event:device updated deviceIds:[3]
+08-14 12:36:02:454 new player piid:5983 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5377
+08-14 12:36:02:454 port updated portId:[753] mapped to player piid:5983
+08-14 12:36:02:455 player piid:5983 event:paused
+08-14 12:36:08:867 player piid:5983 event:started
+08-14 12:36:08:892 player piid:5975 event:paused
+08-14 12:36:08:897 player piid:5975 event:stopped
+08-14 12:36:08:904 releasing player piid:5975, uid:10287
+08-14 12:36:08:934 player piid:5983 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:08:937 player piid:5983 event:started
+08-14 12:36:08:959 player piid:5983 event:device updated deviceIds:[3]
+08-14 12:36:09:463 new player piid:5991 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5385
+08-14 12:36:09:464 port updated portId:[754] mapped to player piid:5991
+08-14 12:36:09:465 player piid:5991 event:paused
+08-14 12:36:16:808 player piid:5991 event:started
+08-14 12:36:16:825 player piid:5983 event:stopped
+08-14 12:36:16:826 releasing player piid:5983, uid:10287
+08-14 12:36:16:873 player piid:5991 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:16:877 player piid:5991 event:started
+08-14 12:36:16:892 player piid:5991 event:device updated deviceIds:[3]
+08-14 12:36:17:422 new player piid:5999 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5393
+08-14 12:36:17:423 port updated portId:[755] mapped to player piid:5999
+08-14 12:36:17:423 player piid:5999 event:paused
+08-14 12:36:22:691 player piid:5999 event:started
+08-14 12:36:22:707 player piid:5991 event:stopped
+08-14 12:36:22:709 releasing player piid:5991, uid:10287
+08-14 12:36:22:760 player piid:5999 event:started
+08-14 12:36:22:761 player piid:5999 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:22:783 player piid:5999 event:device updated deviceIds:[3]
+08-14 12:36:23:308 new player piid:6007 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5401
+08-14 12:36:23:310 port updated portId:[756] mapped to player piid:6007
+08-14 12:36:23:310 player piid:6007 event:paused
+08-14 12:36:33:778 player piid:6007 event:started
+08-14 12:36:33:806 player piid:5999 event:paused
+08-14 12:36:33:858 player piid:6007 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:33:863 player piid:5999 event:stopped
+08-14 12:36:33:866 releasing player piid:5999, uid:10287
+08-14 12:36:33:880 player piid:6007 event:started
+08-14 12:36:33:885 player piid:6007 event:device updated deviceIds:[3]
+08-14 12:36:34:379 new player piid:6015 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5409
+08-14 12:36:34:381 port updated portId:[757] mapped to player piid:6015
+08-14 12:36:34:381 player piid:6015 event:paused
+08-14 12:36:39:508 player piid:6015 event:started
+08-14 12:36:39:515 player piid:6007 event:paused
+08-14 12:36:39:522 player piid:6007 event:stopped
+08-14 12:36:39:522 releasing player piid:6007, uid:10287
+08-14 12:36:39:566 player piid:6015 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:39:569 player piid:6015 event:started
+08-14 12:36:39:575 player piid:6015 event:device updated deviceIds:[3]
+08-14 12:36:40:115 new player piid:6023 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5417
+08-14 12:36:40:116 port updated portId:[758] mapped to player piid:6023
+08-14 12:36:40:118 player piid:6023 event:paused
+08-14 12:36:43:419 player piid:6023 event:started
+08-14 12:36:43:455 player piid:6015 event:paused
+08-14 12:36:43:477 player piid:6015 event:stopped
+08-14 12:36:43:478 releasing player piid:6015, uid:10287
+08-14 12:36:43:494 player piid:6023 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:43:498 player piid:6023 event:started
+08-14 12:36:43:514 player piid:6023 event:device updated deviceIds:[3]
+08-14 12:36:44:030 new player piid:6031 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5425
+08-14 12:36:44:030 port updated portId:[759] mapped to player piid:6031
+08-14 12:36:44:031 player piid:6031 event:paused
+08-14 12:36:49:108 player piid:6031 event:started
+08-14 12:36:49:146 player piid:6023 event:paused
+08-14 12:36:49:152 player piid:6023 event:stopped
+08-14 12:36:49:152 releasing player piid:6023, uid:10287
+08-14 12:36:49:171 player piid:6031 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:36:49:174 player piid:6031 event:started
+08-14 12:36:49:191 player piid:6031 event:device updated deviceIds:[3]
+08-14 12:36:49:732 new player piid:6039 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5433
+08-14 12:36:49:733 port updated portId:[760] mapped to player piid:6039
+08-14 12:36:49:733 player piid:6039 event:paused
+08-14 12:37:01:582 player piid:6031 event:paused
+08-14 12:37:01:589 player piid:6039 event:started
+08-14 12:37:01:647 player piid:6039 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:37:01:650 player piid:6031 event:stopped
+08-14 12:37:01:651 releasing player piid:6031, uid:10287
+08-14 12:37:01:651 player piid:6039 event:started
+08-14 12:37:01:668 player piid:6039 event:device updated deviceIds:[3]
+08-14 12:37:02:210 new player piid:6047 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5441
+08-14 12:37:02:210 port updated portId:[761] mapped to player piid:6047
+08-14 12:37:02:210 player piid:6047 event:paused
+08-14 12:37:09:634 player piid:6047 event:started
+08-14 12:37:09:667 player piid:6039 event:paused
+08-14 12:37:09:713 player piid:6047 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:37:09:713 player piid:6047 event:started
+08-14 12:37:09:731 player piid:6039 event:stopped
+08-14 12:37:09:732 releasing player piid:6039, uid:10287
+08-14 12:37:09:733 player piid:6047 event:device updated deviceIds:[3]
+08-14 12:37:10:236 new player piid:6055 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5449
+08-14 12:37:10:236 port updated portId:[762] mapped to player piid:6055
+08-14 12:37:10:237 player piid:6055 event:paused
+08-14 12:37:23:533 player piid:6047 event:paused
+08-14 12:37:24:282 player piid:6047 event:started
+08-14 12:37:24:347 player piid:6047 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:37:24:368 player piid:6047 event:device updated deviceIds:[3]
+08-14 12:37:25:675 player piid:6055 event:started
+08-14 12:37:25:702 player piid:6047 event:paused
+08-14 12:37:25:714 player piid:6047 event:stopped
+08-14 12:37:25:716 releasing player piid:6047, uid:10287
+08-14 12:37:25:761 player piid:6055 event:started
+08-14 12:37:25:762 player piid:6055 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:37:25:763 player piid:6055 event:device updated deviceIds:[3]
+08-14 12:37:26:275 new player piid:6063 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5457
+08-14 12:37:26:276 port updated portId:[763] mapped to player piid:6063
+08-14 12:37:26:276 player piid:6063 event:paused
+08-14 12:37:27:390 player piid:6055 event:paused
+08-14 12:37:27:982 player piid:6055 event:started
+08-14 12:37:28:031 player piid:6055 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:37:28:039 player piid:6055 event:device updated deviceIds:[3]
+08-14 12:37:45:466 player piid:6063 event:started
+08-14 12:37:45:496 player piid:6055 event:stopped
+08-14 12:37:45:500 releasing player piid:6055, uid:10287
+08-14 12:37:45:528 player piid:6063 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 12:37:45:529 player piid:6063 event:started
+08-14 12:37:45:533 player piid:6063 event:device updated deviceIds:[3]
+08-14 12:37:46:089 new player piid:6071 uid/pid:10287/32710 package:com.zhiliaoapp.musically type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5465
+08-14 12:37:46:090 port updated portId:[764] mapped to player piid:6071
+08-14 12:37:46:090 player piid:6071 event:paused
+08-14 12:37:53:481 player piid:6071 event:stopped
+08-14 12:37:53:485 releasing player piid:6071, uid:10287
+08-14 12:37:53:509 player piid:6063 event:paused
+08-14 12:37:55:688 releasing player piid:4975, uid:0
+08-14 12:37:55:713 releasing player piid:6063, uid:0
+08-14 13:06:56:491 new player piid:6079 uid/pid:1000/3119 package:com.bsp.logmanager type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5473
+08-14 13:06:56:493 player piid:6079 new AudioAttributes:AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+08-14 13:06:57:178 player piid:6079 event:started
+08-14 13:06:57:375 port updated portId:[765] mapped to player piid:6079
+08-14 13:06:57:408 player piid:6079 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:06:57:421 player piid:6079 event:device updated deviceIds:[3]
+08-14 13:06:58:098 player piid:6079 event:stopped
+08-14 13:06:58:099 releasing player piid:6079, uid:1000
+08-14 13:10:00:870 new player piid:6095 uid/pid:10375/4882 package:com.northcube.sleepcycle type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5489
+08-14 13:10:00:873 port updated portId:[769] mapped to player piid:6095
+08-14 13:10:00:878 player piid:6095 event:started
+08-14 13:10:00:925 player piid:6095 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:10:00:942 player piid:6095 event:device updated deviceIds:[3]
+08-14 13:10:09:641 player piid:6095 event:muted updated source:clientVolume 
+08-14 13:10:09:663 player piid:6095 event:paused
+08-14 13:10:09:665 player piid:6095 event:stopped
+08-14 13:10:09:665 releasing player piid:6095, uid:10375
+08-14 13:15:00:739 new player piid:6111 uid/pid:10375/4882 package:com.northcube.sleepcycle type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5505
+08-14 13:15:00:740 port updated portId:[773] mapped to player piid:6111
+08-14 13:15:00:745 player piid:6111 event:started
+08-14 13:15:00:757 new player piid:6119 uid/pid:1000/3119 package:com.bsp.logmanager type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5513
+08-14 13:15:00:759 player piid:6119 new AudioAttributes:AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+08-14 13:15:00:798 player piid:6111 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:15:00:820 player piid:6111 event:device updated deviceIds:[3]
+08-14 13:15:00:958 ducking player piid:6111 uid/pid:10375/4882 skip ramp:false player type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null config:VolumeShaper.Configuration{mType = 1, mId = 1, mOptionFlags = 0x2, mDurationMs = 500.0, mInterpolatorType = 2, mTimes[] = [0.0, 1.0], mVolumes[] = [1.0, 0.2]} operation:VolumeShaper.Operation{mFlags = 0x10, mReplaceId = -1, mXOffset = NaN}
+08-14 13:15:01:499 player piid:6119 event:started
+08-14 13:15:01:683 port updated portId:[774] mapped to player piid:6119
+08-14 13:15:01:719 player piid:6119 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:15:01:845 player piid:6119 event:device updated deviceIds:[3]
+08-14 13:15:02:029 new player piid:6127 uid/pid:1000/3119 package:com.bsp.logmanager type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5521
+08-14 13:15:02:031 player piid:6127 new AudioAttributes:AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+08-14 13:15:02:682 player piid:6127 event:started
+08-14 13:15:02:688 player piid:6119 event:paused
+08-14 13:15:02:771 releasing player piid:6119, uid:1000
+08-14 13:15:02:795 port updated portId:[775] mapped to player piid:6127
+08-14 13:15:02:847 player piid:6127 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:15:02:877 player piid:6127 event:device updated deviceIds:[3]
+08-14 13:15:03:530 player piid:6127 event:stopped
+08-14 13:15:03:532 releasing player piid:6127, uid:1000
+08-14 13:15:03:553 unducking piid:6111
+08-14 13:15:05:590 new player piid:6135 uid/pid:1000/3119 package:com.bsp.logmanager type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5529
+08-14 13:15:05:592 player piid:6135 new AudioAttributes:AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+08-14 13:15:05:637 ducking player piid:6111 uid/pid:10375/4882 skip ramp:false player type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null config:VolumeShaper.Configuration{mType = 1, mId = 1, mOptionFlags = 0x2, mDurationMs = 500.0, mInterpolatorType = 2, mTimes[] = [0.0, 1.0], mVolumes[] = [1.0, 0.2]} operation:VolumeShaper.Operation{mFlags = 0x10, mReplaceId = -1, mXOffset = NaN}
+08-14 13:15:06:140 player piid:6135 event:started
+08-14 13:15:06:158 player piid:6135 event:stopped
+08-14 13:15:06:159 releasing player piid:6135, uid:1000
+08-14 13:15:06:259 unducking piid:6111
+08-14 13:15:07:150 player piid:6111 event:paused
+08-14 13:15:07:153 player piid:6111 event:stopped
+08-14 13:15:07:155 releasing player piid:6111, uid:10375
+08-14 13:20:01:155 new player piid:6151 uid/pid:10375/4882 package:com.northcube.sleepcycle type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5545
+08-14 13:20:01:156 port updated portId:[779] mapped to player piid:6151
+08-14 13:20:01:159 player piid:6151 event:started
+08-14 13:20:01:172 new player piid:6159 uid/pid:1000/3119 package:com.bsp.logmanager type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5553
+08-14 13:20:01:173 player piid:6159 new AudioAttributes:AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+08-14 13:20:01:206 player piid:6151 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:20:01:214 player piid:6151 event:device updated deviceIds:[3]
+08-14 13:20:01:262 ducking player piid:6151 uid/pid:10375/4882 skip ramp:false player type:android.media.AudioTrack attr:AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null config:VolumeShaper.Configuration{mType = 1, mId = 1, mOptionFlags = 0x2, mDurationMs = 500.0, mInterpolatorType = 2, mTimes[] = [0.0, 1.0], mVolumes[] = [1.0, 0.2]} operation:VolumeShaper.Operation{mFlags = 0x10, mReplaceId = -1, mXOffset = NaN}
+08-14 13:20:01:787 player piid:6159 event:started
+08-14 13:20:02:021 port updated portId:[780] mapped to player piid:6159
+08-14 13:20:02:055 player piid:6159 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:20:02:105 player piid:6159 event:device updated deviceIds:[3]
+08-14 13:20:02:641 new player piid:6167 uid/pid:1000/3119 package:com.bsp.logmanager type:android.media.MediaPlayer attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null session:5561
+08-14 13:20:02:641 player piid:6167 new AudioAttributes:AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+08-14 13:20:03:239 player piid:6167 event:started
+08-14 13:20:03:241 player piid:6159 event:paused
+08-14 13:20:03:323 port updated portId:[781] mapped to player piid:6167
+08-14 13:20:03:341 releasing player piid:6159, uid:1000
+08-14 13:20:03:352 player piid:6167 format update:FormatInfo{isSpatialized=false, channelMask=0x3, sampleRate=44100}
+08-14 13:20:03:383 player piid:6167 event:device updated deviceIds:[3]
+08-14 13:20:04:036 player piid:6167 event:stopped
+08-14 13:20:04:038 releasing player piid:6167, uid:1000
+08-14 13:20:04:057 unducking piid:6151
+
+  allowed capture policies:
+
+RecordActivityMonitor dump time: 13:20:15
+riid 6143; active? true
+  session:5537 -- source client=VOICE_RECOGNITION, dev=1ch 44100Hz ENCODING_PCM_16BIT -- uid:10375 -- patch:778 -- pack:com.northcube.sleepcycle -- format client=1ch 44100Hz ENCODING_PCM_FLOAT, dev=1ch 44100Hz ENCODING_PCM_16BIT -- silenced:false -- effects client=, dev=
+
+
+Events log: recording activity received by AudioService
+08-12 22:04:07:023 rec update riid:1783 uid:10375 session:1745 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-13 08:20:34:196 rec stop riid:1783 uid:10375 session:1745 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-13 09:27:32:032 rec update riid:1967 uid:10318 session:1977 src:MIC not silenced pack:ru.yandex.yandexmaps
+08-13 09:27:45:343 rec stop riid:1967 uid:10318 session:1977 src:MIC not silenced pack:ru.yandex.yandexmaps
+08-13 09:29:20:640 rec update riid:1983 uid:10318 session:2065 src:MIC not silenced pack:ru.yandex.yandexmaps
+08-13 09:29:28:830 rec stop riid:1983 uid:10318 session:2065 src:MIC not silenced pack:ru.yandex.yandexmaps
+08-13 22:45:01:683 rec update riid:3727 uid:10375 session:3105 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-14 08:11:01:880 rec stop riid:3727 uid:10375 session:3105 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-14 13:09:26:926 rec update riid:6087 uid:10375 session:5481 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-14 13:10:07:965 rec stop riid:6087 uid:10375 session:5481 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-14 13:13:58:890 rec update riid:6103 uid:10375 session:5497 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-14 13:15:05:417 rec stop riid:6103 uid:10375 session:5497 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+08-14 13:16:38:128 rec update riid:6143 uid:10375 session:5537 src:VOICE_RECOGNITION not silenced pack:com.northcube.sleepcycle
+
+AudioDeviceBroker:
+  Message handler (watch for unhandled messages):
+    Handler (com.android.server.audio.AudioDeviceBroker$BrokerHandler) {1e1865d} @ 107281962
+      Looper (AudioDeviceBroker, tid 188) {397e13f}
+        (MessageQueue is using Concurrent implementation)
+        State: android.os.MessageQueue$StateNode@f277921
+        PriorityQueue Messages: 
+        AsyncPriorityQueue Messages: 
+        (Total messages: 1, polling=true, quitting=false)
+        Dump time: 2026-08-14 13:20:15.117 GMT+03:00
+        Package: system_server
+        Current looper: Looper (AudioDeviceBroker, tid=2602)
+
+
+  BECOMING_NOISY_INTENT_DEVICES_SET=
+ 0x400 0x800 0x8000000 0x20000000 0x80 0x100 0x200 0x2000 0x4000 0x4000000 0x20000001 0x20000 0x20000002 0x4 0x8
+  Preferred devices for strategy:
+
+  Non-default devices for strategy:
+
+  Connected devices:
+
+  APM Connected device (A2DP sink only):
+
+  Preferred devices for capture preset:
+
+  Applied devices roles for strategies (from API):
+
+  Applied devices roles for strategies (internal):
+
+  Applied devices roles for presets (from API):
+
+  Applied devices roles for presets (internal:
+
+devices:
+
+	type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+
+	type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+
+
+  Communication route clients:
+
+  Computed Preferred communication device: null
+
+  Applied Preferred communication device: null
+  Active communication device: AudioDeviceAttributes: role:output type:earpiece addr: name:2510DRA23E profiles:[{ENCODING_PCM_16BIT, sampling rates=[44100, 48000], channel masks=0x04, encapsulation type=0}, {ENCODING_PCM_32BIT, sampling rates=[44100, 48000], channel masks=0x04, encapsulation type=0}, {ENCODING_PCM_FLOAT, sampling rates=[44100, 48000], channel masks=0x04, encapsulation type=0}] descriptors:[]
+  mCommunicationStrategyId: 0
+  mAccessibilityStrategyId: 3
+
+  mModeOwnerPid: 0
+
+mCommDevDispatchers- Registered Clients:
+  UID: 1000 PID: 2288 Package: com.android.server.telecom
+
+  mScoManagedByAudio: false
+
+  Bluetooth SCO on, requested: false, applied: false
+
+  Bluetooth A2DP suspended, requested ext: false, requested int: false, applied false
+
+  Bluetooth LE Audio suspended, requested ext: false, requested int: false, applied false
+
+  mBluetoothHeadset: null
+  mBluetoothHeadsetDevice: null
+  mScoAudioState: SCO_STATE_INACTIVE
+  mScoAudioMode: SCO_MODE_VIRTUAL_CALL
+
+  mHearingAid: null
+
+  mLeAudio: null
+  mA2dp: null
+  mAvrcpAbsVolSupported: false
+
+SoundEffects:
+  Message handler (watch for unhandled messages):
+  Handler (com.android.server.audio.SoundEffectsHelper$SfxHandler) {ce4bbd2} @ 107281966
+    Looper (AS.SfxWorker, tid 190) {50a24a3}
+      (MessageQueue is using Concurrent implementation)
+      State: android.os.MessageQueue$StateNode@f277921
+      PriorityQueue Messages: 
+      AsyncPriorityQueue Messages: 
+      (Total messages: 1, polling=true, quitting=false)
+      Dump time: 2026-08-14 13:20:15.120 GMT+03:00
+      Package: system_server
+      Current looper: Looper (AS.SfxWorker, tid=2604)
+
+  Default attenuation (dB): -6
+Events log: Sound Effects Loading
+08-12 20:53:25:591 effects loading started
+08-12 20:53:25:618 effect /system/media/audio/ui/KeypressInvalid.ogg rejected by SoundPool
+08-12 20:53:25:780 effect KeypressStandard.ogg loaded
+08-12 20:53:25:812 effect Effect_Tick.ogg loaded
+08-12 20:53:25:856 effect KeypressSpacebar.ogg loaded
+08-12 20:53:25:899 effect KeypressDelete.ogg loaded
+08-12 20:53:26:007 effect KeypressReturn.ogg loaded
+08-12 20:53:26:007 effects loading completed
+
+
+
+Event logs:
+Events log: phone state (logged after successful call to AudioSystem.setPhoneState(int, int))
+08-13 16:24:06:644 setMode(MODE_RINGTONE) from package=com.android.server.telecom pid=2288 selected mode=MODE_RINGTONE by pid=2288
+08-13 16:24:16:737 setMode(MODE_IN_CALL) from package=com.android.server.telecom pid=2288 selected mode=MODE_IN_CALL by pid=2288
+08-13 16:24:33:358 setMode(MODE_NORMAL) from package=com.android.server.telecom pid=2288 selected mode=MODE_NORMAL by pid=0
+08-13 21:47:35:537 setMode(MODE_RINGTONE) from package=com.android.server.telecom pid=2288 selected mode=MODE_RINGTONE by pid=2288
+08-13 21:47:44:205 setMode(MODE_IN_CALL) from package=com.android.server.telecom pid=2288 selected mode=MODE_IN_CALL by pid=2288
+08-13 21:51:32:210 setMode(MODE_NORMAL) from package=com.android.server.telecom pid=2288 selected mode=MODE_NORMAL by pid=0
+
+
+Events log: wired/A2DP/hearing aid device connection
+08-13 22:10:41:966 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:10:51:877 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:10:52:083 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:10:55:192 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:10:57:480 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:00:327 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:02:447 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:02:619 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:04:863 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:08:641 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:13:162 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:13:327 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:16:284 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:16:554 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:36:883 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:11:37:113 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:13:28:615 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:13:28:788 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:13:31:552 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:13:31:710 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:13:40:141 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:13:40:284 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:16:52:341 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:17:11:535 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:19:34:678 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:19:54:284 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:20:21:067 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:20:21:244 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:23:26:902 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:23:46:145 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:25:24:068 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:25:43:426 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:05:845 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:06:039 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:08:240 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:08:378 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:10:911 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:25:895 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:26:26:296 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:28:36:756 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:28:37:003 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:29:03:502 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:29:03:746 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:06:951 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:07:428 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:09:378 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:09:600 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:11:917 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:12:301 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:12:846 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:13:022 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:14:646 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:14:821 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:43:369 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:46:592 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:53:260 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:53:839 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:59:415 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:30:59:682 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:31:42:461 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:31:42:737 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:32:56:886 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:32:57:171 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:33:38:500 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:33:38:871 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:34:00:474 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:37:06:631 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:37:26:156 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:40:55:863 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:41:15:753 synchronizeDeviceProfilesInInventory synced device pair ads1=type: 8 internal type: 0x80 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false ads2=type: 7 internal type: 0x10 addr: XX:XX:XX:XX:F4:69 bt audio type: AUDIO_DEVICE_CATEGORY_UNKNOWN enabled: false HT: false HTenabled: false
+08-13 22:41:38:293 In handleBluetoothActiveDeviceChanged(), previousDevice: XX:XX:XX:XX:F4:69, newDevice: null, BluetoothProfileConnectionInfo { Profile: 2, SupprNoisy: false, Volume: -1, IsLeOutput: false }
+08-13 22:41:38:294 BluetoothActiveDeviceChanged for A2DP, device update XX:XX:XX:XX:F4:69 -> null
+08-13 22:41:38:298 msg: MSG_L_BT_ACTIVE_DEVICE_CHANGE_EXT BtDeviceInfo: device=XX:XX:XX:XX:F4:69 state=0 prof=2 supprNoisy=false volume=-1 isLeOutput=false eventSource=AudioService audioSystemDevice=128 musicDevice=0 isDeviceSwitch=false
+08-13 22:41:38:305 dropping ACTION_AUDIO_BECOMING_NOISY
+08-13 22:41:38:311 getCodec DEFAULT from MSG_L_SET_BT_ACTIVE_DEVICE fallback to SBC
+08-13 22:41:38:312 BT connected:BtDeviceInfo: device=XX:XX:XX:XX:F4:69 state=0 prof=2 supprNoisy=false volume=-1 isLeOutput=false eventSource=AudioService audioSystemDevice=128 musicDevice=0 isDeviceSwitch=false codec=AUDIO_FORMAT_SBC
+08-13 22:41:38:462 A2DP device addr=XX:XX:XX:XX:F4:69 made unavailable, deviceSwitch: false
+08-13 22:41:39:270 SCO sink device addr=E8:EC:A3:8E:F4:69 made unavailable
+08-13 22:41:39:273 updateCommunicationRoute, preferredCommunicationDevice: null eventSource: handleDeviceConnection
+08-13 22:41:39:273 removePreferredDevicesForStrategyInt, strategy: 0
+08-13 22:41:39:273 removePreferredDevicesForStrategyInt APM fail to removed, strategy: 0, 0ms
+08-13 22:41:39:273 removePreferredDevicesForStrategyInt, strategy: 3
+08-13 22:41:39:273 removePreferredDevicesForStrategyInt APM fail to removed, strategy: 3, 0ms
+08-13 22:41:39:354 SCO source device addr=E8:EC:A3:8E:F4:69 made unavailable
+08-13 22:41:39:356 updateCommunicationRoute, preferredCommunicationDevice: null eventSource: handleDeviceConnection
+08-13 22:41:39:356 removePreferredDevicesForStrategyInt, strategy: 0
+08-13 22:41:39:356 removePreferredDevicesForStrategyInt APM fail to removed, strategy: 0, 0ms
+08-13 22:41:39:356 removePreferredDevicesForStrategyInt, strategy: 3
+08-13 22:41:39:356 removePreferredDevicesForStrategyInt APM fail to removed, strategy: 3, 0ms
+08-13 22:41:39:409 updateCommunicationRoute, preferredCommunicationDevice: null eventSource: resetBluetoothSco
+08-13 22:41:39:409 removePreferredDevicesForStrategyInt, strategy: 0
+08-13 22:41:39:409 removePreferredDevicesForStrategyInt APM fail to removed, strategy: 0, 0ms
+08-13 22:41:39:409 removePreferredDevicesForStrategyInt, strategy: 3
+08-13 22:41:39:409 removePreferredDevicesForStrategyInt APM fail to removed, strategy: 3, 0ms
+08-13 22:41:39:831 BT profile service: disconnecting A2DP profile
+08-13 22:41:39:831 BT profile service: disconnecting HEADSET profile
+08-13 22:41:39:831 BT profile service: disconnecting HID_HOST profile
+08-13 22:41:39:834 BT profile A2DP disconnected
+08-13 22:41:39:835 BT profile HEADSET disconnected
+08-13 22:41:39:835 BT profile HID_HOST disconnected
+
+
+Events log: force use (logged before setForceUse() is executed)
+08-13 22:13:31:030 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:26:02:837 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:26:07:776 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:26:26:062 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:30:07:210 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:30:09:104 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:30:11:231 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:30:53:423 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:32:56:918 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:33:57:487 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:33:57:726 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:41:34:640 setForceUse(FOR_MEDIA, FORCE_NONE) due to setBluetoothA2dpOn(true) from u/pid:1000/2288 src:AudioService.setBtA2dpOn
+08-13 22:41:39:060 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/2288
+08-13 22:41:39:340 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/2288
+08-13 22:41:39:519 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/2288
+08-13 22:41:39:532 setForceUse(FOR_VIBRATE_RINGING, FORCE_NONE) due to muteRingerModeStreams() from u/pid:1000/2288
+08-13 23:00:00:177 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+08-14 00:00:01:225 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+08-14 07:00:00:136 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+08-14 08:04:10:175 setForceUse(FOR_DOCK, FORCE_DIGITAL_DOCK) due to readDockAudioSettings
+
+
+Events log: volume changes (logged when command received by AudioService)
+08-12 20:53:20:419 updateIndexFactors() stream:0 index min/max:1/11 indexStepFactor:1.0
+08-12 20:53:20:422 updateIndexFactors() stream:1 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:423 updateIndexFactors() stream:2 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:424 updateIndexFactors() stream:3 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:426 updateIndexFactors() stream:4 index min/max:1/15 indexStepFactor:1.0
+08-12 20:53:20:429 updateIndexFactors() stream:5 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:432 updateIndexFactors() stream:7 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:433 updateIndexFactors() stream:8 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:434 updateIndexFactors() stream:9 index min/max:0/15 indexStepFactor:1.0
+08-12 20:53:20:436 updateIndexFactors() stream:10 index min/max:1/15 indexStepFactor:1.0
+08-12 20:53:20:438 updateIndexFactors() stream:11 index min/max:0/15 indexStepFactor:1.0
+08-12 21:25:13:409 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-12 21:25:15:274 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 08:20:33:826 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-13 08:20:33:854 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-13 09:19:44:026 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, muted)
+08-13 09:19:44:031 handleBluetoothActiveDeviceChanged dev:0x80 volIdx:50
+08-13 09:19:44:268 onSetBtActiveDevice dev:0x80 volIdx:50
+08-13 09:19:44:708 setDeviceVolumeBehavior: dev:bt_a2dp addr:XX:XX:XX:XX:F4:69 behavior:DEVICE_VOLUME_BEHAVIOR_ABSOLUTE pack:com.android.bluetooth
+08-13 09:19:45:482 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, unmuted)
+08-13 09:20:49:444 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:20:49:497 sending VOLUME_CHANGED stream:STREAM_MUSIC index:6 (was:5) aliased streams: STREAM_ACCESSIBILITY:7 STREAM_TTS:6 
+08-13 09:20:49:516 setAvrcpVolume: index:6
+08-13 09:20:50:514 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:20:50:566 sending VOLUME_CHANGED stream:STREAM_MUSIC index:7 (was:6) aliased streams: STREAM_ACCESSIBILITY:8 STREAM_TTS:7 
+08-13 09:20:50:624 setAvrcpVolume: index:7
+08-13 09:20:50:740 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:20:50:847 sending VOLUME_CHANGED stream:STREAM_MUSIC index:8 (was:7) aliased streams: STREAM_ACCESSIBILITY:9 STREAM_TTS:8 
+08-13 09:20:50:905 setAvrcpVolume: index:8
+08-13 09:20:50:936 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:20:50:972 sending VOLUME_CHANGED stream:STREAM_MUSIC index:9 (was:8) aliased streams: STREAM_ACCESSIBILITY:9 STREAM_TTS:9 
+08-13 09:20:51:081 setAvrcpVolume: index:9
+08-13 09:20:51:130 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:20:51:209 sending VOLUME_CHANGED stream:STREAM_MUSIC index:10 (was:9) aliased streams: STREAM_ACCESSIBILITY:10 STREAM_TTS:10 
+08-13 09:20:51:235 setAvrcpVolume: index:10
+08-13 09:20:51:365 adjustSuggestedStreamVolume(sugg:USE_DEFAULT_STREAM_TYPE dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:20:51:408 setAvrcpVolume: index:10
+08-13 09:20:59:754 adjustSuggestedStreamVolume(sugg:STREAM_MUSIC dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 09:20:59:784 sending VOLUME_CHANGED stream:STREAM_MUSIC index:9 (was:10) aliased streams: STREAM_ACCESSIBILITY:9 STREAM_TTS:9 
+08-13 09:20:59:799 setAvrcpVolume: index:9
+08-13 09:21:00:973 adjustSuggestedStreamVolume(sugg:STREAM_MUSIC dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:21:00:994 sending VOLUME_CHANGED stream:STREAM_MUSIC index:10 (was:9) aliased streams: STREAM_ACCESSIBILITY:10 STREAM_TTS:10 
+08-13 09:21:01:021 setAvrcpVolume: index:10
+08-13 09:47:15:942 adjustSuggestedStreamVolume(sugg:STREAM_MUSIC dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 09:47:15:964 sending VOLUME_CHANGED stream:STREAM_MUSIC index:11 (was:10) aliased streams: STREAM_ACCESSIBILITY:11 STREAM_TTS:11 
+08-13 09:47:15:985 setAvrcpVolume: index:11
+08-13 10:03:48:406 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, muted)
+08-13 10:03:50:354 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, unmuted)
+08-13 18:04:25:884 handleBluetoothActiveDeviceChanged dev:0x80 volIdx:110
+08-13 18:04:25:983 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, muted)
+08-13 18:04:25:984 onSetBtActiveDevice dev:0x80 volIdx:110
+08-13 18:04:26:900 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, unmuted)
+08-13 18:04:27:374 setDeviceVolumeBehavior: dev:bt_a2dp addr:XX:XX:XX:XX:F4:69 behavior:DEVICE_VOLUME_BEHAVIOR_ABSOLUTE pack:com.android.bluetooth
+08-13 18:04:38:958 handleBluetoothActiveDeviceChanged dev:0x80 volIdx:110
+08-13 18:04:39:080 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, muted)
+08-13 18:04:39:082 onSetBtActiveDevice dev:0x80 volIdx:110
+08-13 18:04:39:956 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, unmuted)
+08-13 18:04:40:331 setDeviceVolumeBehavior: dev:bt_a2dp addr:XX:XX:XX:XX:F4:69 behavior:DEVICE_VOLUME_BEHAVIOR_ABSOLUTE pack:com.android.bluetooth
+08-13 18:05:12:713 adjustSuggestedStreamVolume(sugg:STREAM_MUSIC dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 18:05:12:729 sending VOLUME_CHANGED stream:STREAM_MUSIC index:10 (was:11) aliased streams: STREAM_ACCESSIBILITY:10 STREAM_TTS:10 
+08-13 18:05:12:768 setAvrcpVolume: index:10
+08-13 18:05:13:632 adjustSuggestedStreamVolume(sugg:STREAM_MUSIC dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 18:05:13:655 sending VOLUME_CHANGED stream:STREAM_MUSIC index:9 (was:10) aliased streams: STREAM_ACCESSIBILITY:9 STREAM_TTS:9 
+08-13 18:05:13:676 setAvrcpVolume: index:9
+08-13 18:57:20:806 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, muted)
+08-13 18:57:22:883 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, unmuted)
+08-13 21:47:49:980 adjustSuggestedStreamVolume(sugg:STREAM_VOICE_CALL dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 21:47:49:987 sending VOLUME_CHANGED stream:STREAM_VOICE_CALL index:7 (was:8) aliased streams: STREAM_DTMF:9 
+08-13 21:47:50:917 adjustSuggestedStreamVolume(sugg:STREAM_VOICE_CALL dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 21:47:50:934 sending VOLUME_CHANGED stream:STREAM_VOICE_CALL index:6 (was:7) aliased streams: STREAM_DTMF:8 
+08-13 21:47:51:505 adjustSuggestedStreamVolume(sugg:STREAM_VOICE_CALL dir:ADJUST_LOWER flags:0x1011) from android/android uid:1000
+08-13 21:47:51:510 sending VOLUME_CHANGED stream:STREAM_VOICE_CALL index:5 (was:6) aliased streams: STREAM_DTMF:7 
+08-13 21:47:52:933 adjustSuggestedStreamVolume(sugg:STREAM_VOICE_CALL dir:ADJUST_RAISE flags:0x1011) from android/android uid:1000
+08-13 21:47:52:944 sending VOLUME_CHANGED stream:STREAM_VOICE_CALL index:6 (was:5) aliased streams: STREAM_DTMF:8 
+08-13 22:10:36:783 handleBluetoothActiveDeviceChanged dev:0x80 volIdx:90
+08-13 22:10:36:919 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, muted)
+08-13 22:10:36:920 onSetBtActiveDevice dev:0x80 volIdx:90
+08-13 22:10:37:266 setDeviceVolumeBehavior: dev:bt_a2dp addr:XX:XX:XX:XX:F4:69 behavior:DEVICE_VOLUME_BEHAVIOR_ABSOLUTE pack:com.android.bluetooth
+08-13 22:10:37:853 VolumeStreamState.muteInternally(stream:STREAM_MUSIC, unmuted)
+08-14 08:10:41:829 setStreamVolume(stream:STREAM_ALARM index:15 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 08:10:41:832 sending VOLUME_CHANGED stream:STREAM_ALARM index:15 (was:6)
+08-14 08:11:00:120 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:15) from com.northcube.sleepcycle
+08-14 08:11:00:121 sending VOLUME_CHANGED stream:STREAM_ALARM index:6 (was:15)
+08-14 08:11:01:697 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 08:11:01:704 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 13:10:00:493 setStreamVolume(stream:STREAM_ALARM index:15 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 13:10:00:496 sending VOLUME_CHANGED stream:STREAM_ALARM index:15 (was:6)
+08-14 13:10:07:772 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:15) from com.northcube.sleepcycle
+08-14 13:10:07:773 sending VOLUME_CHANGED stream:STREAM_ALARM index:6 (was:15)
+08-14 13:10:07:793 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 13:15:00:555 setStreamVolume(stream:STREAM_ALARM index:15 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 13:15:00:558 sending VOLUME_CHANGED stream:STREAM_ALARM index:15 (was:6)
+08-14 13:15:05:226 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:15) from com.northcube.sleepcycle
+08-14 13:15:05:227 sending VOLUME_CHANGED stream:STREAM_ALARM index:6 (was:15)
+08-14 13:15:05:256 setStreamVolume(stream:STREAM_ALARM index:6 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 13:20:00:971 setStreamVolume(stream:STREAM_ALARM index:15 flags:0x0 oldIndex:6) from com.northcube.sleepcycle
+08-14 13:20:00:973 sending VOLUME_CHANGED stream:STREAM_ALARM index:15 (was:6)
+
+
+Events log: mute commands
+08-13 17:09:37:710 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 17:09:38:553 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:23:326 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:23:376 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:26:317 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:28:255 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:28:496 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:28:521 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:28:610 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:35:590 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:35:640 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:04:39:381 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:57:21:756 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:57:21:889 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:57:22:186 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 18:57:22:328 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:47:35:597 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:47:35:676 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:47:44:265 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:47:44:402 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:47:45:240 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:51:32:257 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 21:51:32:310 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:10:34:350 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:10:34:518 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:10:37:245 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:41:38:695 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:41:39:340 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:41:39:409 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+08-13 22:41:39:531 RingerZenMutedStreams 0x0 from muteRingerModeStreams
+
+
+Supported System Usages:
+	USAGE_CALL_ASSISTANT
+
+
+
+Spatial audio:
+mHasSpatializerEffect:true (effect present)
+isSpatializerEnabled:false (routing dependent)
+SpatializerHelper:
+	mState:1
+	mSpatLevel:0
+	mCapableSpatLevel:0
+	spatialized speaker masks: none
+	mIsHeadTrackingSupported:false
+	supported head tracking modes:
+	mDesiredHeadTrackingMode:HEAD_TRACKING_MODE_RELATIVE_WORLD
+	mActualHeadTrackingMode:HEAD_TRACKING_MODE_UNSUPPORTED
+	headtracker available:false
+	supports binaural:false / transaural:false
+	mSpatOutput:0
+	has FEATURE_AUDIO_SPATIAL_HEADTRACKING_LOW_LATENCY:false
+Events log: spatial audio
+08-13 22:28:37:003 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:29:03:529 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:29:03:753 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:06:951 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:07:428 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:09:378 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:09:601 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:11:918 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:12:301 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:12:846 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:13:022 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:14:647 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:14:822 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:43:369 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:46:593 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:53:260 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:53:843 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:59:416 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:30:59:682 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:31:42:473 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:31:42:737 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:32:56:886 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:32:57:172 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:33:38:500 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:33:38:871 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:34:00:474 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:37:06:633 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:37:26:156 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:40:55:865 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+08-13 22:41:15:755 removeCompatibleAudioDevice: dev=AudioDeviceAttributes: role:output type:bt_sco addr:XX:XX:XX:XX:F4:69 name: profiles:[] descriptors:[]
+
+
+
+Loudness alignment:
+
+Registered clients:
+
+
+Events log: Loudness updates
+08-12 20:55:51:988 Loudness client with pid 9814 died
+08-12 20:56:00:386 Loudness client with pid 10518 died
+08-12 21:24:28:954 Loudness client with pid 10470 died
+08-13 09:26:15:738 Loudness client with pid 390 died
+08-13 09:27:49:377 Loudness client with pid 1000 died
+08-13 09:29:31:609 Loudness client with pid 3082 died
+08-13 17:09:30:260 Loudness client with pid 30517 died
+08-13 19:30:40:371 Loudness client with pid 29306 died
+08-13 20:40:05:186 Loudness client with pid 28361 died
+08-13 22:09:52:122 Loudness client with pid 7352 died
+08-14 01:04:27:165 Loudness client with pid 27740 died
+08-14 09:39:39:648 Loudness client with pid 20237 died
+08-14 12:53:16:579 Loudness client with pid 26193 died
+
+
+Absolute volume devices with their volume driving streams:
+Device type: 0x8000000, driving stream 3
+Device type: 0x20000000, driving stream 3
+Device type: 0x20000001, driving stream 3
+Device type: 0x20000002, driving stream 3
+
+AudioSystemAdapter:
+ last cache clear time: 08-14 08:04:10:175
+ mDevicesForAttrCache:
+	AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_SYSTEM(1)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_TTS content=CONTENT_TYPE_UNKNOWN flags=0x808 tags= bundle=null forVolume: true stream: STREAM_MUSIC(3)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ASSISTANCE_ACCESSIBILITY content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_ACCESSIBILITY(10)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_NOTIFICATION_RINGTONE content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_RING(2)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ALARM content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_ALARM(4)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ASSISTANT content=CONTENT_TYPE_SPEECH flags=0x800 tags= bundle=null forVolume: true stream: STREAM_ASSISTANT(11)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_NOTIFICATION(5)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_VOICE_COMMUNICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_VOICE_CALL(0)
+		AudioDeviceAttributes: role:output type:earpiece addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_ENFORCED_AUDIBLE content=CONTENT_TYPE_UNKNOWN flags=0x801 tags= bundle=null forVolume: true stream: STREAM_SYSTEM(1)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_VOICE_COMMUNICATION_SIGNALLING content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_DTMF(8)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]
+	AudioAttributes: usage=USAGE_MEDIA content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null forVolume: true stream: STREAM_MUSIC(3)
+		AudioDeviceAttributes: role:output type:speaker addr: name: profiles:[] descriptors:[]

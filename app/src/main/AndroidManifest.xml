@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Точный будильник. USE_EXACT_ALARM выдаётся приложениям-будильникам при установке
+         и не требует ничего от пользователя; SCHEDULE_EXACT_ALARM оставлен запасным. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- Показ экрана поверх всего -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.TURN_SCREEN_ON" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Испытание «отжимания»: камера смотрит на позу и считает повторы.
+         Кадры никуда не уходят — сети у приложения нет вовсе (P0 №6). -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="false" />
+    <!-- Испытание «метки»: из метки читается только её идентификатор, содержимое не
+         трогается вовсе. Разрешение выдаётся при установке, спрашивать нечего. -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
+
+    <!-- Нужно, чтобы поднять системную громкость будильника, когда она стоит в нуле
+         и телефон при этом в режиме «Не беспокоить». -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
+    <!-- Пережить перезагрузку и спящий режим -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission
+        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+        tools:ignore="BatteryLife" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- testOnly даёт главную страховку жёсткой блокировки: с таким приложением
+         команда `adb shell dpm remove-active-admin` снимает права владельца устройства
+         даже если приложение зависло и до его собственного EscapeReceiver не достучаться.
+         Плата — ставить APK нужно с ключом: `adb install -t -r ...`. -->
+    <application
+        android:testOnly="true"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.Alarm">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Alarm">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Экран тревоги. Отдельная задача и excludeFromRecents: он не часть обычной
+             навигации приложения, а окно, которое просто появляется поверх всего. -->
+        <activity
+            android:name=".AlarmActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleInstance"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.Alarm.FullScreen"
+            android:turnScreenOn="true" />
+
+        <service
+            android:name=".AlarmService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="alarm_screen" />
+        </service>
+
+        <!-- Второй слой блокировки: мгновенный возврат экрана тревоги.
+             Содержимое чужих окон не читается, нужен только факт смены окна. -->
+        <service
+            android:name=".AlarmGuardAccessibilityService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service" />
+        </service>
+
+        <!-- Зацеп за Sleep Cycle: ловит момент, когда владелец выключил чужой будильник. -->
+        <service
+            android:name=".SleepCycleListener"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Жёсткая блокировка. Права появляются только командой с компьютера:
+             adb shell dpm set-device-owner com.sasha.alarm/.AlarmDeviceAdminReceiver -->
+        <receiver
+            android:name=".AlarmDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Путь к отступлению через кабель. Открыт наружу намеренно: иначе
+             `am broadcast` с компьютера до него не достучится. Защищён ключом. -->
+        <receiver
+            android:name=".EscapeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.sasha.alarm.ESCAPE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Пара к EscapeReceiver: поднять проверочную тревогу с компьютера. -->
+        <receiver
+            android:name=".TestTriggerReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.sasha.alarm.TEST_TRIGGER" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="false" />
+
+        <!-- Сторож бэкапа живёт в ОТДЕЛЬНОМ процессе: падение основного процесса
+             не должно уносить с собой единственный механизм снятия блока (P0 №5). -->
+        <receiver
+            android:name=".GuardReceiver"
+            android:exported="false"
+            android:process=":guard" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

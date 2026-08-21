@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Сигнальный красный фон -->
+    <path
+        android:fillColor="#FF0026"
+        android:pathData="M0,0h108v108h-108z" />
+    <!-- Полоса опасности: более высокая (y=0..40), чёрные диагональные штрихи 45°.
+         Верхняя кромка уходит под маску лаунчера — это ожидаемо для краевого декора. -->
+    <group>
+        <path android:fillColor="#000000" android:pathData="M-40,0 L-31,0 L-71,40 L-80,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M-22,0 L-13,0 L-53,40 L-62,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M-4,0 L5,0 L-35,40 L-44,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M14,0 L23,0 L-17,40 L-26,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M32,0 L41,0 L1,40 L-8,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M50,0 L59,0 L19,40 L10,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M68,0 L77,0 L37,40 L28,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M86,0 L95,0 L55,40 L46,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M104,0 L113,0 L73,40 L64,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M122,0 L131,0 L91,40 L82,40 Z" />
+        <path android:fillColor="#000000" android:pathData="M140,0 L149,0 L109,40 L100,40 Z" />
+    </group>
+</vector>

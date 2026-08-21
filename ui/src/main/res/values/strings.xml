@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_title">ALARM</string>
+    <string name="menu_test">ТЕСТ ЭКРАНА</string>
+    <string name="menu_permissions_all">все выданы</string>
+    <string name="menu_permissions_missing">выдано %1$d из %2$d</string>
+
+    <!-- Меню настроек: страницы, а не всплывающие окна -->
+    <string name="menu_challenge">ИСПЫТАНИЕ</string>
+    <string name="menu_sound">ЗВУК</string>
+    <string name="menu_lock">БЛОКИРОВКА</string>
+    <string name="menu_permissions">РАЗРЕШЕНИЯ</string>
+    <string name="menu_configure">НАСТРОИТЬ ›</string>
+    <string name="menu_back">‹</string>
+
+    <string name="settings_resume_title">Возврат после перезагрузки</string>
+    <string name="main_headphones_warning">Подключены наушники или колонка. Звук будильника уйдёт в них, и телефон рядом промолчит — переключить маршрут звука приложение не может.</string>
+
+    <!-- Звук -->
+    <string name="sound_melody_title">Мелодия</string>
+    <string name="sound_melody_system">Системная мелодия будильника</string>
+    <string name="sound_melody_pick">Выбрать</string>
+    <string name="sound_start_volume_title">Начальная громкость</string>
+    <string name="sound_ramp_title">Нарастание</string>
+    <string name="sound_vibrate_title">Вибрация</string>
+
+    <string name="settings_app_settings">Настройки приложения в системе</string>
+
+    <string name="perm_notifications_title">Уведомления</string>
+    <string name="perm_notification_listener_title">Доступ к уведомлениям</string>
+    <string name="perm_accessibility_title">Специальные возможности</string>
+    <string name="accessibility_description">Возвращает экран будильника, если с него ушли, пока будильник не выключен.</string>
+    <string name="perm_full_screen_title">Полноэкранные уведомления</string>
+    <string name="perm_overlay_title">Поверх других приложений</string>
+    <string name="perm_exact_alarm_title">Точные будильники</string>
+    <string name="perm_battery_title">Без ограничений батареи</string>
+    <string name="perm_camera_title">Камера</string>
+    <string name="perm_nfc_title">NFC</string>
+    <string name="perm_xiaomi_autostart_title">Автозапуск (Xiaomi)</string>
+    <string name="perm_xiaomi_popup_title">Всплывающие окна в фоне (Xiaomi)</string>
+
+    <string name="settings_failsafe_title">Бэкап-выключение</string>
+
+    <!-- Экран тревоги -->
+    <string name="alarm_exit">Выйти</string>
+    <string name="alarm_all_solved">Готово</string>
+
+    <!-- Испытания -->
+    <string name="challenge_pushups">Отжимания</string>
+    <string name="pushup_overlay_figure">ФИГУРА</string>
+    <string name="pushup_overlay_dots">СКЕЛЕТ</string>
+    <string name="pushup_model_lite">ЛЁГКАЯ</string>
+    <string name="pushup_model_full">СРЕДНЯЯ</string>
+    <string name="pushup_model_heavy">ТЯЖЁЛАЯ</string>
+    <string name="pushup_model_hint">Тяжёлая точнее ставит точки, но выдаёт меньше кадров — и может пропустить нижнюю точку отжимания. Сравните на себе.</string>
+
+    <!-- Вердикт по каждому подъёму: сказать один раз и по делу -->
+    <string name="pushup_verdict_too_soon">Слишком быстро</string>
+    <!-- Ровно как в макете: одна строка вместо абзаца. Подробное объяснение
+         человеку нужно не в настройках, а на самом экране испытания — и там оно есть. -->
+
+    <!-- Разбор кадра. Одна и та же строка идёт и на экран, и в голос: во время
+         отжиманий человек смотрит в пол, и написанное он попросту не увидит. -->
+    <string name="pushup_problem_start">Поставь телефон так, чтобы тебя было видно целиком</string>
+    <string name="pushup_problem_no_pose">Не вижу тебя. Встань перед камерой</string>
+    <string name="pushup_problem_too_close">Слишком близко. Отодвинь телефон</string>
+    <string name="pushup_problem_too_far">Слишком далеко. Придвинь телефон</string>
+    <string name="pushup_problem_shoulders">Не вижу плечи</string>
+    <string name="pushup_problem_elbows">Не вижу локти</string>
+    <string name="pushup_problem_wrists">Не вижу кисти</string>
+    <string name="pushup_problem_arms">Не разберу позу. Повернись к камере боком</string>
+    <string name="pushup_problem_low">Ниже. Опускайся до конца</string>
+    <string name="pushup_problem_none">Вижу тебя. Работай</string>
+    <!-- Засчитанный повтор произносится голым числом, без слов: это отсчёт под
+         нагрузкой, а не диктор. Строки для него нет намеренно. -->
+    <string name="math_range_title">Диапазон чисел</string>
+    <string name="challenge_math">Примеры</string>
+    <string name="challenge_reaction">Реакция</string>
+    <string name="challenge_nfc">NFC-метка</string>
+    <string name="challenge_nfc_no_route">сначала соберите маршрут</string>
+
+    <string name="math_count_title">Сколько примеров</string>
+    <string name="sound_enabled_title">Звук</string>
+
+    <!-- Экран победы -->
+    <string name="victory_title">Подъём!</string>
+    <string name="victory_subtitle">Испытание пройдено.\nС добрым утром.</string>
+    <string name="victory_duration">Время испытания</string>
+    <string name="victory_woke">Подъём</string>
+    <string name="victory_range">%1$s → %2$s</string>
+    <string name="victory_math_solved">Примеров решено</string>
+    <string name="victory_math_solved_value">%1$d из %2$d</string>
+    <string name="victory_math_wrong">Ошибок</string>
+    <string name="victory_math_average">В среднем на пример</string>
+    <string name="victory_pushups">Отжиманий сделано</string>
+    <string name="victory_pushups_value">%1$d из %2$d</string>
+    <string name="victory_nfc">Меток обойдено</string>
+    <string name="victory_nfc_average">В среднем на метку</string>
+    <string name="victory_reaction_hits">Кружков поймано</string>
+    <string name="victory_reaction_misses">Упущено</string>
+    <string name="victory_reaction_accuracy">Точность</string>
+    <string name="victory_percent">%1$d%%</string>
+    <string name="victory_exit">Выйти</string>
+
+    <!-- Метки -->
+    <string name="nfc_title">Метки и маршрут</string>
+    <string name="nfc_tags_header">Метки</string>
+    <!-- Одна строка вместо трёх абзацев — как в макете. -->
+    <string name="nfc_route_header">Маршрут</string>
+    <string name="nfc_route_empty">маршрут пуст</string>
+    <string name="nfc_waiting">Приложи метку к телефону</string>
+    <string name="nfc_waiting_cancel">Отмена</string>
+    <string name="nfc_unsupported">В этом телефоне нет NFC — испытание с метками работать не будет.</string>
+    <string name="nfc_disabled">NFC выключен в системе. Пока он выключен, метки не читаются ни здесь, ни на экране тревоги.</string>
+    <string name="nfc_open_settings">Включить NFC</string>
+
+    <!-- Ответ на касание (макет 2026-08-18): одно слово во весь блок. Номер метки
+         из ответа убран намеренно — спросонья он не нужен, нужно «туда или не туда».
+         «Ещё раз» — отдельный случай: метка та самая, но телефон не оторвали, и
+         сказать про неё «неверно» значило бы отправить искать другую. -->
+    <string name="nfc_scan_right">Верно</string>
+    <string name="nfc_scan_wrong">Неверно</string>
+    <string name="nfc_scan_too_soon">Ещё раз</string>
+    <string name="nfc_touch_known">Это метка %1$d</string>
+    <string name="nfc_touch_added">Запомнил: метка %1$d</string>
+    <string name="nfc_touch_unknown">Метка не из списка. Нажмите ＋, чтобы запомнить её.</string>
+
+    <!-- Уведомление -->
+    <string name="notification_channel_name">Экран тревоги</string>
+    <string name="notification_channel_description">Поднимает экран будильника поверх всего</string>
+    <string name="notification_title">Будильник</string>
+    <!-- Нажимать не на что: человек уже на экране тревоги. Строка нужна лишь потому,
+         что уведомление у службы переднего плана обязательно и без текста выглядит сломанным. -->
+    <string name="notification_text">Идёт тревога</string>
+
+</resources>

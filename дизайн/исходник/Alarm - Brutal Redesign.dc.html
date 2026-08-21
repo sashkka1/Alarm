@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#FF0026"/><rect width="100" height="18" fill="#000"/><rect y="6" width="100" height="6" fill="#FF0026" transform="skewX(-20)" opacity="0"/><g fill="#000"><circle cx="50" cy="56" r="26" fill="none" stroke="#000" stroke-width="6"/><path d="M50 40v16l11 7" fill="none" stroke="#000" stroke-width="6" stroke-linecap="round"/></g></svg>
+</template>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0d0b0a; font-family:'Archivo',sans-serif; }
+  ::selection { background:#C24A32; color:#000; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; background:transparent; cursor:pointer; height:24px; }
+  input[type=range]::-webkit-slider-runnable-track{ height:5px; border-radius:999px; background:#3A332E; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; margin-top:-8.5px; border-radius:999px; background:#C24A32; border:0; box-shadow:0 2px 6px rgba(0,0,0,.4); }
+  input[type=range]::-moz-range-track{ height:5px; border-radius:999px; background:#3A332E; }
+  input[type=range]::-moz-range-thumb{ width:22px; height:22px; border-radius:999px; background:#C24A32; border:0; }
+  .rng{ -webkit-appearance:none; appearance:none; width:100%; background:transparent !important; pointer-events:none; position:absolute; left:0; top:0; height:24px; margin:0; }
+  .rng::-webkit-slider-runnable-track{ background:transparent !important; }
+  .rng::-moz-range-track{ background:transparent !important; }
+  .rng::-webkit-slider-thumb{ pointer-events:auto; }
+  .rng::-moz-range-thumb{ pointer-events:auto; }
+  .scr::-webkit-scrollbar{ width:0; }
+  @keyframes pageIn{ from{ opacity:0; transform:translateX(14px);} to{ opacity:1; transform:translateX(0);} }
+  .pageIn{ animation:pageIn .24s ease both; }
+  @keyframes sheetUp{ from{ transform:translateY(100%);} to{ transform:translateY(0);} }
+  .sheetUp{ animation:sheetUp .28s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes fadeIn{ from{ opacity:0;} to{ opacity:1;} }
+  .fadeIn{ animation:fadeIn .2s ease both; }
+</style>
+</helmet>
+<div style="min-height:100vh; background:#0d0b0a; background-image:radial-gradient(circle at 20% 0%, #17130F 0%, #0d0b0a 60%); padding:52px 60px 90px; font-family:'Archivo',sans-serif; color:#ECE5E0;">
+  <div style="display:flex; align-items:flex-end; gap:22px; border-bottom:2px solid #C24A32; padding-bottom:20px; margin-bottom:12px;">
+    <div style="font-size:56px; line-height:0.9; font-weight:900; letter-spacing:-2px; color:#C24A32;">ALARM</div>
+    <div style="font-size:12px; letter-spacing:2px; color:#8A7E77; text-transform:uppercase; padding-bottom:8px;">Прототип · сведён с кодом приложения</div>
+  </div>
+  <div style="font-size:12px; color:#6B625C; letter-spacing:1px; margin-bottom:40px;">Две страницы (меню, испытания), остальное — шторки снизу. Испытания: примеры · реакция · NFC · отжимания.</div>
+  <div style="display:flex; flex-wrap:wrap; gap:52px; align-items:flex-start;">
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="width:22px; height:22px; border-radius:6px; background:#C24A32; color:#17130F; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center;">▶</span>
+        <span style="font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#ECE5E0;">Прототип — кликай</span>
+      </div>
+      <div style="width:372px; background:#000; border-radius:44px; padding:11px; box-shadow:0 40px 80px rgba(0,0,0,0.6);">
+       <div style="border-radius:34px; overflow:hidden; height:806px; position:relative; background:#14110F;">
+
+        <sc-if value="{{ isMenu }}" hint-placeholder-val="{{ true }}">
+        <div class="scr" style="height:100%; display:flex; flex-direction:column; overflow:auto;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 22px 6px; font-size:12px; color:#8A7E77;"><span>08:14</span><span style="letter-spacing:2px;">▲ ▲ ◼</span></div>
+          <div style="flex:1; display:flex; flex-direction:column; padding:12px 20px 20px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div style="font-size:46px; line-height:46px; font-weight:900; letter-spacing:-2px; color:#C24A32;">ALARM</div>
+              <div onClick="{{ toggleMaster }}" style="width:56px; height:32px; border-radius:999px; background:{{ masterTrack }}; border:2px solid {{ masterBorder }}; position:relative; cursor:pointer;"><div style="position:absolute; top:2px; left:{{ masterKnob }}; width:24px; height:24px; border-radius:999px; background:{{ masterKnobColor }};"></div></div>
+            </div>
+
+            <div style="height:20px;"></div>
+
+            <div onClick="{{ openChallenges }}" style="display:flex; align-items:center; gap:14px; padding:16px; border-radius:16px; background:#1D1815; border:1.5px solid #302A26; cursor:pointer;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="#C24A32" stroke="none"/><path d="M12 .5v3.4M12 20.1v3.4M.5 12h3.4M20.1 12h3.4"/></svg>
+              <div style="flex:1;">
+                <div style="font-size:11px; letter-spacing:1px; color:#8A7E77;">ИСПЫТАНИЕ</div>
+                <div style="font-size:19px; font-weight:900; color:#ECE5E0; margin-top:2px;">{{ challengeLabel }}</div>
+              </div>
+              <span style="font-size:22px; font-weight:900; color:#302A26;">›</span>
+            </div>
+
+            <div style="height:11px;"></div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:11px;">
+              <div onClick="{{ openSound }}" style="background:#1D1815; border:1.5px solid #302A26; border-radius:16px; padding:16px 15px 14px; display:flex; flex-direction:column; gap:14px; min-height:100px; cursor:pointer;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="2.2" stroke-linecap="round"><path d="M3 10v4M8 6v12M13 3v18M18 8v8M22 11v2"/></svg>
+                <div style="font-size:12px; letter-spacing:1px; color:#ECE5E0;">ЗВУК</div>
+              </div>
+              <div onClick="{{ openLock }}" style="background:#1D1815; border:1.5px solid #302A26; border-radius:16px; padding:16px 15px 14px; display:flex; flex-direction:column; gap:14px; min-height:100px; cursor:pointer;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+                <div style="font-size:12px; letter-spacing:1px; color:#ECE5E0;">БЛОКИРОВКА</div>
+              </div>
+            </div>
+
+            <div style="height:11px;"></div>
+            <div onClick="{{ openPerms }}" style="display:flex; align-items:center; gap:14px; padding:16px; border-radius:16px; background:{{ permBg }}; border:1.5px solid {{ permBorder }}; cursor:pointer;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.9" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 9.5v4.6M12 16.8v.1" stroke-linecap="round"/></svg>
+              <div style="flex:1;">
+                <div style="font-size:11px; letter-spacing:1px; color:#8A7E77;">{{ permCaption }}</div>
+                <div style="font-size:19px; font-weight:900; color:#ECE5E0; margin-top:2px;">РАЗРЕШЕНИЯ</div>
+              </div>
+              <span style="font-size:22px; font-weight:900; color:{{ permArrow }};">›</span>
+            </div>
+
+            <div style="flex:1; min-height:18px;"></div>
+            <div onClick="{{ onTest }}" style="display:flex; align-items:center; justify-content:center; gap:12px; padding:20px; border-radius:16px; background:#C24A32; cursor:pointer;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#000"><path d="M6 4l14 8-14 8z"/></svg>
+              <span style="font-size:18px; font-weight:900; letter-spacing:1px; color:#000;">ТЕСТ ЭКРАНА</span>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isChallenges }}" hint-placeholder-val="{{ false }}">
+        <div class="scr pageIn" style="height:100%; overflow:auto; padding:20px;">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+            <div onClick="{{ backMenu }}" style="font-size:30px; font-weight:900; color:#ECE5E0; cursor:pointer; line-height:1;">‹</div>
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="#C24A32" stroke="none"/><path d="M12 .5v3.4M12 20.1v3.4M.5 12h3.4M20.1 12h3.4"/></svg>
+            <span style="font-size:24px; font-weight:900; color:#ECE5E0;">ИСПЫТАНИЕ</span>
+          </div>
+          <sc-for list="{{ challengeRows }}" as="c" hint-placeholder-count="4">
+            <div style="display:flex; align-items:center; gap:0; padding:16px; border-radius:16px; background:#1D1815; border:1.5px solid {{ c.border }}; margin-bottom:11px;">
+              <div onClick="{{ c.onSelect }}" style="width:22px; height:22px; border-radius:50%; border:2px solid {{ c.dotBorder }}; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none;"><sc-if value="{{ c.active }}" hint-placeholder-val="{{ false }}"><div style="width:10px; height:10px; border-radius:50%; background:#C24A32;"></div></sc-if></div>
+              <div onClick="{{ c.onSelect }}" style="flex:1; padding:0 14px; cursor:pointer;">
+                <div style="font-size:15px; letter-spacing:1px; color:{{ c.nameColor }};">{{ c.label }}</div>
+                <sc-if value="{{ c.hasSub }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px; color:#6B625C; margin-top:2px;">{{ c.sub }}</div></sc-if>
+              </div>
+              <div onClick="{{ c.onOpen }}" style="padding:9px 12px; border-radius:10px; background:#241E1A; font-size:11px; letter-spacing:1px; color:#C24A32; cursor:pointer; flex:none;">НАСТРОИТЬ ›</div>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isNfcSetup }}" hint-placeholder-val="{{ false }}">
+        <div class="scr pageIn" style="height:100%; overflow:auto; padding:20px;">
+          <div style="display:flex; align-items:center; margin-bottom:20px;">
+            <span style="flex:1; font-size:26px; font-weight:900; color:#ECE5E0;">Метки и маршрут</span>
+            <span onClick="{{ backChallenges }}" style="font-size:14px; color:#C24A32; cursor:pointer;">Назад</span>
+          </div>
+
+          <div style="font-size:11px; letter-spacing:1px; color:#8A7E77; margin-bottom:12px;">МЕТКИ</div>
+          <sc-if value="{{ nfcTouched }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:14px; background:{{ nfcTouchBg }}; padding:14px 16px; margin-bottom:12px; font-size:15px; font-weight:700; color:{{ nfcTouchColor }};">{{ nfcTouchText }}</div>
+          </sc-if>
+          <sc-if value="{{ nfcWaiting }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:16px; background:#241E1A; border:1px solid #C24A32; padding:18px;">
+              <div style="font-size:16px; font-weight:600; color:#ECE5E0;">Приложи метку к телефону</div>
+              <div style="display:flex; gap:10px; margin-top:12px;">
+                <div onClick="{{ nfcAddTag }}" style="flex:1; text-align:center; padding:11px; border-radius:10px; background:#C24A32; color:#000; font-size:13px; font-weight:700; cursor:pointer;">Симулировать касание</div>
+                <div onClick="{{ nfcCancelArm }}" style="padding:11px 16px; border-radius:10px; background:#1D1815; border:1px solid #302A26; color:#C24A32; font-size:13px; cursor:pointer;">Отмена</div>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ nfcNotWaiting }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+              <sc-for list="{{ nfcTagChips }}" as="t" hint-placeholder-count="3">
+                <div style="position:relative; width:56px; height:56px;">
+                  <div onClick="{{ t.onAdd }}" style="width:56px; height:56px; border-radius:16px; background:#1D1815; border:1px solid #302A26; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; color:#ECE5E0; cursor:pointer;">{{ t.n }}</div>
+                  <div onClick="{{ t.onForget }}" style="position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#14110F; border:1px solid #302A26; display:flex; align-items:center; justify-content:center; font-size:12px; color:#8A7E77; cursor:pointer;">×</div>
+                </div>
+              </sc-for>
+              <div onClick="{{ nfcArm }}" style="width:56px; height:56px; border-radius:16px; background:#C24A32; display:flex; align-items:center; justify-content:center; font-size:24px; color:#fff; cursor:pointer;">＋</div>
+            </div>
+          </sc-if>
+
+          <div style="height:28px;"></div>
+          <div style="display:flex; align-items:center; margin-bottom:12px;">
+            <span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">МАРШРУТ</span>
+            <sc-if value="{{ nfcHasRoute }}" hint-placeholder-val="{{ true }}">
+              <span style="display:flex; gap:8px;">
+                <span onClick="{{ nfcUndo }}" style="width:36px; height:36px; border-radius:9px; background:#241E1A; border:1px solid #302A26; display:flex; align-items:center; justify-content:center; font-size:16px; color:#C24A32; cursor:pointer;">⌫</span>
+                <span onClick="{{ nfcClear }}" style="width:36px; height:36px; border-radius:9px; background:#241E1A; border:1px solid #302A26; display:flex; align-items:center; justify-content:center; font-size:16px; color:#C24A32; cursor:pointer;">×</span>
+              </span>
+            </sc-if>
+          </div>
+          <sc-if value="{{ nfcRouteEmpty }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px; color:#6B625C;">маршрут пуст</div></sc-if>
+          <sc-if value="{{ nfcHasRoute }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+              <sc-for list="{{ nfcRouteChips }}" as="r" hint-placeholder-count="4">
+                <div style="width:44px; height:44px; border-radius:12px; background:#241E1A; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; color:#ECE5E0;">{{ r.n }}</div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isAlarm }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%; background:#FF0026; display:flex; flex-direction:column; position:relative;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 22px 4px; font-size:12px; color:#000; font-weight:700;"><span>08:14</span><span style="letter-spacing:2px;">▲ ▲ ◼</span></div>
+          <div style="flex:1; display:flex; flex-direction:column; position:relative;">
+            <div style="padding:8px 20px 0;">
+              <div style="display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px;">
+                <div style="justify-self:start; font-size:24px; font-weight:900; letter-spacing:-1px; color:#000;">08:14</div>
+                <div onClick="{{ onExit }}" style="justify-self:center; font-size:11px; font-weight:700; color:#5A0010; border:1.5px solid #000; padding:5px 10px; cursor:pointer;">ВЫЙТИ</div>
+                <div style="justify-self:end; font-size:24px; font-weight:900; letter-spacing:-1px; color:#000;">{{ alarmCounter }}</div>
+              </div>
+              <sc-if value="{{ showMeter }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:14px; height:14px; border-radius:7px; background:rgba(0,0,0,0.2); overflow:hidden;"><div style="height:100%; width:{{ meterWidth }}; background:#000; border-radius:7px;"></div></div>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ showMath }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:1; display:flex; flex-direction:column; position:relative; z-index:2;">
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:6px 20px;">
+                <div style="font-size:72px; line-height:72px; font-weight:900; letter-spacing:-3px; color:#000;">{{ taskText }}</div>
+                <div style="height:66px; display:flex; align-items:center; justify-content:center;"><span style="font-size:46px; font-weight:900; letter-spacing:-2px; color:{{ answerColor }};">{{ answerText }}</span></div>
+              </div>
+              <div style="height:12px; background:repeating-linear-gradient(-45deg,#000 0 11px,#FF0026 11px 22px);"></div>
+              <div style="background:#120B0C; padding:16px 20px;">
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
+                  <div onClick="{{ onK1 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">1</div>
+                  <div onClick="{{ onK2 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">2</div>
+                  <div onClick="{{ onK3 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">3</div>
+                  <div onClick="{{ onK4 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">4</div>
+                  <div onClick="{{ onK5 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">5</div>
+                  <div onClick="{{ onK6 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">6</div>
+                  <div onClick="{{ onK7 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">7</div>
+                  <div onClick="{{ onK8 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">8</div>
+                  <div onClick="{{ onK9 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">9</div>
+                  <div onClick="{{ onDel }}" style="height:54px; border-radius:12px; background:#000; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#FF0026; cursor:pointer;">⌫</div>
+                  <div onClick="{{ onK0 }}" style="height:54px; border-radius:12px; background:#FF0026; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#000; cursor:pointer;">0</div>
+                  <div onClick="{{ onOk }}" style="height:54px; border-radius:12px; background:#000; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:26px; color:#FF0026; cursor:pointer;">✓</div>
+                </div>
+              </div>
+            </div>
+            </sc-if>
+
+            <sc-if value="{{ showReactionMid }}" hint-placeholder-val="{{ false }}"><div style="flex:1;"></div></sc-if>
+
+            <sc-if value="{{ showPush }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1; display:flex; flex-direction:column; position:relative; z-index:2; padding:10px 18px 18px; gap:12px;">
+              <div style="flex:1; border-radius:18px; background:#120B0C; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                <div style="position:absolute; top:10px; left:12px; font-size:9px; letter-spacing:2px; color:#4A423C;">● CAM · СБОКУ</div>
+                <svg width="210" height="150" viewBox="0 0 210 150" fill="none" stroke="#C24A32" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="0.85">
+                  <circle cx="44" cy="66" r="11" fill="#C24A32" stroke="none"/>
+                  <path d="M52 72 L120 90 L188 96"/>
+                  <path d="M120 90 L124 128 M154 92 L158 128"/>
+                  <path d="M74 78 L92 108 L82 130"/>
+                </svg>
+                <div style="position:absolute; bottom:12px; left:0; right:0; text-align:center; font-size:11px; font-weight:700; color:#00E07A;">{{ poseHint }}</div>
+              </div>
+              <div onClick="{{ pushRep }}" style="text-align:center; padding:14px; border-radius:14px; background:#000; color:#FF0026; font-size:15px; font-weight:900; cursor:pointer;">СИМ. ОТЖИМАНИЕ +1</div>
+            </div>
+            </sc-if>
+
+            <sc-for list="{{ circles }}" as="c" hint-placeholder-count="0">
+              <div onClick="{{ c.onTap }}" style="position:absolute; z-index:3; left:{{ c.left }}; top:{{ c.top }}; width:{{ c.size }}; height:{{ c.size }}; border-radius:50%; background:{{ c.color }}; transform:translate(-50%,-50%); cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.25);"></div>
+            </sc-for>
+            <sc-if value="{{ greenVisible }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ greenTap }}" style="position:absolute; z-index:4; left:{{ greenLeft }}; top:{{ greenTop }}; width:44px; height:44px; border-radius:50%; background:#2E7D32; transform:translate(-50%,-50%); box-shadow:0 0 16px rgba(46,125,50,.7); cursor:pointer;"></div>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isNfcAlarm }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%; background:#fff; display:flex; flex-direction:column;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 22px 4px; font-size:12px; color:#111; font-weight:700;"><span>08:14</span><span style="letter-spacing:2px;">▲ ▲ ◼</span></div>
+          <div style="flex:1; display:flex; flex-direction:column; padding:8px 20px 20px;">
+            <div style="display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px;">
+              <div style="justify-self:start; font-size:24px; font-weight:900; letter-spacing:-1px; color:#111;">08:14</div>
+              <div onClick="{{ onExit }}" style="justify-self:center; font-size:11px; font-weight:700; color:#E23B3B; border:1.5px solid #111; padding:5px 10px; cursor:pointer;">ВЫЙТИ</div>
+              <div style="justify-self:end; font-size:24px; font-weight:900; letter-spacing:-1px; color:#111;">{{ nfcAlarmDone }} / {{ nfcAlarmTotal }}</div>
+            </div>
+
+            <div style="display:flex; gap:8px; align-items:center; overflow:hidden; height:72px; margin-top:14px;">
+              <sc-for list="{{ nfcStripCells }}" as="c" hint-placeholder-count="4">
+                <div style="width:{{ c.size }}; height:{{ c.size }}; border-radius:{{ c.radius }}; background:{{ c.bg }}; border:{{ c.border }}; display:flex; align-items:center; justify-content:center; font-size:{{ c.fs }}; font-weight:900; color:{{ c.fg }}; flex:none;">{{ c.n }}</div>
+              </sc-for>
+            </div>
+
+            <div style="flex:1; display:flex; align-items:center; justify-content:center;"><div style="font-size:150px; line-height:150px; font-weight:900; color:#111;">{{ nfcBigNext }}</div></div>
+
+            <div style="height:64px; display:flex; align-items:center; justify-content:center;">
+              <sc-if value="{{ nfcBannerShow }}" hint-placeholder-val="{{ false }}">
+                <div style="width:100%; text-align:center; border-radius:16px; background:{{ nfcBannerBg }}; padding:14px 18px; font-size:19px; font-weight:700; color:{{ nfcBannerColor }};">{{ nfcBannerText }}</div>
+              </sc-if>
+            </div>
+
+            <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+              <sc-for list="{{ nfcTapRow }}" as="t" hint-placeholder-count="3">
+                <div onClick="{{ t.onTap }}" style="width:52px; height:52px; border-radius:12px; background:#F2F2F5; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; color:#111; cursor:pointer;">{{ t.n }}</div>
+              </sc-for>
+            </div>
+            <div style="text-align:center; font-size:9px; letter-spacing:1px; color:#8A8A8A; margin-top:8px;">СИМ. ПРИКЛАДЫВАНИЯ МЕТОК</div>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isVictory }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%; background:#fff; display:flex; flex-direction:column; align-items:center; padding:40px 24px 24px;">
+          <div style="flex:0.5;"></div>
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <g stroke="#FF8A00" stroke-width="7" stroke-linecap="round" opacity="0.9">
+              <line x1="75" y1="14" x2="75" y2="34"/><line x1="75" y1="116" x2="75" y2="136"/>
+              <line x1="14" y1="75" x2="34" y2="75"/><line x1="116" y1="75" x2="136" y2="75"/>
+              <line x1="31" y1="31" x2="45" y2="45"/><line x1="105" y1="105" x2="119" y2="119"/>
+              <line x1="119" y1="31" x2="105" y2="45"/><line x1="45" y1="105" x2="31" y2="119"/>
+            </g>
+            <circle cx="75" cy="75" r="30" fill="#FFB74D"/>
+            <circle cx="68" cy="68" r="24" fill="#FFD166"/>
+          </svg>
+          <div style="font-size:44px; font-weight:700; color:#111; margin-top:26px;">Подъём!</div>
+          <div style="font-size:17px; color:#8A8A8A; margin-top:6px;">Испытание пройдено</div>
+          <div style="width:100%; margin-top:34px; border-radius:20px; background:#F5F5F7; padding:6px 20px;">
+            <sc-for list="{{ victoryStats }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:{{ s.line }};">
+                <span style="font-size:16px; color:#8A8A8A;">{{ s.label }}</span>
+                <span style="font-size:19px; font-weight:600; color:#111;">{{ s.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="flex:1;"></div>
+          <div onClick="{{ onExit }}" style="width:100%; text-align:center; padding:20px; border-radius:18px; background:#111; color:#fff; font-size:20px; font-weight:600; cursor:pointer;">Выйти</div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ anySheet }}" hint-placeholder-val="{{ false }}">
+        <div class="fadeIn" style="position:absolute; inset:0; display:flex; align-items:flex-end; z-index:30;">
+          <div onClick="{{ closeSheet }}" style="position:absolute; inset:0; background:rgba(0,0,0,0.62);"></div>
+          <div class="scr sheetUp" style="position:relative; width:100%; background:#1D1815; border-radius:24px 24px 0 0; padding:26px 24px 24px; max-height:88%; overflow:auto;">
+
+            <sc-if value="{{ sheetSound }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="2.2" stroke-linecap="round"><path d="M3 10v4M8 6v12M13 3v18M18 8v8M22 11v2"/></svg><span style="font-size:22px; font-weight:900; color:#ECE5E0;">ЗВУК</span></div>
+              <div style="display:flex; align-items:center; padding:4px 0;"><span style="flex:1; font-size:15px; color:#ECE5E0;">Звук</span><div onClick="{{ toggleSound }}" style="width:52px; height:30px; border-radius:999px; background:{{ soundTrack }}; border:2px solid {{ soundBorder }}; position:relative; cursor:pointer;"><div style="position:absolute; top:2px; left:{{ soundKnob }}; width:22px; height:22px; border-radius:999px; background:{{ soundKnobColor }};"></div></div></div>
+              <div style="display:flex; align-items:center; padding:4px 0; margin-bottom:16px;"><span style="flex:1; font-size:15px; color:#ECE5E0;">Вибрация</span><div onClick="{{ toggleVibrate }}" style="width:52px; height:30px; border-radius:999px; background:{{ vibTrack }}; border:2px solid {{ vibBorder }}; position:relative; cursor:pointer;"><div style="position:absolute; top:2px; left:{{ vibKnob }}; width:22px; height:22px; border-radius:999px; background:{{ vibKnobColor }};"></div></div></div>
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">НАЧАЛЬНАЯ ГРОМКОСТЬ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">{{ startVol }}%</span></div>
+              <input type="range" min="0" max="100" value="{{ startVol }}" onInput="{{ onStartVol }}" style="margin-bottom:16px;">
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">НАРАСТАНИЕ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">1% / {{ ramp }} с</span></div>
+              <input type="range" min="1" max="5" value="{{ ramp }}" onInput="{{ onRamp }}" style="margin-bottom:18px;">
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">МЕЛОДИЯ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">{{ melodyName }}</span></div>
+              <div style="text-align:center; padding:12px; border-radius:12px; background:#241E1A; color:#C24A32; font-size:14px; cursor:pointer;">Выбрать</div>
+            </sc-if>
+
+            <sc-if value="{{ sheetLock }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="2"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg><span style="font-size:22px; font-weight:900; color:#ECE5E0;">БЛОКИРОВКА</span></div>
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">БЭКАП-ВЫКЛЮЧЕНИЕ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">{{ failSafe }} мин</span></div>
+              <input type="range" min="1" max="5" value="{{ failSafe }}" onInput="{{ onFailSafe }}" style="margin-bottom:18px;">
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">ВОЗВРАТ ПОСЛЕ ПЕРЕЗАГРУЗКИ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">{{ resume }} с</span></div>
+              <input type="range" min="5" max="30" value="{{ resume }}" onInput="{{ onResume }}">
+            </sc-if>
+
+            <sc-if value="{{ sheetPerms }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.9" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 9.5v4.6M12 16.8v.1" stroke-linecap="round"/></svg><span style="font-size:22px; font-weight:900; color:#ECE5E0;">РАЗРЕШЕНИЯ</span></div>
+              <div style="text-align:center; padding:12px; border-radius:12px; background:#241E1A; border:1.5px solid #3A332E; color:#C24A32; font-size:12px; letter-spacing:1px; margin-bottom:12px; cursor:pointer;">НАСТРОЙКИ ПРИЛОЖЕНИЯ В СИСТЕМЕ</div>
+              <sc-for list="{{ perms }}" as="p" hint-placeholder-count="9">
+                <div style="display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid #241E1A;">
+                  <span onClick="{{ p.onToggle }}" style="width:14px; height:14px; border-radius:50%; background:{{ p.dot }}; box-shadow:{{ p.dotGlow }}; cursor:pointer; flex:none;"></span>
+                  <span onClick="{{ p.onToggle }}" style="flex:1; font-size:13px; color:#ECE5E0; cursor:pointer;">{{ p.title }}</span>
+                  <div onClick="{{ p.onOpen }}" style="width:36px; height:36px; border-radius:9px; background:#241E1A; border:1px solid #302A26; display:flex; align-items:center; justify-content:center; cursor:pointer; flex:none;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></div>
+                </div>
+              </sc-for>
+            </sc-if>
+
+            <sc-if value="{{ sheetMath }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="#C24A32" stroke="none"/></svg><span style="font-size:22px; font-weight:900; color:#ECE5E0;">ПРИМЕРЫ</span></div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:22px;">
+                <div onClick="{{ togglePlus }}" style="height:52px; border-radius:999px; background:{{ plusBg }}; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:700; color:{{ plusFg }}; cursor:pointer;">+</div>
+                <div onClick="{{ toggleMinus }}" style="height:52px; border-radius:999px; background:{{ minusBg }}; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:700; color:{{ minusFg }}; cursor:pointer;">−</div>
+              </div>
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">СКОЛЬКО ПРИМЕРОВ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">{{ mathCount }}</span></div>
+              <input type="range" min="10" max="35" value="{{ mathCount }}" onInput="{{ onMathCount }}" style="margin-bottom:18px;">
+              <div style="display:flex; margin-bottom:4px;"><span style="flex:1; font-size:11px; letter-spacing:1px; color:#8A7E77;">ДИАПАЗОН ЧИСЕЛ</span><span style="font-size:14px; font-weight:700; color:#C08A6E;">{{ rangeLabel }}</span></div>
+              <div style="position:relative; height:24px;">
+                <div style="position:absolute; top:9.5px; left:0; right:0; height:5px; border-radius:999px; background:#3A332E;"></div>
+                <div style="position:absolute; top:9.5px; height:5px; border-radius:999px; background:#C24A32; left:{{ rangeFillLeft }}; right:{{ rangeFillRight }};"></div>
+                <input class="rng" type="range" min="1" max="50" value="{{ mathMin }}" onInput="{{ onMathMin }}">
+                <input class="rng" type="range" min="1" max="50" value="{{ mathMax }}" onInput="{{ onMathMax }}">
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ sheetReaction }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="#C24A32" stroke="none"/></svg><span style="font-size:22px; font-weight:900; color:#ECE5E0;">РЕАКЦИЯ</span></div>
+              <div style="font-size:56px; line-height:56px; font-weight:900; letter-spacing:-2px; text-align:center; color:#C08A6E;">{{ perfectSeconds }} с</div>
+              <div style="height:10px;"></div>
+              <input type="range" min="10" max="90" value="{{ perfectSeconds }}" onInput="{{ onPerfect }}">
+            </sc-if>
+
+            <sc-if value="{{ sheetPushups }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#C24A32" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.4" fill="#C24A32" stroke="none"/></svg><span style="font-size:22px; font-weight:900; color:#ECE5E0;">ОТЖИМАНИЯ</span></div>
+              <div style="font-size:56px; line-height:56px; font-weight:900; letter-spacing:-2px; text-align:center; color:#C08A6E;">{{ pushCount }}</div>
+              <div style="height:10px;"></div>
+              <input type="range" min="3" max="40" value="{{ pushCount }}" onInput="{{ onPushCount }}">
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+       </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="width:22px; height:22px; border-radius:6px; background:#FF0026; color:#000; font-weight:900; font-size:12px; display:flex; align-items:center; justify-content:center;">✱</span>
+        <span style="font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#ECE5E0;">Иконка → файлы для кода</span>
+      </div>
+      <div style="width:300px; background:#14110F; border:1.5px solid #302A26; border-radius:20px; padding:32px 28px; display:flex; flex-direction:column; gap:22px; align-items:center;">
+        <div style="width:200px; height:200px; border-radius:46px; background:#FF0026; position:relative; overflow:hidden; box-shadow:0 24px 50px rgba(255,0,38,0.3);">
+          <div style="position:absolute; top:0; left:0; right:0; height:44px; background:repeating-linear-gradient(45deg,#000 0 9px,#FF0026 9px 18px);"></div>
+          <div style="position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:26px;">
+            <svg width="112" height="112" viewBox="0 0 24 24" fill="#000"><path d="M12,4C7.58,4 4,7.58 4,12s3.58,8 8,8 8,-3.58 8,-8 -3.58,-8 -8,-8zM12.5,12.2l3.2,1.9 -0.75,1.23 -3.95,-2.33L11,7h1.5v5.2z"/><path d="M7.88,3.39L6.6,1.86 2,5.71l1.29,1.53 4.59,-3.85zM22,5.72l-4.6,-3.86 -1.29,1.53 4.6,3.86L22,5.72z"/></svg>
+          </div>
+        </div>
+        <div style="font-size:11px; letter-spacing:1px; color:#6B625C; text-align:center; line-height:1.7;">СИГНАЛЬНЫЙ КРАСНЫЙ #FF0026<br>ЧЁРНЫЙ БУДИЛЬНИК · ПОЛОСА ОПАСНОСТИ<br><span style="color:#C24A32;">→ app-icon/ в проекте</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+
+class Component extends DCLogic {
+  state = {
+    view:'menu', sheet:'none', masterOn:true, challenge:'MATH',
+    plus:true, minus:true, mathCount:10, mathMin:1, mathMax:50,
+    answer:'', solved:0, task:{a:37,b:18,op:'−',ans:19}, mathWrong:0, wrongFlash:false,
+    perfectSeconds:30, meter:100, hits:0, misses:0,
+    circles:[], greenVisible:true, greenLeft:'50%', greenTop:'34%',
+    nfcTags:[1,2,3], nfcRoute:[2,1,3,2], nfcDone:0, nfcScan:null, scanTick:0, nfcWaiting:false, nfcTouch:null,
+    pushCount:10, pushReps:0,
+    soundOn:true, vibrate:false, startVol:60, ramp:3, failSafe:5, resume:15,
+    permGranted:[true,false,true,true,true,true,true,true,true],
+    elapsed:0, victorySecs:0,
+  };
+  _cid=0;
+  componentDidMount(){ this.sp=setInterval(()=>this._spawn(),380); this.ck=setInterval(()=>{ if(this.state.view==='alarm'||this.state.view==='nfcAlarm') this.setState(s=>({elapsed:s.elapsed+1})); },1000); }
+  componentWillUnmount(){ clearInterval(this.sp); clearInterval(this.ck); }
+  _rand(lo,hi){ return lo+Math.floor(Math.random()*(hi-lo+1)); }
+  _gen(){ const o=[]; if(this.state.plus)o.push('+'); if(this.state.minus)o.push('−'); if(!o.length)o.push('+'); const op=o[Math.floor(Math.random()*o.length)]; const lo=Math.min(this.state.mathMin,this.state.mathMax),hi=Math.max(this.state.mathMin,this.state.mathMax); let a=this._rand(lo,hi),b=this._rand(lo,hi); if(op==='−'&&b>a){const t=a;a=b;b=t;} return {a,b,op,ans:op==='+'?a+b:a-b}; }
+  _stepPct(){ return 100/(Math.max(1,this.state.perfectSeconds)*1000/380); }
+  _spawn(){ if(this.state.view!=='alarm'||this.state.challenge!=='REACTION')return; this.setState(s=>{ if(s.circles.length>=4)return{}; const id=++this._cid; const pal=['#93DBFF','#B9A6FF','#9FF3FF','#FFE08A','#CDEFFF','#E4D4FF']; const c={id,left:(12+Math.random()*74).toFixed(0)+'%',top:(26+Math.random()*40).toFixed(0)+'%',size:(46+Math.random()*26).toFixed(0)+'px',color:pal[Math.floor(Math.random()*pal.length)]}; setTimeout(()=>this._miss(id),1500); return {circles:[...s.circles,c]}; }); }
+  _miss(id){ this.setState(s=>{ if(!s.circles.some(c=>c.id===id))return{}; return {circles:s.circles.filter(c=>c.id!==id), meter:Math.min(100,s.meter+this._stepPct()*1.6), misses:s.misses+1}; }); }
+  _hit(id){ this.setState(s=>{ const meter=Math.max(0,s.meter-this._stepPct()); if(meter<=0) setTimeout(()=>this._win(),0); return {circles:s.circles.filter(c=>c.id!==id), meter, hits:s.hits+1}; }); }
+  _num(d){ this.setState(s=> s.answer.length>=4?{}:{answer:s.answer+d, wrongFlash:false}); }
+  _submit(){ const s=this.state; if(s.answer==='')return; if(parseInt(s.answer,10)===s.task.ans){ const solved=s.solved+1; if(solved>=s.mathCount){ this.setState({solved,answer:''}); this._win(); } else this.setState({solved,answer:'',task:this._gen()}); } else { this.setState(st=>({answer:'',mathWrong:st.mathWrong+1,wrongFlash:true})); setTimeout(()=>this.setState({wrongFlash:false}),500); } }
+  _startTest(){ const c=this.state.challenge; if(c==='NFC'){ this.setState({view:'nfcAlarm', elapsed:0, nfcDone:0, nfcScan:null, scanTick:0}); return; } this.setState({ view:'alarm', elapsed:0, answer:'', solved:0, mathWrong:0, wrongFlash:false, task:this._gen(), meter:100, hits:0, misses:0, circles:[], greenVisible:true, greenLeft:'50%', greenTop:'34%', pushReps:0 }); }
+  _win(){ this.setState(s=>({view:'victory', victorySecs:s.elapsed})); }
+  _greenTap(){ this.setState({greenVisible:false}); setTimeout(()=>this.setState({greenVisible:true,greenLeft:(15+Math.random()*70).toFixed(0)+'%',greenTop:(26+Math.random()*40).toFixed(0)+'%'}),1300); }
+  _nfcTap(n){ this.setState(s=>{ const exp=s.nfcRoute[s.nfcDone]; if(n===exp){ const done=s.nfcDone+1; if(done>=s.nfcRoute.length) setTimeout(()=>this._win(),0); return {nfcDone:done, nfcScan:{kind:'right',n}, scanTick:s.scanTick+1}; } return {nfcScan:{kind:'wrong',n,exp}, scanTick:s.scanTick+1}; }); }
+  _pushRep(){ this.setState(s=>{ const reps=s.pushReps+1; if(reps>=s.pushCount) setTimeout(()=>this._win(),0); return {pushReps:reps}; }); }
+  _nfcAddTag(){ this.setState(s=>{ const n=(s.nfcTags.length?Math.max.apply(null,s.nfcTags):0)+1; return {nfcTags:[...s.nfcTags,n], nfcWaiting:false, nfcTouch:{kind:'added',n}}; }); }
+  _nfcForget(n){ this.setState(s=>({nfcTags:s.nfcTags.filter(x=>x!==n), nfcRoute:s.nfcRoute.filter(x=>x!==n)})); }
+  _nfcAddStep(n){ this.setState(s=> s.nfcRoute.length>=30?{}:{nfcRoute:[...s.nfcRoute,n], nfcTouch:{kind:'known',n}}); }
+  _togglePerm(i){ this.setState(s=>{ const a=[...s.permGranted]; a[i]=!a[i]; return {permGranted:a}; }); }
+  _fmt(t){ const m=Math.floor(t/60),s=t%60; return m+':'+(s<10?'0':'')+s; }
+
+  renderVals(){
+    const st=this.state, ON='#C24A32', OFF='#241E1A', OFFB='#3A332E';
+    const isMath=st.challenge==='MATH', isReaction=st.challenge==='REACTION', isNfc=st.challenge==='NFC', isPush=st.challenge==='PUSHUPS';
+    const L={MATH:'ПРИМЕРЫ',REACTION:'РЕАКЦИЯ',NFC:'NFC-МЕТКА',PUSHUPS:'ОТЖИМАНИЯ'};
+    const permT=['Уведомления','Доступ к уведомлениям','Специальные возможности','Полноэкранные уведомления','Поверх других приложений','Точные будильники','Без ограничений батареи','Камера','NFC'];
+    const order=['MATH','REACTION','NFC','PUSHUPS'];
+    const grantedCount=st.permGranted.filter(Boolean).length, allGranted=grantedCount===st.permGranted.length;
+    const hasRoute=st.nfcRoute.length>0;
+
+    let counter=''; if(isMath)counter=st.solved+' / '+st.mathCount; else if(isReaction)counter=''+st.hits; else if(isPush)counter=st.pushReps+' / '+st.pushCount;
+
+    const cells=st.nfcRoute.map((n,i)=>{ const cur=i===st.nfcDone,past=i<st.nfcDone; return {n, size:cur?'58px':'40px', radius:cur?'16px':'12px', fs:cur?'26px':'17px', bg:cur?'#fff':'#F2F2F5', fg: past?'rgba(17,17,17,0.55)':(cur?'#111':'rgba(17,17,17,0.28)'), border:cur?'3px solid #E23B3B':'none'}; });
+    const nextTag = st.nfcDone<st.nfcRoute.length ? String(st.nfcRoute[st.nfcDone]) : '✓';
+    let banText='',banColor='#111',banBg='#F2F2F5',banShow=false;
+    if(st.nfcScan){ banShow=true; if(st.nfcScan.kind==='right'){banText='Метка '+st.nfcScan.n+' — верно'; banColor='#1B8E3A'; banBg='rgba(27,142,58,0.14)';} else {banText='Это метка '+st.nfcScan.n+', нужна '+st.nfcScan.exp; banColor='#E23B3B'; banBg='rgba(226,59,59,0.12)';} }
+
+    let touchText='',touchColor='#8A7E77',touchBg='#241E1A',touchShow=false;
+    if(st.nfcTouch){ touchShow=true; if(st.nfcTouch.kind==='added'){touchText='Запомнил: метка '+st.nfcTouch.n; touchColor='#00E07A'; touchBg='rgba(0,224,122,0.12)';} else {touchText='Это метка '+st.nfcTouch.n; touchColor='#00E07A'; touchBg='rgba(0,224,122,0.12)';} }
+
+    const dur=this._fmt(st.victorySecs);
+    const woke='08:14 → 08:'+(14+Math.max(1,Math.ceil(st.victorySecs/60)));
+    let vs=[['Время испытания',dur],['Подъём',woke]];
+    if(isReaction){ const shown=st.hits+st.misses; vs.push(['Кружков поймано',''+st.hits],['Упущено',''+st.misses]); if(shown>0) vs.push(['Точность',Math.round(st.hits*100/shown)+'%']); }
+    else if(isNfc){ vs.push(['Меток обойдено',''+st.nfcRoute.length]); }
+    else if(isPush){ vs.push(['Отжиманий сделано',st.pushReps+' из '+st.pushCount]); }
+    else { vs.push(['Примеров решено',st.solved+' из '+st.mathCount],['Ошибок',''+st.mathWrong]); }
+    const victoryStats=vs.map((r,i)=>({label:r[0],value:r[1],line: i===vs.length-1?'none':'1px solid #E6E6EA'}));
+
+    return {
+      isMenu:st.view==='menu', isChallenges:st.view==='challenges', isNfcSetup:st.view==='nfcSetup',
+      isAlarm:st.view==='alarm', isNfcAlarm:st.view==='nfcAlarm', isVictory:st.view==='victory',
+      anySheet:st.sheet!=='none', sheetSound:st.sheet==='sound', sheetLock:st.sheet==='lock', sheetPerms:st.sheet==='perms', sheetMath:st.sheet==='math', sheetReaction:st.sheet==='reaction', sheetPushups:st.sheet==='pushups',
+
+      toggleMaster:()=>this.setState(s=>({masterOn:!s.masterOn})),
+      masterTrack:st.masterOn?ON:OFF, masterBorder:st.masterOn?ON:OFFB, masterKnob:st.masterOn?'26px':'2px', masterKnobColor:st.masterOn?'#000':'#8A7E77',
+      challengeLabel:L[st.challenge],
+      permCaption: allGranted?'все выданы':('выдано '+grantedCount+' из '+st.permGranted.length),
+      permBg: allGranted?'#1D1815':'#211613', permBorder: allGranted?'#302A26':'#C24A32', permArrow: allGranted?'#302A26':'#C24A32',
+      openChallenges:()=>this.setState({view:'challenges'}), openSound:()=>this.setState({sheet:'sound'}), openLock:()=>this.setState({sheet:'lock'}), openPerms:()=>this.setState({sheet:'perms'}),
+      onTest:()=>this._startTest(),
+
+      backMenu:()=>this.setState({view:'menu'}), backChallenges:()=>this.setState({view:'challenges'}),
+      challengeRows: order.map(k=>{ const locked=(k==='NFC'&&!hasRoute); const sel=st.challenge===k; return {
+        label:L[k], active:sel&&!locked, border:(sel&&!locked)?ON:'#302A26', dotBorder:(sel&&!locked)?ON:'#3A332E',
+        nameColor:locked?'#6B625C':'#ECE5E0', hasSub:locked, sub:'сначала соберите маршрут',
+        onSelect: locked?(()=>{}):(()=>this.setState({challenge:k})),
+        onOpen:()=>{ if(k==='NFC'){this.setState({view:'nfcSetup'});} else {this.setState({challenge:k, sheet:(k==='MATH'?'math':k==='REACTION'?'reaction':'pushups')});} },
+      }; }),
+
+      // nfc setup
+      nfcWaiting:st.nfcWaiting, nfcNotWaiting:!st.nfcWaiting,
+      nfcTouched:touchShow, nfcTouchText:touchText, nfcTouchColor:touchColor, nfcTouchBg:touchBg,
+      nfcArm:()=>this.setState({nfcWaiting:true}), nfcCancelArm:()=>this.setState({nfcWaiting:false}), nfcAddTag:()=>this._nfcAddTag(),
+      nfcTagChips:st.nfcTags.map(n=>({n, onAdd:()=>this._nfcAddStep(n), onForget:()=>this._nfcForget(n)})),
+      nfcRouteEmpty:!hasRoute, nfcHasRoute:hasRoute, nfcRouteChips:st.nfcRoute.map(n=>({n})),
+      nfcUndo:()=>this.setState(s=>({nfcRoute:s.nfcRoute.slice(0,-1)})), nfcClear:()=>this.setState({nfcRoute:[]}),
+
+      // alarm red
+      onExit:()=>this.setState({view:'menu', circles:[], nfcTouch:null}),
+      alarmCounter:counter,
+      showMeter:isReaction, meterWidth:Math.max(0,Math.min(100,st.meter))+'%',
+      showMath:isMath, taskText:st.task.a+' '+st.task.op+' '+st.task.b, answerText:st.answer, answerColor:st.wrongFlash?'#5A0010':'#000',
+      showReactionMid:isReaction, showPush:isPush, poseHint:'Вижу тебя. Работай', pushRep:()=>this._pushRep(),
+      circles:st.circles.map(c=>({...c, onTap:()=>this._hit(c.id)})),
+      greenVisible:isReaction&&st.greenVisible, greenLeft:st.greenLeft, greenTop:st.greenTop, greenTap:()=>this._greenTap(),
+      onK0:()=>this._num('0'),onK1:()=>this._num('1'),onK2:()=>this._num('2'),onK3:()=>this._num('3'),onK4:()=>this._num('4'),onK5:()=>this._num('5'),onK6:()=>this._num('6'),onK7:()=>this._num('7'),onK8:()=>this._num('8'),onK9:()=>this._num('9'),
+      onDel:()=>this.setState(s=>({answer:s.answer.slice(0,-1)})), onOk:()=>this._submit(),
+
+      // nfc alarm
+      nfcAlarmDone:st.nfcDone, nfcAlarmTotal:st.nfcRoute.length, nfcStripCells:cells, nfcBigNext:nextTag,
+      nfcBannerShow:banShow, nfcBannerText:banText, nfcBannerColor:banColor, nfcBannerBg:banBg,
+      nfcTapRow:st.nfcTags.map(n=>({n, onTap:()=>this._nfcTap(n)})),
+
+      // victory
+      victoryStats,
+
+      // sheets
+      closeSheet:()=>this.setState({sheet:'none'}),
+      toggleSound:()=>this.setState(s=>({soundOn:!s.soundOn})), toggleVibrate:()=>this.setState(s=>({vibrate:!s.vibrate})),
+      soundTrack:st.soundOn?ON:OFF, soundBorder:st.soundOn?ON:OFFB, soundKnob:st.soundOn?'28px':'2px', soundKnobColor:st.soundOn?'#000':'#8A7E77',
+      vibTrack:st.vibrate?ON:OFF, vibBorder:st.vibrate?ON:OFFB, vibKnob:st.vibrate?'28px':'2px', vibKnobColor:st.vibrate?'#000':'#8A7E77',
+      startVol:st.startVol, onStartVol:(e)=>this.setState({startVol:+e.target.value}), ramp:st.ramp, onRamp:(e)=>this.setState({ramp:+e.target.value}), melodyName:'Системная',
+      failSafe:st.failSafe, onFailSafe:(e)=>this.setState({failSafe:+e.target.value}), resume:st.resume, onResume:(e)=>this.setState({resume:+e.target.value}),
+      perms:st.permGranted.map((g,i)=>({title:permT[i], dot:g?'#C24A32':'#4A423C', dotGlow:g?'0 0 8px rgba(194,74,50,.6)':'none', onToggle:()=>this._togglePerm(i), onOpen:()=>{}})),
+      togglePlus:()=>this.setState(s=>({plus:(s.minus?!s.plus:true)})), toggleMinus:()=>this.setState(s=>({minus:(s.plus?!s.minus:true)})),
+      plusBg:st.plus?ON:OFF, plusFg:st.plus?'#fff':'#8A7E77', minusBg:st.minus?ON:OFF, minusFg:st.minus?'#fff':'#8A7E77',
+      mathCount:st.mathCount, onMathCount:(e)=>this.setState({mathCount:+e.target.value}),
+      mathMin:st.mathMin, mathMax:st.mathMax, onMathMin:(e)=>this.setState(s=>({mathMin:Math.min(+e.target.value,s.mathMax)})), onMathMax:(e)=>this.setState(s=>({mathMax:Math.max(+e.target.value,s.mathMin)})),
+      rangeLabel:Math.min(st.mathMin,st.mathMax)+'–'+Math.max(st.mathMin,st.mathMax), rangeFillLeft:((Math.min(st.mathMin,st.mathMax)-1)/49*100)+'%', rangeFillRight:(100-(Math.max(st.mathMin,st.mathMax)-1)/49*100)+'%',
+      perfectSeconds:st.perfectSeconds, onPerfect:(e)=>this.setState({perfectSeconds:+e.target.value}),
+      pushCount:st.pushCount, onPushCount:(e)=>this.setState({pushCount:+e.target.value}),
+    };
+  }
+}
+</script>
+</body>
+</html>

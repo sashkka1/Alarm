@@ -1,0 +1,13 @@
+{
+  "name": "alarm",
+  "private": true,
+  "description": "Обёртка вокруг build.ps1, чтобы собирать привычной командой npm run dev",
+  "scripts": {
+    "dev": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build.ps1",
+    "release": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build.ps1 -Release",
+    "nobump": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build.ps1 -NoBump",
+    "test": "powershell -NoProfile -ExecutionPolicy Bypass -File ./build.ps1 -Test",
+    "escape": "powershell -NoProfile -ExecutionPolicy Bypass -File ./escape.ps1",
+    "escape:wipe": "powershell -NoProfile -ExecutionPolicy Bypass -File ./escape.ps1 -Wipe"
+  }
+}

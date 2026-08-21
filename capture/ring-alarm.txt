@@ -1,0 +1,1671 @@
+﻿Current Alarm Manager state:
+  Settings:
+    version=3 
+    min_futurity=+5s0ms
+    min_interval=+1m0s0ms
+    max_interval=+365d0h0m0s0ms
+    min_window=+10m0s0ms
+    listener_timeout=+5s0ms
+    allow_while_idle_quota=72 
+    allow_while_idle_window=+1h0m0s0ms
+    allow_while_idle_compat_quota=7 
+    allow_while_idle_compat_window=+1h0m0s0ms
+    allow_while_idle_whitelist_duration=+10s0ms
+    max_alarms_per_uid=500 
+    app_standby_window=+1h0m0s0ms
+    standby_quota_active=720 
+    standby_quota_working=10 
+    standby_quota_frequent=2 
+    standby_quota_rare=1 
+    standby_quota_never=0 
+    standby_quota_restricted=1 
+    app_standby_restricted_window=+1d0h0m0s0ms
+    time_tick_allowed_while_idle=true 
+    priority_alarm_delay=+1m0s0ms
+    min_device_idle_fuzz=+2m0s0ms
+    max_device_idle_fuzz=+15m0s0ms
+    temporary_quota_bump=0 
+    delay_nonwakeup_alarms_while_screen_off=true 
+    cached_listener_removal_delay=+10s0ms
+  
+  Feature Flags:
+    com.android.server.alarm.start_user_before_scheduled_alarms=true 
+    com.android.server.alarm.acquire_wakelock_before_send=false 
+  
+  App Standby Parole: false
+  
+  Current AppStateTracker State:
+    Force all apps standby: false
+    Small Battery Device: false
+    Force all apps standby for small battery device: false
+    Plugged In: true
+    Active uids: [u0a82 u0a89 u0a142 u0a145 u0a148 u0a153 u0a155 u0a156 u0a159 u0a160 u0a166 u0a167 u0a174 u0a178 u0a187 u0a188 u0a196 u0a198 u0a200 u0a209 u0a214 u0a249 u0a252 u0a253 u0a262 u0a375 u0ai9000 u0i7 u0i35]
+    Except-idle + user exemption list appids: [1001, 2000, 6102, 10084, 10086, 10087, 10089, 10099, 10104, 10120, 10137, 10142, 10145, 10146, 10148, 10149, 10156, 10164, 10167, 10183, 10184, 10185, 10188, 10200, 10206, 10215, 10221, 10222, 10265, 10266, 10271, 10299, 10325]
+    User exemption list appids: [1001, 10142, 10146, 10148, 10167, 10183, 10184, 10185, 10188, 10200, 10215, 10222, 10271, 10325]
+    Temp exemption list appids: []
+    Exempted bucket packages:
+      User 0
+        com.xiaomi.account
+        com.whatsapp
+        com.android.deskclock
+        com.lbe.security.miui
+    
+    Restricted packages:
+    Stats:
+      UID_FG_STATE_CHANGED: count=0, total=0,0ms, avg=0,000ms, max calls/s=0 max dur/s=0,0ms max time=0,0ms
+      UID_ACTIVE_STATE_CHANGED: count=2099, total=2533,5ms, avg=1,207ms, max calls/s=14 max dur/s=300,8ms max time=300,4ms
+      RUN_ANY_CHANGED: count=0, total=0,0ms, avg=0,000ms, max calls/s=0 max dur/s=0,0ms max time=0,0ms
+      ALL_UNEXEMPTED: count=4, total=5,4ms, avg=1,355ms, max calls/s=0 max dur/s=0,0ms max time=1,9ms
+      ALL_EXEMPTION_LIST_CHANGED: count=2, total=2,2ms, avg=1,086ms, max calls/s=1 max dur/s=1,5ms max time=1,5ms
+      TEMP_EXEMPTION_LIST_CHANGED: count=3212, total=10382,9ms, avg=3,233ms, max calls/s=35 max dur/s=194,6ms max time=144,2ms
+      EXEMPTED_BUCKET_CHANGED: count=5, total=46,0ms, avg=9,200ms, max calls/s=0 max dur/s=0,0ms max time=21,4ms
+      FORCE_ALL_CHANGED: count=0, total=0,0ms, avg=0,000ms, max calls/s=0 max dur/s=0,0ms max time=0,0ms
+      IS_UID_ACTIVE_CACHED: count=0, total=0,0ms, avg=0,000ms, max calls/s=0 max dur/s=0,0ms max time=0,0ms
+      IS_UID_ACTIVE_RAW: count=718, total=535,0ms, avg=0,745ms, max calls/s=13 max dur/s=42,3ms max time=34,6ms
+  
+  nowRTC=1786702815210=2026-08-14 13:20:15.210 nowELAPSED=145669668
+  mLastTimeChangeClockTime=1786557198017=2026-08-12 20:53:18.017
+  mLastTimeChangeRealtime=52475
+  mLastTickReceived=2026-08-14 13:20:00.662
+  mLastTickSet=2026-08-14 13:20:00.662
+  
+  Recent TIME_TICK history:
+    2026-08-14 13:20:00.660
+    2026-08-14 13:19:23.651
+    2026-08-14 13:18:00.000
+    2026-08-14 13:17:00.001
+    2026-08-14 13:16:23.583
+    2026-08-14 13:15:00.000
+    2026-08-14 13:14:00.000
+    2026-08-14 13:13:00.000
+    2026-08-14 13:12:00.000
+    2026-08-14 13:11:00.000
+  
+  RuntimeStarted=2026-08-12 20:53:11.962
+  Runtime uptime (elapsed): +1d16h27m3s248ms
+  Runtime uptime (uptime): +1d5h47m15s636ms
+  
+  Max wakeup delay: +2m0s0ms
+  Time since last dispatch: +13s580ms
+  Next non-wakeup delivery time: +2m45s521ms
+  Next non-wakeup alarm: +2m45s521ms = 145835189 = 2026-08-14 13:23:00.731
+    set at -13s670ms
+  Next wakeup alarm: +8s486ms = 145678154 = 2026-08-14 13:20:23.696
+    set at -12s68ms
+  Next kernel non-wakeup alarm: +2m45s519ms
+  Next kernel wakeup alarm: +8s484ms
+  Last wakeup: -14s479ms = 145655189
+  Last trigger: -14s479ms = 145655189
+  Num time change events: 0
+  
+  App ids requesting SCHEDULE_EXACT_ALARM: {1000, 2000, 6100, 6101, 6110, 10082, 10131, 10142, 10143, 10146, 10149, 10154, 10159, 10160, 10161, 10164, 10165, 10166, 10183, 10191, 10215, 10221, 10273, 10286, 10318, 10319, 10325, 10342, 10345, 10351, 10356, 10379}
+  
+  Last OP_SCHEDULE_EXACT_ALARM: [1000:allow, 2000:default, 6100:default, 6101:default, 6110:default, u0a82:default, u0a131:default, u0a142:default, u0a143:default, u0a146:default, u0a149:default, u0a154:allow, u0a159:default, u0a160:default, u0a161:default, u0a164:default, u0a165:default, u0a166:default, u0a183:default, u0a191:default, u0a215:default, u0a221:default, u0a273:default, u0a286:default, u0a318:default, u0a319:default, u0a325:default, u0a342:default, u0a345:default, u0a351:default, u0a356:default, u0a379:default]
+  
+  Next alarm clock information: 
+    user:0 pendingSend:false time:1786734000000 = 2026-08-14 22:00:00.000 = +8h39m44s790ms
+  
+  124 pending alarms: 
+    ELAPSED #1: Alarm{44625d7 type 3 origWhen 145671136 whenElapsed 145671136 com.miui.powerkeeper}
+      tag=*alarm*:miui.intent.action.powerkeeper_alarm
+      type=ELAPSED origWhen=+1s468ms window=+3m45s0ms repeatInterval=300000 count=0 flags=0x8
+      policyWhenElapsed: requester=+1s468ms app_standby=-4m50s215ms device_idle=-- battery_saver=-- ssru=-4m50s215ms power_pending=--
+      whenElapsed=+1s468ms maxWhenElapsed=+3m46s468ms
+      operation=PendingIntent{560b006: PendingIntentRecord{a70f6c7 com.miui.powerkeeper startService}}
+    ELAPSED_WAKEUP #2: Alarm{e2a5f24 type 2 origWhen 145678154 whenElapsed 145678154 android}
+      tag=*walarm*:miui.intent.action.CYCLE_CHECK
+      type=ELAPSED_WAKEUP origWhen=+8s486ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+8s486ms app_standby=-21s514ms device_idle=-- battery_saver=-- ssru=-21s514ms power_pending=--
+      whenElapsed=+8s486ms maxWhenElapsed=+8s486ms
+      operation=PendingIntent{14239a5: PendingIntentRecord{161017a android broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #3: Alarm{32a07e0 type 3 origWhen 145714175 whenElapsed 145714175 com.miui.misightservice}
+      tag=*alarm*:com.miui.misightservice/.MiSightManagerService
+      type=ELAPSED origWhen=+44s507ms window=+11m15s0ms repeatInterval=900000 count=0 flags=0x8
+      policyWhenElapsed: requester=+44s507ms app_standby=-13m42s755ms device_idle=-13m21s794ms battery_saver=-- ssru=-13m42s755ms power_pending=--
+      whenElapsed=+44s507ms maxWhenElapsed=+11m59s507ms
+      operation=PendingIntent{c538515: PendingIntentRecord{5889ae1 com.miui.misightservice startService}}
+    ELAPSED #4: Alarm{12a80a7 type 3 origWhen 145714458 whenElapsed 145714458 android}
+      tag=*alarm*:TIME_TICK
+      type=ELAPSED origWhen=+44s790ms window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+44s790ms app_standby=-14s547ms device_idle=-- battery_saver=-- ssru=-14s547ms power_pending=--
+      whenElapsed=+44s790ms maxWhenElapsed=+44s790ms
+      listener=com.android.server.alarm.AlarmManagerService$2@383dd48
+    ELAPSED_WAKEUP #5: Alarm{3d1b6f5 type 2 origWhen 145761596 whenElapsed 145761596 com.xiaomi.xmsf}
+      tag=*walarm*:com.xiaomi.push.PING_TIMER
+      type=ELAPSED_WAKEUP origWhen=+1m31s928ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+1m31s928ms app_standby=-8m28s57ms device_idle=-- battery_saver=-8m28s57ms ssru=-8m28s57ms power_pending=--
+      whenElapsed=+1m31s928ms maxWhenElapsed=+1m31s928ms
+      operation=PendingIntent{c2bcf4e: PendingIntentRecord{99fe243 com.xiaomi.xmsf broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #6: Alarm{fc118e2 type 0 origWhen 1786702922548 whenElapsed 145777005 android}
+      tag=*walarm*:miui.extm.action.mark
+      type=RTC_WAKEUP origWhen=2026-08-14 13:22:02.548 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+1m47s337ms app_standby=-12s649ms device_idle=-- battery_saver=-- ssru=-12s649ms power_pending=--
+      whenElapsed=+1m47s337ms maxWhenElapsed=+1m47s337ms
+      operation=PendingIntent{c25386f: PendingIntentRecord{3cce61c android broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #7: Alarm{dc2266e type 3 origWhen 145800000 whenElapsed 145800000 android}
+      tag=*alarm*:miui.intent.action.CHECK_TIME_UP
+      type=ELAPSED origWhen=+2m10s332ms window=+1h30m0s0ms repeatInterval=7200000 count=0 flags=0x8
+      policyWhenElapsed: requester=+2m10s332ms app_standby=-1h53m46s685ms device_idle=-13m21s794ms battery_saver=-- ssru=-1h53m46s685ms power_pending=--
+      whenElapsed=+2m10s332ms maxWhenElapsed=+1h32m10s332ms
+      operation=PendingIntent{4bf34aa: PendingIntentRecord{cf1689b android broadcastIntent}}
+    ELAPSED #8: Alarm{6b40155 type 3 origWhen 145805405 whenElapsed 145805405 android}
+      tag=*alarm*:*job.delay*
+      type=ELAPSED origWhen=+2m15s737ms window=+6m41s105ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+2m15s737ms app_standby=-6m39s69ms device_idle=-- battery_saver=-- ssru=-6m39s69ms power_pending=--
+      whenElapsed=+2m15s737ms maxWhenElapsed=+8m56s842ms
+      listener=android.app.AlarmManager$ListenerWrapper@c9a911d
+    ELAPSED #9: Alarm{b22340c type 3 origWhen 145855859 whenElapsed 145855859 android}
+      tag=*alarm*:*job.cleanup*
+      type=ELAPSED origWhen=+3m6s191ms window=+7m18s951ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+3m6s191ms app_standby=-6m39s72ms device_idle=-- battery_saver=-- ssru=-6m39s72ms power_pending=--
+      whenElapsed=+3m6s191ms maxWhenElapsed=+10m25s142ms
+      listener=android.app.AlarmManager$ListenerWrapper@c9d85f4
+    ELAPSED #10: Alarm{8a0d6d8 type 3 origWhen 145859919 whenElapsed 145859919 android}
+      tag=*alarm*:com.android.server.action.NETWORK_STATS_POLL
+      type=ELAPSED origWhen=+3m10s251ms window=+22m30s0ms repeatInterval=1800000 count=0 flags=0x8
+      policyWhenElapsed: requester=+3m10s251ms app_standby=-26m42s896ms device_idle=-13m21s794ms battery_saver=-- ssru=-26m42s896ms power_pending=--
+      whenElapsed=+3m10s251ms maxWhenElapsed=+25m40s251ms
+      operation=PendingIntent{ac09cff: PendingIntentRecord{12bacc android broadcastIntent}}
+    ELAPSED #11: Alarm{e888da4 type 3 origWhen 145907375 whenElapsed 145907375 android}
+      tag=*alarm*:*CountQuotaTracker.cleanup*
+      type=ELAPSED origWhen=+3m57s707ms window=+23m16s915ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+3m57s707ms app_standby=-27m4s846ms device_idle=-13m21s794ms battery_saver=-- ssru=-27m4s846ms power_pending=--
+      whenElapsed=+3m57s707ms maxWhenElapsed=+27m14s622ms
+      listener=android.app.AlarmManager$ListenerWrapper@321e4b7
+    ELAPSED #12: Alarm{473a09e type 3 origWhen 145981922 whenElapsed 145981922 android}
+      tag=*alarm*:*CountQuotaTracker.cleanup*
+      type=ELAPSED origWhen=+5m12s254ms window=+6m41s233ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+5m12s254ms app_standby=-3m42s724ms device_idle=-- battery_saver=-- ssru=-3m42s724ms power_pending=--
+      whenElapsed=+5m12s254ms maxWhenElapsed=+11m53s487ms
+      listener=android.app.AlarmManager$ListenerWrapper@e070d60
+    ELAPSED_WAKEUP #13: Alarm{3c8936d type 2 origWhen 146046820 whenElapsed 146046820 com.google.android.gms}
+      tag=*walarm*:FusedLocation:throttling_delivery
+      type=ELAPSED_WAKEUP origWhen=+6m17s152ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x21
+      policyWhenElapsed: requester=+6m17s152ms app_standby=-3m13s322ms device_idle=-- battery_saver=-3m42s811ms ssru=-3m42s811ms power_pending=--
+      whenElapsed=+6m17s152ms maxWhenElapsed=+6m17s152ms
+      listener=android.os.BinderProxy@7e5097c
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #14: Alarm{24d785d type 0 origWhen 1786703197956 whenElapsed 146052414 com.northcube.sleepcycle}
+      tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm
+      type=RTC_WAKEUP origWhen=2026-08-14 13:26:37.956 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+6m22s746ms app_standby=-51s533ms device_idle=-- battery_saver=-3m37s243ms ssru=-3m37s243ms power_pending=--
+      whenElapsed=+6m22s746ms maxWhenElapsed=+6m22s746ms
+      operation=PendingIntent{7510205: PendingIntentRecord{f9925a com.northcube.sleepcycle broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #15: Alarm{8f3ef24 type 2 origWhen 146064608 whenElapsed 146064608 android}
+      tag=*walarm*:*job.deadline*
+      type=ELAPSED_WAKEUP origWhen=+6m34s940ms window=+19m50s777ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+6m34s940ms app_standby=-19m52s762ms device_idle=-13m21s794ms battery_saver=-- ssru=-19m52s762ms power_pending=--
+      whenElapsed=+6m34s940ms maxWhenElapsed=+26m25s717ms
+      listener=android.app.AlarmManager$ListenerWrapper@5a85424
+    ELAPSED #16: Alarm{8762c5e type 3 origWhen 146066281 whenElapsed 146066281 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.gcm.ACTION_CHECK_QUEUE
+      type=ELAPSED origWhen=+6m36s613ms window=+14m50s732ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+6m36s613ms app_standby=-3m13s322ms device_idle=-- battery_saver=-13m11s30ms ssru=-13m11s30ms power_pending=--
+      whenElapsed=+6m36s613ms maxWhenElapsed=+21m27s345ms
+      operation=PendingIntent{a26fb8d: PendingIntentRecord{34e806 com.google.android.gms/com.google.android.gms.scheduler broadcastIntent}}
+    ELAPSED #17: Alarm{80afc14 type 3 origWhen 146079220 whenElapsed 146079220 com.google.android.gms}
+      tag=*alarm*:NetworkLocationSensorUploader
+      type=ELAPSED origWhen=+6m49s552ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+6m49s552ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-1h53m10s394ms power_pending=--
+      whenElapsed=+6m49s552ms maxWhenElapsed=+1h6m49s552ms
+      listener=android.os.BinderProxy@f4c4142
+    RTC_WAKEUP #18: Alarm{a661553 type 0 origWhen 1786702410953 whenElapsed 146100000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 13:13:30.953 window=+3h20m0s0ms repeatInterval=16123515 count=0 flags=0x8
+      policyWhenElapsed: requester=+7m10s332ms app_standby=-4h18m58s905ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-4h18m58s905ms power_pending=--
+      whenElapsed=+7m10s332ms maxWhenElapsed=+3h27m10s332ms
+      operation=PendingIntent{63d763: PendingIntentRecord{fb50f60 com.miui.msa.global startService}}
+    RTC #19: Alarm{b69333f type 1 origWhen 1786703316132 whenElapsed 146170590 com.miui.securitycenter}
+      tag=*alarm*:com.miui.powercenter.action.BATTERYHISTORY_CHECKRESET
+      type=RTC origWhen=2026-08-14 13:28:36.132 window=+11m15s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+8m20s922ms app_standby=-6m39s77ms device_idle=-- battery_saver=-- ssru=-6m39s77ms power_pending=--
+      whenElapsed=+8m20s922ms maxWhenElapsed=+19m35s922ms
+      operation=PendingIntent{76ec8b: PendingIntentRecord{3a354f com.miui.securitycenter startService}}
+    ELAPSED #20: Alarm{8ae2347 type 3 origWhen 146234626 whenElapsed 146234626 android}
+      tag=*alarm*:*usage.launchTime*
+      type=ELAPSED origWhen=+9m24s958ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+9m24s958ms app_standby=-13h51m23s554ms device_idle=-13m21s794ms battery_saver=-- ssru=-13h51m23s554ms power_pending=--
+      whenElapsed=+9m24s958ms maxWhenElapsed=+9m24s958ms
+      listener=android.app.AlarmManager$ListenerWrapper@9288e90
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #21: Alarm{a87dec7 type 2 origWhen 146240614 whenElapsed 146240614 com.google.android.gms}
+      tag=*walarm*:GCM_HB_ALARM
+      type=ELAPSED_WAKEUP origWhen=+9m30s946ms window=0 exactAllowReason=prioritized repeatInterval=0 count=0 flags=0x41
+      policyWhenElapsed: requester=+9m30s946ms app_standby=-2m29s52ms device_idle=-- battery_saver=-2m29s52ms ssru=-2m29s52ms power_pending=--
+      whenElapsed=+9m30s946ms maxWhenElapsed=+9m30s946ms
+      listener=android.os.BinderProxy@9dfb6
+    ELAPSED #22: Alarm{4ea8965 type 3 origWhen 146395284 whenElapsed 146395284 android}
+      tag=*alarm*:*CountQuotaTracker.cleanup*
+      type=ELAPSED origWhen=+12m5s616ms window=+9m42s853ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+12m5s616ms app_standby=-51s515ms device_idle=-- battery_saver=-- ssru=-51s515ms power_pending=--
+      whenElapsed=+12m5s616ms maxWhenElapsed=+21m48s469ms
+      listener=android.app.AlarmManager$ListenerWrapper@2de7a65
+    RTC_WAKEUP #23: Alarm{514c389 type 0 origWhen 1786703019182 whenElapsed 146400000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 13:23:39.182 window=+3h45m0s0ms repeatInterval=18215048 count=0 flags=0x8
+      policyWhenElapsed: requester=+12m10s332ms app_standby=-4h52m27s906ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-4h52m27s906ms power_pending=--
+      whenElapsed=+12m10s332ms maxWhenElapsed=+3h57m10s332ms
+      operation=PendingIntent{b3286bf: PendingIntentRecord{4bc18c com.miui.msa.global startService}}
+    ELAPSED #24: Alarm{7eb2db8 type 3 origWhen 146497762 whenElapsed 146497762 android}
+      tag=*alarm*:*job.flexibility_check*
+      type=ELAPSED origWhen=+13m48s94ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+13m48s94ms app_standby=-5m21s657ms device_idle=-- battery_saver=-- ssru=-5m21s657ms power_pending=--
+      whenElapsed=+13m48s94ms maxWhenElapsed=+13m48s94ms
+      listener=android.app.AlarmManager$ListenerWrapper@f74cf92
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #25: Alarm{63b93f2 type 2 origWhen 146691258 whenElapsed 146691258 com.google.android.networkstack}
+      tag=*walarm*:DhcpClient.wlan0.RENEW
+      type=ELAPSED_WAKEUP origWhen=+17m1s590ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+17m1s590ms app_standby=-12m58s403ms device_idle=-- battery_saver=-- ssru=-12m58s403ms power_pending=--
+      whenElapsed=+17m1s590ms maxWhenElapsed=+17m1s590ms
+      listener=android.os.BinderProxy@2612f8e
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #26: Alarm{eddeb76 type 3 origWhen 146808946 whenElapsed 146808946 android}
+      tag=*alarm*:PowerStats
+      type=ELAPSED origWhen=+18m59s278ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+18m59s278ms app_standby=-3h41m0s721ms device_idle=-13m21s794ms battery_saver=-- ssru=-3h41m0s721ms power_pending=--
+      whenElapsed=+18m59s278ms maxWhenElapsed=+1h18m59s278ms
+      listener=android.app.AlarmManager$ListenerWrapper@5b2b3af
+    RTC #27: Alarm{83003bc type 1 origWhen 1786703833243 whenElapsed 146961596 com.miui.analytics}
+      tag=*alarm*:com.miui.analytics/.internal.WakeupService
+      type=RTC origWhen=2026-08-14 13:37:13.243 window=+1h25m0s0ms repeatInterval=6964333 count=0 flags=0x8
+      policyWhenElapsed: requester=+21m31s928ms app_standby=-1h38m26s842ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-1h38m26s842ms power_pending=--
+      whenElapsed=+21m31s928ms maxWhenElapsed=+1h46m31s928ms
+      operation=PendingIntent{7758258: PendingIntentRecord{2e88a1 com.miui.analytics startService}}
+    ELAPSED_WAKEUP #28: Alarm{d9dea43 type 2 origWhen 148041254 whenElapsed 148041254 com.google.android.networkstack}
+      tag=*walarm*:DhcpClient.wlan0.REBIND
+      type=ELAPSED_WAKEUP origWhen=+39m31s586ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+39m31s586ms app_standby=-12m58s402ms device_idle=-- battery_saver=-- ssru=-12m58s402ms power_pending=--
+      whenElapsed=+39m31s586ms maxWhenElapsed=+39m31s586ms
+      listener=android.os.BinderProxy@cfd0f45
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #29: Alarm{7ae9634 type 2 origWhen 148091887 whenElapsed 148091887 com.miui.securitycenter}
+      tag=*walarm*:com.miui.powercenter.action.BATTERYHISTORY_RECORD
+      type=ELAPSED_WAKEUP origWhen=+40m22s219ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+40m22s219ms app_standby=-19m37s777ms device_idle=-13m21s794ms battery_saver=-- ssru=-19m37s777ms power_pending=--
+      whenElapsed=+40m22s219ms maxWhenElapsed=+40m22s219ms
+      operation=PendingIntent{6c4b69a: PendingIntentRecord{8a017f0 com.miui.securitycenter startService}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #30: Alarm{680dbcb type 3 origWhen 147828028 whenElapsed 148161596 com.whatsapp}
+      tag=*alarm*:com.whatsapp.action.HOURLY_CRON
+      type=ELAPSED origWhen=+35m58s360ms window=+45m0s0ms repeatInterval=3600000 count=0 flags=0x8
+      policyWhenElapsed: requester=+41m31s928ms app_standby=-18m26s852ms device_idle=-13m21s794ms battery_saver=-18m26s852ms ssru=-18m26s852ms power_pending=--
+      whenElapsed=+41m31s928ms maxWhenElapsed=+1h26m31s928ms
+      operation=PendingIntent{49fffe6: PendingIntentRecord{9fc3927 com.whatsapp broadcastIntent}}
+    ELAPSED_WAKEUP #31: Alarm{c6f58c0 type 2 origWhen 148491253 whenElapsed 148491253 com.google.android.networkstack}
+      tag=*walarm*:DhcpClient.wlan0.EXPIRY
+      type=ELAPSED_WAKEUP origWhen=+47m1s585ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+47m1s585ms app_standby=-12m58s401ms device_idle=-- battery_saver=-- ssru=-12m58s401ms power_pending=--
+      whenElapsed=+47m1s585ms maxWhenElapsed=+47m1s585ms
+      listener=android.os.BinderProxy@1d79fa8
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #32: Alarm{151953e type 3 origWhen 149181637 whenElapsed 149181637 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.westworld.action.METADATA_ALARM
+      type=ELAPSED origWhen=+58m31s969ms window=+3h0m0s0ms repeatInterval=14400000 count=0 flags=0x0
+      policyWhenElapsed: requester=+58m31s969ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h1m28s30ms power_pending=--
+      whenElapsed=+58m31s969ms maxWhenElapsed=+3h58m31s969ms
+      operation=PendingIntent{f645ac1: PendingIntentRecord{4d498c3 com.google.android.gms/com.google.android.gms.westworld startService}}
+    ELAPSED_WAKEUP #33: Alarm{5bb4c3 type 2 origWhen 151200000 whenElapsed 151200000 com.android.providers.calendar}
+      tag=*walarm*:com.android.providers.calendar.intent.CalendarProvider2
+      type=ELAPSED_WAKEUP origWhen=+1h32m10s332ms window=+4h30m0s0ms repeatInterval=21600000 count=0 flags=0x0
+      policyWhenElapsed: requester=+1h32m10s332ms app_standby=-1h23m45s852ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-4h24m17s909ms power_pending=--
+      whenElapsed=+1h32m10s332ms maxWhenElapsed=+6h2m10s332ms
+      operation=PendingIntent{929affb: PendingIntentRecord{1809818 com.android.providers.calendar broadcastIntent}}
+    RTC_WAKEUP #34: Alarm{3a7a266 type 0 origWhen 1786705508843 whenElapsed 152061596 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 14:05:08.843 window=+1h45m0s0ms repeatInterval=8714607 count=0 flags=0x8
+      policyWhenElapsed: requester=+1h46m31s928ms app_standby=-41m1s532ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-41m1s532ms power_pending=--
+      whenElapsed=+1h46m31s928ms maxWhenElapsed=+3h31m31s928ms
+      operation=PendingIntent{4bdd272: PendingIntentRecord{11d86c3 com.miui.msa.global startService}}
+    ELAPSED #35: Alarm{fb42bd2 type 3 origWhen 153261256 whenElapsed 153261256 android}
+      tag=*alarm*:*job.quota_check*
+      type=ELAPSED origWhen=+2h6m31s588ms window=+30s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+2h6m31s588ms app_standby=-47m5s171ms device_idle=-13m21s794ms battery_saver=-- ssru=-47m5s171ms power_pending=--
+      whenElapsed=+2h6m31s588ms maxWhenElapsed=+2h7m1s588ms
+      listener=android.app.AlarmManager$ListenerWrapper@2bf69a7
+    ELAPSED #36: Alarm{31fc240 type 3 origWhen 153453953 whenElapsed 153453953 com.google.android.gms}
+      tag=*alarm*:NetworkLocationBurstCollectionTrigger
+      type=ELAPSED origWhen=+2h9m44s285ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x1
+      policyWhenElapsed: requester=+2h9m44s285ms app_standby=-3m13s322ms device_idle=-- battery_saver=-13m20s189ms ssru=-13m20s189ms power_pending=--
+      whenElapsed=+2h9m44s285ms maxWhenElapsed=+2h9m44s285ms
+      listener=android.os.BinderProxy@bdb0e54
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #37: Alarm{e6e8ea6 type 0 origWhen 1786712491728 whenElapsed 155670843 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 16:01:31.728 window=+4h37m8s132ms repeatInterval=22170843 count=0 flags=0x8
+      policyWhenElapsed: requester=+2h46m41s175ms app_standby=-3h18m35s265ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-3h18m35s265ms power_pending=--
+      whenElapsed=+2h46m41s175ms maxWhenElapsed=+7h23m49s307ms
+      operation=PendingIntent{a11677e: PendingIntentRecord{65a4df com.miui.msa.global startService}}
+    ELAPSED_WAKEUP #38: Alarm{f156646 type 2 origWhen 157297521 whenElapsed 157297521 com.google.android.gms}
+      tag=*walarm*:NetworkLocationScanner
+      type=ELAPSED_WAKEUP origWhen=+3h13m47s853ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x21
+      policyWhenElapsed: requester=+3h13m47s853ms app_standby=-3m13s322ms device_idle=-- battery_saver=-13m19s903ms ssru=-13m19s902ms power_pending=--
+      whenElapsed=+3h13m47s853ms maxWhenElapsed=+3h13m47s853ms
+      listener=android.os.BinderProxy@39ae1fd
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #39: Alarm{6960277 type 3 origWhen 158645902 whenElapsed 158645902 com.google.android.gms}
+      tag=*alarm*:CMAlarm
+      type=ELAPSED origWhen=+3h36m16s234ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+3h36m16s234ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-23m43s752ms ssru=-23m43s752ms power_pending=--
+      whenElapsed=+3h36m16s234ms maxWhenElapsed=+4h36m16s234ms
+      listener=android.os.BinderProxy@7b7ef2
+    RTC #40: Alarm{aa0544 type 1 origWhen 1786717500000 whenElapsed 160354458 com.google.android.googlequicksearchbox}
+      tag=*alarm*:TIME TRIGGER ALLOW IDLE ACTION
+      type=RTC origWhen=2026-08-14 17:25:00.000 window=0 exactAllowReason=permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+4h4m44s790ms app_standby=-3m27s802ms device_idle=-- battery_saver=-3m27s802ms ssru=-3m27s802ms power_pending=--
+      whenElapsed=+4h4m44s790ms maxWhenElapsed=+4h4m44s790ms
+      operation=PendingIntent{d374168: PendingIntentRecord{3ee8fbd com.google.android.googlequicksearchbox broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #41: Alarm{9ff486a type 0 origWhen 1786719616782 whenElapsed 162471240 com.miui.powerkeeper}
+      tag=*walarm*:settlement
+      type=RTC_WAKEUP origWhen=2026-08-14 18:00:16.782 window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+4h40m1s572ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-19h18m53s4ms power_pending=--
+      whenElapsed=+4h40m1s572ms maxWhenElapsed=+22h40m1s572ms
+      operation=PendingIntent{adf973b: PendingIntentRecord{3e98e58 com.miui.powerkeeper startService}}
+    RTC_WAKEUP #42: Alarm{4e4b981 type 0 origWhen 1786719600000 whenElapsed 162561596 com.google.android.calendar}
+      tag=*walarm*:com.google.android.calendar.intent.action.CHECK_NOTIFICATIONS
+      type=RTC_WAKEUP origWhen=2026-08-14 18:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+4h41m31s928ms app_standby=-5m14s962ms device_idle=-- battery_saver=-4m5s170ms ssru=-5m14s962ms power_pending=--
+      whenElapsed=+4h41m31s928ms maxWhenElapsed=+4h41m31s928ms
+      operation=PendingIntent{ae7a26: PendingIntentRecord{8110237 com.google.android.calendar broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC #43: Alarm{b61ae07 type 1 origWhen 1786720036192 whenElapsed 162890650 com.miui.securitycenter}
+      tag=*alarm*:com.miui.securitycenter/.receiver.CleanerReceiver
+      type=RTC origWhen=2026-08-14 18:07:16.192 window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+4h47m0s982ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-19h12m51s888ms power_pending=--
+      whenElapsed=+4h47m0s982ms maxWhenElapsed=+22h47m0s982ms
+      operation=PendingIntent{949c259: PendingIntentRecord{7750e1e com.miui.securitycenter broadcastIntent}}
+    RTC_WAKEUP #44: Alarm{66ef943 type 0 origWhen 1786719882025 whenElapsed 163161596 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 18:04:42.025 window=+4h10m0s0ms repeatInterval=20322978 count=0 flags=0x8
+      policyWhenElapsed: requester=+4h51m31s928ms app_standby=-41m1s531ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-41m1s531ms power_pending=--
+      whenElapsed=+4h51m31s928ms maxWhenElapsed=+9h1m31s928ms
+      operation=PendingIntent{38240d5: PendingIntentRecord{7f4b0ea com.miui.msa.global startService}}
+    ELAPSED_WAKEUP #45: Alarm{31365b4 type 2 origWhen 164457717 whenElapsed 164457717 com.android.systemui}
+      tag=*walarm*:miui.intent.action.FOCUS_NOTIFICATION_DELETE_TIMEOUT
+      type=ELAPSED_WAKEUP origWhen=+5h13m8s49ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+5h13m8s49ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-18h46m51s941ms power_pending=--
+      whenElapsed=+5h13m8s49ms maxWhenElapsed=+5h13m8s49ms
+      operation=PendingIntent{a04bbc0: PendingIntentRecord{bb8a0f9 com.android.systemui broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #46: Alarm{83e983e type 2 origWhen 165664362 whenElapsed 165900000 com.android.phone}
+      tag=*walarm*:SatelliteController
+      type=ELAPSED_WAKEUP origWhen=+5h33m14s694ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x1
+      policyWhenElapsed: requester=+5h37m10s332ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-17h26m45s305ms power_pending=--
+      whenElapsed=+5h37m10s332ms maxWhenElapsed=+5h37m10s332ms
+      listener=android.os.BinderProxy@2fde69f
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #47: Alarm{a022935 type 3 origWhen 167095273 whenElapsed 167095273 com.google.android.gms}
+      tag=*alarm*:NetworkLocationSCollector
+      type=ELAPSED origWhen=+5h57m5s605ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x1
+      policyWhenElapsed: requester=+5h57m5s605ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-1h53m10s454ms power_pending=--
+      whenElapsed=+5h57m5s605ms maxWhenElapsed=+5h57m5s605ms
+      listener=android.os.BinderProxy@59d3ec
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #48: Alarm{cee700c type 3 origWhen 167179367 whenElapsed 167179367 com.google.android.gms}
+      tag=*alarm*:CMAlarm
+      type=ELAPSED origWhen=+5h58m29s699ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+5h58m29s699ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-18h1m30s299ms power_pending=--
+      whenElapsed=+5h58m29s699ms maxWhenElapsed=+6h58m29s699ms
+      listener=android.os.BinderProxy@95953b5
+    ELAPSED_WAKEUP #49: Alarm{7b06e8b type 2 origWhen 167257453 whenElapsed 167257453 com.android.systemui}
+      tag=*walarm*:FoldCoordinator.fold
+      type=ELAPSED_WAKEUP origWhen=+5h59m47s785ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+5h59m47s785ms app_standby=-12s68ms device_idle=-- battery_saver=-- ssru=-12s68ms power_pending=--
+      whenElapsed=+5h59m47s785ms maxWhenElapsed=+5h59m47s785ms
+      operation=PendingIntent{2e5c667: PendingIntentRecord{8f30c14 com.android.systemui broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #50: Alarm{4dd20b3 type 0 origWhen 1786723533661 whenElapsed 167447827 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 19:05:33.661 window=+4h56m50s870ms repeatInterval=23747827 count=0 flags=0x8
+      policyWhenElapsed: requester=+6h2m58s159ms app_standby=-27m4s812ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-27m4s812ms power_pending=--
+      whenElapsed=+6h2m58s159ms maxWhenElapsed=+10h59m49s29ms
+      operation=PendingIntent{c2e1157: PendingIntentRecord{9301444 com.miui.msa.global startService}}
+    ELAPSED_WAKEUP #51: Alarm{c9c72b4 type 2 origWhen 172854645 whenElapsed 172854645 android}
+      tag=*walarm*:AutomaticOnOffKeepaliveTracker
+      type=ELAPSED_WAKEUP origWhen=+7h33m4s977ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h33m4s977ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m3s504ms power_pending=--
+      whenElapsed=+7h33m4s977ms maxWhenElapsed=+8h33m4s977ms
+      listener=android.app.AlarmManager$ListenerWrapper@587fa4a
+    ELAPSED_WAKEUP #52: Alarm{31f2603 type 2 origWhen 172855301 whenElapsed 172855301 android}
+      tag=*walarm*:sched_latency_data_alarm
+      type=ELAPSED_WAKEUP origWhen=+7h33m5s633ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+7h33m5s633ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m54s366ms power_pending=--
+      whenElapsed=+7h33m5s633ms maxWhenElapsed=+7h33m5s633ms
+      operation=PendingIntent{8644dbb: PendingIntentRecord{28f4014 android broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC #53: Alarm{ccbe617 type 1 origWhen 1786683600000 whenElapsed 172856059 android}
+      tag=*alarm*:WIFI_SCAN_REPORT_ALARM
+      type=RTC origWhen=2026-08-14 08:00:00.000 window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h33m6s391ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m49s12ms power_pending=--
+      whenElapsed=+7h33m6s391ms maxWhenElapsed=+1d1h33m6s391ms
+      operation=PendingIntent{1b109a3: PendingIntentRecord{62f4a0 android broadcastIntent}}
+    RTC #54: Alarm{d983f51 type 1 origWhen 1786730003978 whenElapsed 172858435 android}
+      tag=*alarm*:report_scheduled_task_dfs
+      type=RTC origWhen=2026-08-14 20:53:23.978 window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+7h33m8s767ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m51s219ms power_pending=--
+      whenElapsed=+7h33m8s767ms maxWhenElapsed=+7h33m8s767ms
+      listener=android.app.AlarmManager$ListenerWrapper@c0642d8
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #55: Alarm{ea78af2 type 2 origWhen 172866185 whenElapsed 172866185 android}
+      tag=*walarm*:action upload data
+      type=ELAPSED_WAKEUP origWhen=+7h33m16s517ms window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h33m16s517ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m3s572ms power_pending=--
+      whenElapsed=+7h33m16s517ms maxWhenElapsed=+1d1h33m16s517ms
+      operation=PendingIntent{5d494a2: PendingIntentRecord{818d533 android/GnssService broadcastIntent}}
+    ELAPSED_WAKEUP #56: Alarm{c1944e8 type 2 origWhen 172869052 whenElapsed 172869052 android}
+      tag=*walarm*:report_power_statistic
+      type=ELAPSED_WAKEUP origWhen=+7h33m19s384ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+7h33m19s384ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m40s615ms power_pending=--
+      whenElapsed=+7h33m19s384ms maxWhenElapsed=+7h33m19s384ms
+      listener=android.app.AlarmManager$ListenerWrapper@2187631
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #57: Alarm{ab1c794 type 2 origWhen 172869077 whenElapsed 172869077 android}
+      tag=*walarm*:miui.intent.action.UPDATE_BATTERY_DATA
+      type=ELAPSED_WAKEUP origWhen=+7h33m19s409ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+7h33m19s409ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m40s587ms power_pending=--
+      whenElapsed=+7h33m19s409ms maxWhenElapsed=+7h33m19s409ms
+      operation=PendingIntent{6d13491: PendingIntentRecord{e3dbff6 android broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #58: Alarm{5ff9dfd type 3 origWhen 172869167 whenElapsed 172869167 android}
+      tag=*alarm*:android.intent.action.UPDATE_CT_LOGS
+      type=ELAPSED origWhen=+7h33m19s499ms window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h33m19s499ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h26m3s573ms power_pending=--
+      whenElapsed=+7h33m19s499ms maxWhenElapsed=+1d1h33m19s499ms
+      operation=PendingIntent{4f67991: PendingIntentRecord{d2220f6 android broadcastIntent}}
+    RTC #59: Alarm{29d914b type 1 origWhen 1786730082963 whenElapsed 172937421 android}
+      tag=*alarm*:report_tap_and_double_click_drag
+      type=RTC origWhen=2026-08-14 20:54:42.963 window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+7h34m27s753ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h25m32s235ms power_pending=--
+      whenElapsed=+7h34m27s753ms maxWhenElapsed=+7h34m27s753ms
+      listener=android.app.AlarmManager$ListenerWrapper@3537116
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC #60: Alarm{bb04d8a type 1 origWhen 1786712761049 whenElapsed 172955539 com.miui.securitycenter}
+      tag=*alarm*:com.miui.securitycenter/.service.CloudDataUpdateService
+      type=RTC origWhen=2026-08-14 16:06:01.049 window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h34m45s871ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h25m13s777ms power_pending=--
+      whenElapsed=+7h34m45s871ms maxWhenElapsed=+1d1h34m45s871ms
+      operation=PendingIntent{677e315: PendingIntentRecord{f7a462a com.miui.securitycenter startService}}
+    RTC #61: Alarm{a7bb9ad type 1 origWhen 1786654800000 whenElapsed 172958925 com.miui.securitycenter}
+      tag=*alarm*:com.miui.action.REFRESH_DATA_USAGE_DAILY
+      type=RTC origWhen=2026-08-14 00:00:00.000 window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h34m49s257ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h25m6s650ms power_pending=--
+      whenElapsed=+7h34m49s257ms maxWhenElapsed=+1d1h34m49s257ms
+      operation=PendingIntent{c08a418: PendingIntentRecord{43d5e71 com.miui.securitycenter broadcastIntent}}
+    RTC_WAKEUP #62: Alarm{b232191 type 0 origWhen 1786683600475 whenElapsed 172960952 com.android.settings}
+      tag=*walarm*:com.android.settings/.wifi.OneTrackService
+      type=RTC_WAKEUP origWhen=2026-08-14 08:00:00.475 window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h34m51s284ms app_standby=-16h19m50s267ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h19m50s267ms power_pending=--
+      whenElapsed=+7h34m51s284ms maxWhenElapsed=+1d1h34m51s284ms
+      operation=PendingIntent{a9e47f0: PendingIntentRecord{2eff169 com.android.settings startService}}
+    RTC #63: Alarm{fdcc523 type 1 origWhen 1786730289360 whenElapsed 173143818 android}
+      tag=*alarm*:upload_transition_execution_time
+      type=RTC origWhen=2026-08-14 20:58:09.360 window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+7h37m54s150ms app_standby=-16h22m5s829ms device_idle=-13m21s794ms battery_saver=-- ssru=-16h22m5s829ms power_pending=--
+      whenElapsed=+7h37m54s150ms maxWhenElapsed=+7h37m54s150ms
+      listener=android.app.AlarmManager$ListenerWrapper@4000a97
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #64: Alarm{ed0976f type 3 origWhen 173143965 whenElapsed 173143965 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.stats.eastworld.action.EASTWORLD_ALARM
+      type=ELAPSED origWhen=+7h37m54s297ms window=+1h30m0s0ms repeatInterval=7200000 count=0 flags=0x0
+      policyWhenElapsed: requester=+7h37m54s297ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-16h22m5s702ms power_pending=--
+      whenElapsed=+7h37m54s297ms maxWhenElapsed=+9h7m54s297ms
+      operation=PendingIntent{f08b484: PendingIntentRecord{f83d9e com.google.android.gms/com.google.android.gms.stats startService}}
+    ELAPSED_WAKEUP #65: Alarm{70e1e6f type 2 origWhen 173331013 whenElapsed 173331013 android}
+      tag=*walarm*:NetworkStatsReporter
+      type=ELAPSED_WAKEUP origWhen=+7h41m1s345ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+7h41m1s345ms app_standby=-4h18m58s644ms device_idle=-13m21s794ms battery_saver=-- ssru=-4h18m58s644ms power_pending=--
+      whenElapsed=+7h41m1s345ms maxWhenElapsed=+8h41m1s345ms
+      listener=android.app.AlarmManager$ListenerWrapper@fcd446d
+    ELAPSED #66: Alarm{439fe0 type 3 origWhen 174601199 whenElapsed 174601199 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.common.operation.LOG_CORE_ANALYTICS
+      type=ELAPSED origWhen=+8h2m11s531ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+8h2m11s531ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h57m48s468ms power_pending=--
+      whenElapsed=+8h2m11s531ms maxWhenElapsed=+9h2m11s531ms
+      operation=PendingIntent{e8d88a2: PendingIntentRecord{bda5b09 com.google.android.gms/com.google.android.gms.core startService}}
+    RTC #67: Alarm{bcf5f24 type 1 origWhen 1786732021359 whenElapsed 174875816 android}
+      tag=*alarm*:upload_shortcut_status
+      type=RTC origWhen=2026-08-14 21:27:01.359 window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+8h6m46s148ms app_standby=-15h53m13s840ms device_idle=-13m21s794ms battery_saver=-- ssru=-15h53m13s840ms power_pending=--
+      whenElapsed=+8h6m46s148ms maxWhenElapsed=+8h6m46s148ms
+      listener=android.app.AlarmManager$ListenerWrapper@130b933
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC #68: Alarm{b8500a4 type 1 origWhen 1786732022337 whenElapsed 174876794 android}
+      tag=*alarm*:upload_dark_mode_switch
+      type=RTC origWhen=2026-08-14 21:27:02.337 window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+8h6m47s126ms app_standby=-15h53m12s873ms device_idle=-13m21s794ms battery_saver=-- ssru=-15h53m12s873ms power_pending=--
+      whenElapsed=+8h6m47s126ms maxWhenElapsed=+8h6m47s126ms
+      listener=android.app.AlarmManager$ListenerWrapper@a9e94f0
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #69: Alarm{a59b0a4 type 2 origWhen 175500871 whenElapsed 175500871 com.whatsapp}
+      tag=*walarm*:com.whatsapp.action.HEARTBEAT_WAKEUP
+      type=ELAPSED_WAKEUP origWhen=+8h17m11s203ms window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+8h17m11s203ms app_standby=-3h14m13s19ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h14m13s19ms power_pending=--
+      whenElapsed=+8h17m11s203ms maxWhenElapsed=+8h17m11s203ms
+      operation=PendingIntent{886ba69: PendingIntentRecord{fbe3b15 com.whatsapp broadcastIntent}}
+    ELAPSED #70: Alarm{b5e3fec type 3 origWhen 175779453 whenElapsed 175779453 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.common.operation.LOG_CORE_ANALYTICS
+      type=ELAPSED origWhen=+8h21m49s785ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+8h21m49s785ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-15h38m10s210ms power_pending=--
+      whenElapsed=+8h21m49s785ms maxWhenElapsed=+9h21m49s785ms
+      operation=PendingIntent{45f8cee: PendingIntentRecord{77f04f1 com.google.android.gms/com.google.android.gms.core startService}}
+    RTC_WAKEUP #71: Alarm{b0bc985 type 0 origWhen 1786734000000 whenElapsed 176854458 com.android.providers.calendar}
+      tag=*walarm*:android.intent.action.EVENT_REMINDER
+      type=RTC_WAKEUP origWhen=2026-08-14 22:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x3
+      policyWhenElapsed: requester=+8h39m44s790ms app_standby=-1h23m45s852ms device_idle=-13m21s794ms battery_saver=-- ssru=-3h50m13s741ms power_pending=--
+      whenElapsed=+8h39m44s790ms maxWhenElapsed=+8h39m44s790ms
+      Alarm clock:
+        triggerTime=2026-08-14 22:00:00.000
+        showIntent=PendingIntent{7b3b58f: PendingIntentRecord{470101c com.android.providers.calendar startService}}
+      operation=PendingIntent{a479425: PendingIntentRecord{93b89fa com.android.providers.calendar broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=301, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #72: Alarm{dd01b type 0 origWhen 1786734000000 whenElapsed 176854458 com.google.android.calendar}
+      tag=*walarm*:com.google.android.calendar.intent.action.CHECK_NOTIFICATIONS
+      type=RTC_WAKEUP origWhen=2026-08-14 22:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+8h39m44s790ms app_standby=-49m59s758ms device_idle=-13m21s794ms battery_saver=-4m5s170ms ssru=-49m59s758ms power_pending=--
+      whenElapsed=+8h39m44s790ms maxWhenElapsed=+8h39m44s790ms
+      operation=PendingIntent{3c01bab: PendingIntentRecord{a01b6a6 com.google.android.calendar broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #73: Alarm{d271758 type 3 origWhen 177216818 whenElapsed 177216818 com.whatsapp}
+      tag=*alarm*:com.whatsapp.action.UPDATE_NTP
+      type=ELAPSED origWhen=+8h45m47s150ms window=+9h0m0s0ms repeatInterval=43200000 count=0 flags=0x8
+      policyWhenElapsed: requester=+8h45m47s150ms app_standby=-3h14m12s842ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h14m12s842ms power_pending=--
+      whenElapsed=+8h45m47s150ms maxWhenElapsed=+17h45m47s150ms
+      operation=PendingIntent{27c1208: PendingIntentRecord{b70028b com.whatsapp broadcastIntent}}
+    RTC_WAKEUP #74: Alarm{8a069b1 type 0 origWhen 1786734587648 whenElapsed 177442106 com.android.bluetooth}
+      tag=*walarm*:com_android_bluetooth_onetrack
+      type=RTC_WAKEUP origWhen=2026-08-14 22:09:47.648 window=+9h0m0s0ms repeatInterval=43200000 count=0 flags=0x8
+      policyWhenElapsed: requester=+8h49m32s438ms app_standby=-3h5m18s845ms device_idle=-13m21s794ms battery_saver=-- ssru=-3h5m18s845ms power_pending=--
+      whenElapsed=+8h49m32s438ms maxWhenElapsed=+17h49m32s438ms
+      operation=PendingIntent{cee8e22: PendingIntentRecord{12d10b3 com.android.bluetooth broadcastIntent}}
+    RTC_WAKEUP #75: Alarm{6824da1 type 0 origWhen 1786736491609 whenElapsed 179700000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 22:41:31.609 window=+12h25m0s0ms repeatInterval=59710697 count=0 flags=0x8
+      policyWhenElapsed: requester=+9h27m10s332ms app_standby=-6h49m0s204ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-6h49m0s204ms power_pending=--
+      whenElapsed=+9h27m10s332ms maxWhenElapsed=+21h52m10s332ms
+      operation=PendingIntent{b508906: PendingIntentRecord{bae5bc7 com.miui.msa.global startService}}
+    RTC_WAKEUP #76: Alarm{eb71dd8 type 0 origWhen 1786737600000 whenElapsed 180454458 android}
+      tag=*walarm*:ScheduleConditionProvider.EVALUATE
+      type=RTC_WAKEUP origWhen=2026-08-14 23:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+9h39m44s790ms app_standby=-14s501ms device_idle=-- battery_saver=-- ssru=-14s501ms power_pending=--
+      whenElapsed=+9h39m44s790ms maxWhenElapsed=+9h39m44s790ms
+      operation=PendingIntent{8a26cbd: PendingIntentRecord{de84a01 android broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC #77: Alarm{669ca84 type 1 origWhen 1786737600990 whenElapsed 180455448 com.miui.powerkeeper}
+      tag=*alarm*:miui.intent.action.powerkeeper_schedule
+      type=RTC origWhen=2026-08-14 23:00:00.990 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+9h39m45s780ms app_standby=-6h19m28s210ms device_idle=-13m21s794ms battery_saver=-- ssru=-6h19m28s210ms power_pending=--
+      whenElapsed=+9h39m45s780ms maxWhenElapsed=+9h39m45s780ms
+      operation=PendingIntent{3e2c787: PendingIntentRecord{4e9e178 com.miui.powerkeeper broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #78: Alarm{2f91176 type 3 origWhen 180769476 whenElapsed 180769476 com.google.android.gms}
+      tag=*alarm*:com.google.android.gms.auth.authzen.CHECK_REGISTRATION
+      type=ELAPSED origWhen=+9h44m59s808ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+9h44m59s808ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-18h22m55s33ms power_pending=--
+      whenElapsed=+9h44m59s808ms maxWhenElapsed=+10h44m59s808ms
+      operation=PendingIntent{9c446b4: PendingIntentRecord{cd8b688 com.google.android.gms/com.google.android.gms.auth_authzen__phone startService}}
+    ELAPSED #79: Alarm{35ea483 type 3 origWhen 181200009 whenElapsed 181200009 android}
+      tag=*alarm*:WifiHealthMonitor Schedule Daily Detection Timer
+      type=ELAPSED origWhen=+9h52m10s341ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+9h52m10s341ms app_standby=-14h7m49s644ms device_idle=-13m21s794ms battery_saver=-- ssru=-14h7m49s644ms power_pending=--
+      whenElapsed=+9h52m10s341ms maxWhenElapsed=+10h52m10s341ms
+      listener=android.app.AlarmManager$ListenerWrapper@95522dd
+    RTC_WAKEUP #80: Alarm{dcd5e52 type 0 origWhen 1786740658047 whenElapsed 183900000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-14 23:50:58.047 window=+12h40m0s0ms repeatInterval=61099379 count=0 flags=0x8
+      policyWhenElapsed: requester=+10h37m10s332ms app_standby=-5h14m50s163ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-5h14m50s163ms power_pending=--
+      whenElapsed=+10h37m10s332ms maxWhenElapsed=+23h17m10s332ms
+      operation=PendingIntent{9378eae: PendingIntentRecord{2b4f44f com.miui.msa.global startService}}
+    RTC_WAKEUP #81: Alarm{abcecac type 0 origWhen 1786741200000 whenElapsed 184054457 com.google.android.gms}
+      tag=*walarm*:com.google.android.gms.reminders.notification.ACTION_REFRESH_TIME_REMINDERS
+      type=RTC_WAKEUP origWhen=2026-08-15 00:00:00.000 window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x21
+      policyWhenElapsed: requester=+10h39m44s789ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-13h20m15s94ms power_pending=--
+      whenElapsed=+10h39m44s789ms maxWhenElapsed=+10h39m44s789ms
+      operation=PendingIntent{89a5523: PendingIntentRecord{e1af41c com.google.android.gms/com.google.android.gms.reminders startService}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=-1, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=1, android:broadcast.flags=8}]
+    RTC #82: Alarm{6a3c880 type 1 origWhen 1786741200000 whenElapsed 184054458 android}
+      tag=*alarm*:android.intent.action.DATE_CHANGED
+      type=RTC origWhen=2026-08-15 00:00:00.000 window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x1
+      policyWhenElapsed: requester=+10h39m44s790ms app_standby=-13h20m15s134ms device_idle=-13m21s794ms battery_saver=-- ssru=-13h20m15s134ms power_pending=--
+      whenElapsed=+10h39m44s790ms maxWhenElapsed=+10h39m44s790ms
+      operation=PendingIntent{ffdef50: PendingIntentRecord{5e97549 android broadcastIntent}}
+    RTC_WAKEUP #83: Alarm{7e58e1f type 0 origWhen 1786741200000 whenElapsed 184054458 com.xiaomi.calendar}
+      tag=*walarm*:com.miui.action.MIDNIGHT
+      type=RTC_WAKEUP origWhen=2026-08-15 00:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x3
+      policyWhenElapsed: requester=+10h39m44s790ms app_standby=-1h18m28s59ms device_idle=-13m21s794ms battery_saver=-- ssru=-13h20m14s616ms power_pending=--
+      whenElapsed=+10h39m44s790ms maxWhenElapsed=+10h39m44s790ms
+      Alarm clock:
+        triggerTime=2026-08-15 00:00:00.000
+        showIntent=PendingIntent{bb91a20: PendingIntentRecord{8860fd9 com.xiaomi.calendar startService}}
+      operation=PendingIntent{4bf0d9e: PendingIntentRecord{8605868 com.xiaomi.calendar broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=301, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #84: Alarm{6d03dc3 type 0 origWhen 1786741206000 whenElapsed 184060458 com.whatsapp}
+      tag=*walarm*:com.whatsapp.action.DAILY_CRON
+      type=RTC_WAKEUP origWhen=2026-08-15 00:00:06.000 window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+10h39m50s790ms app_standby=-3h14m12s235ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h14m12s235ms power_pending=--
+      whenElapsed=+10h39m50s790ms maxWhenElapsed=+10h39m50s790ms
+      operation=PendingIntent{1b3207f: PendingIntentRecord{c9e26ee com.whatsapp broadcastIntent}}
+    RTC_WAKEUP #85: Alarm{e65b84c type 0 origWhen 1786743268407 whenElapsed 186300000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-15 00:34:28.407 window=+12h50m0s0ms repeatInterval=61989966 count=0 flags=0x8
+      policyWhenElapsed: requester=+11h17m10s332ms app_standby=-5h14m50s165ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-5h14m50s165ms power_pending=--
+      whenElapsed=+11h17m10s332ms maxWhenElapsed=+1d0h7m10s332ms
+      operation=PendingIntent{675d699: PendingIntentRecord{ae52d5e com.miui.msa.global startService}}
+    ELAPSED_WAKEUP #86: Alarm{10bb9ca type 2 origWhen 187855093 whenElapsed 187855093 android}
+      tag=*walarm*:android.appwidget.action.APPWIDGET_UPDATE
+      type=ELAPSED_WAKEUP origWhen=+11h43m5s425ms window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+11h43m5s425ms app_standby=-8h52m49s662ms device_idle=-13m21s794ms battery_saver=-- ssru=-8h52m49s662ms power_pending=--
+      whenElapsed=+11h43m5s425ms maxWhenElapsed=+1d5h43m5s425ms
+      operation=PendingIntent{e67052b: PendingIntentRecord{fb27d88 android broadcastIntent}}
+    RTC_WAKEUP #87: Alarm{a9b47af type 0 origWhen 1786748424000 whenElapsed 191278458 com.whatsapp}
+      tag=*walarm*:com.whatsapp.action.BACKUP_MESSAGES
+      type=RTC_WAKEUP origWhen=2026-08-15 02:00:24.000 window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+12h40m8s790ms app_standby=-3h14m11s898ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h14m11s898ms power_pending=--
+      whenElapsed=+12h40m8s790ms maxWhenElapsed=+12h40m8s790ms
+      operation=PendingIntent{63ed095: PendingIntentRecord{9b3378f com.whatsapp broadcastIntent}}
+    RTC #88: Alarm{972348c type 1 origWhen 1786749789295 whenElapsed 192643753 com.miui.analytics}
+      tag=*alarm*:com.miui.analytics/.internal.WakeupService
+      type=RTC origWhen=2026-08-15 02:23:09.295 window=+9h0m0s0ms repeatInterval=43200000 count=0 flags=0x8
+      policyWhenElapsed: requester=+13h2m54s85ms app_standby=-3h36m10s364ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-3h36m10s364ms power_pending=--
+      whenElapsed=+13h2m54s85ms maxWhenElapsed=+22h2m54s85ms
+      operation=PendingIntent{48a65aa: PendingIntentRecord{13eedc6 com.miui.analytics startService}}
+    RTC #89: Alarm{a75b4c2 type 1 origWhen 1786752000000 whenElapsed 194854458 android}
+      tag=*alarm*:GraphicsStatsService
+      type=RTC origWhen=2026-08-15 03:00:00.000 window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+13h39m44s790ms app_standby=-10h19m33s511ms device_idle=-13m21s794ms battery_saver=-- ssru=-10h19m33s511ms power_pending=--
+      whenElapsed=+13h39m44s790ms maxWhenElapsed=+13h39m44s790ms
+      listener=android.app.AlarmManager$ListenerWrapper@563459b
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #90: Alarm{86c3d57 type 3 origWhen 194931217 whenElapsed 194931217 android}
+      tag=*alarm*:NetworkTimeUpdateService.POLL
+      type=ELAPSED origWhen=+13h41m1s549ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+13h41m1s549ms app_standby=-4h18m58s440ms device_idle=-13m21s794ms battery_saver=-- ssru=-4h18m58s440ms power_pending=--
+      whenElapsed=+13h41m1s549ms maxWhenElapsed=+14h41m1s549ms
+      listener=android.app.AlarmManager$ListenerWrapper@b5c0d38
+    RTC_WAKEUP #91: Alarm{388e111 type 0 origWhen 1786759792223 whenElapsed 202800000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-15 05:09:52.223 window=+1d2h15m0s0ms repeatInterval=126343085 count=0 flags=0x8
+      policyWhenElapsed: requester=+15h52m10s332ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-19h16m6s70ms power_pending=--
+      whenElapsed=+15h52m10s332ms maxWhenElapsed=+1d18h7m10s332ms
+      operation=PendingIntent{a013276: PendingIntentRecord{c799d8e com.miui.msa.global startService}}
+    ELAPSED #92: Alarm{52d21f2 type 3 origWhen 207180201 whenElapsed 207180201 com.google.android.gms}
+      tag=*alarm*:NetworkLocationInOutCollector
+      type=ELAPSED origWhen=+17h5m10s533ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x1
+      policyWhenElapsed: requester=+17h5m10s533ms app_standby=-3m13s322ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-2h56m15s783ms power_pending=--
+      whenElapsed=+17h5m10s533ms maxWhenElapsed=+17h5m10s533ms
+      listener=android.os.BinderProxy@d26a077
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #93: Alarm{fb9ec46 type 0 origWhen 1786766400000 whenElapsed 209254458 com.miui.securitycenter}
+      tag=*walarm*:com.miui.powercenter.RESET_BOOT_TIME
+      type=RTC_WAKEUP origWhen=2026-08-15 07:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+17h39m44s790ms app_standby=-6h20m15s158ms device_idle=-13m21s794ms battery_saver=-- ssru=-6h20m15s158ms power_pending=--
+      whenElapsed=+17h39m44s790ms maxWhenElapsed=+17h39m44s790ms
+      operation=PendingIntent{160c4e4: PendingIntentRecord{41a3a8 com.miui.securitycenter startService}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED #94: Alarm{3b08b0d type 3 origWhen 216056018 whenElapsed 216056018 android}
+      tag=*alarm*:android.net.wifi.24htimeup
+      type=ELAPSED origWhen=+19h33m6s350ms window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+19h33m6s350ms app_standby=-4h25m54s847ms device_idle=-13m21s794ms battery_saver=-- ssru=-4h25m54s847ms power_pending=--
+      whenElapsed=+19h33m6s350ms maxWhenElapsed=+1d13h33m6s350ms
+      operation=PendingIntent{d8c6eee: PendingIntentRecord{8abef8f android broadcastIntent}}
+    ELAPSED_WAKEUP #95: Alarm{d83b15b type 2 origWhen 216056823 whenElapsed 216056823 android}
+      tag=*walarm*:report_switch_stats
+      type=ELAPSED_WAKEUP origWhen=+19h33m7s155ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+19h33m7s155ms app_standby=-4h26m52s844ms device_idle=-13m21s794ms battery_saver=-- ssru=-4h26m52s844ms power_pending=--
+      whenElapsed=+19h33m7s155ms maxWhenElapsed=+19h33m7s155ms
+      listener=android.app.AlarmManager$ListenerWrapper@e897d4d
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #96: Alarm{74982d7 type 2 origWhen 218121082 whenElapsed 218121082 android}
+      tag=*walarm*:action collect data
+      type=ELAPSED_WAKEUP origWhen=+20h7m31s414ms window=+18h0m0s0ms repeatInterval=86400000 count=0 flags=0x8
+      policyWhenElapsed: requester=+20h7m31s414ms app_standby=-3h49m12s841ms device_idle=-13m21s794ms battery_saver=-- ssru=-3h49m12s841ms power_pending=--
+      whenElapsed=+20h7m31s414ms maxWhenElapsed=+1d14h7m31s414ms
+      operation=PendingIntent{8164d06: PendingIntentRecord{59acfc7 android/GnssService broadcastIntent}}
+    RTC_WAKEUP #97: Alarm{b460002 type 0 origWhen 1786780126775 whenElapsed 223200000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-15 10:48:46.775 window=+23h10m0s0ms repeatInterval=111413707 count=0 flags=0x8
+      policyWhenElapsed: requester=+21h32m10s332ms app_standby=-8h52m49s663ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-8h52m49s663ms power_pending=--
+      whenElapsed=+21h32m10s332ms maxWhenElapsed=+1d20h42m10s332ms
+      operation=PendingIntent{9ab01a5: PendingIntentRecord{2ee297a com.miui.msa.global startService}}
+    RTC #98: Alarm{17812b2 type 1 origWhen 1786786200000 whenElapsed 229161596 com.google.android.calendar}
+      tag=*alarm*:com.google.android.calendar.intent.action.CHECK_NOTIFICATIONS_WHEN_AWAKE
+      type=RTC origWhen=2026-08-15 12:30:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+23h11m31s928ms app_standby=-5m14s953ms device_idle=-- battery_saver=-4m5s170ms ssru=-5m14s953ms power_pending=--
+      whenElapsed=+23h11m31s928ms maxWhenElapsed=+23h11m31s928ms
+      operation=PendingIntent{d7e6203: PendingIntentRecord{4d74b50 com.google.android.calendar broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    RTC_WAKEUP #99: Alarm{87da149 type 0 origWhen 1786796757874 whenElapsed 239700000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-15 15:25:57.874 window=+1d0h55m0s0ms repeatInterval=119729459 count=0 flags=0x8
+      policyWhenElapsed: requester=+1d2h7m10s332ms app_standby=-6h49m0s205ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-6h49m0s205ms power_pending=--
+      whenElapsed=+1d2h7m10s332ms maxWhenElapsed=+2d3h2m10s332ms
+      operation=PendingIntent{285266c: PendingIntentRecord{7ee7435 com.miui.msa.global startService}}
+    RTC_WAKEUP #100: Alarm{c181a4e type 0 origWhen 1786800057085 whenElapsed 243000000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-15 16:20:57.085 window=+1d1h15m0s0ms repeatInterval=121380458 count=0 flags=0x8
+      policyWhenElapsed: requester=+1d3h2m10s332ms app_standby=-5h14m50s162ms device_idle=-13m21s794ms battery_saver=-25m59s53ms ssru=-5h14m50s162ms power_pending=--
+      whenElapsed=+1d3h2m10s332ms maxWhenElapsed=+2d4h17m10s332ms
+      operation=PendingIntent{b048441: PendingIntentRecord{c7e4de6 com.miui.msa.global startService}}
+    ELAPSED_WAKEUP #101: Alarm{d8324b3 type 2 origWhen 259344637 whenElapsed 259344637 android}
+      tag=*walarm*:LockSettingsStrongAuth.timeoutForUser
+      type=ELAPSED_WAKEUP origWhen=+1d7h34m34s969ms window=0 exactAllowReason=listener repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+1d7h34m34s969ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-1d16h25m25s31ms power_pending=--
+      whenElapsed=+1d7h34m34s969ms maxWhenElapsed=+1d7h34m34s969ms
+      listener=android.app.AlarmManager$ListenerWrapper@49b276f
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #102: Alarm{60d7adf type 2 origWhen 259369636 whenElapsed 259369636 android}
+      tag=*walarm*:com.android.server.notification.TimeToLiveHelper
+      type=ELAPSED_WAKEUP origWhen=+1d7h34m59s968ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+1d7h34m59s968ms app_standby=-16h24m45s737ms device_idle=-13m21s794ms battery_saver=-- ssru=-19h1m43s144ms power_pending=--
+      whenElapsed=+1d7h34m59s968ms maxWhenElapsed=+1d7h34m59s968ms
+      operation=PendingIntent{aedcc7c: PendingIntentRecord{f760905 android broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #103: Alarm{4cc9a6f type 2 origWhen 352151362 whenElapsed 352151362 com.android.systemui}
+      tag=*walarm*:MiuiTimeoutCoordinator.TIMEOUT
+      type=ELAPSED_WAKEUP origWhen=+2d9h21m21s694ms window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+2d9h21m21s694ms app_standby=-1h5m32s395ms device_idle=-13m21s794ms battery_saver=-- ssru=-1h5m32s395ms power_pending=--
+      whenElapsed=+2d9h21m21s694ms maxWhenElapsed=+2d9h21m21s694ms
+      operation=PendingIntent{adf8d5a: PendingIntentRecord{bdccb8b com.android.systemui broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+    ELAPSED_WAKEUP #104: Alarm{f3acf0c type 2 origWhen 93800109 whenElapsed 353000109 com.xiaomi.hm.health}
+      tag=*walarm*:android.intent.action.HMCoreService.KEEP_ALIVE
+      type=ELAPSED_WAKEUP origWhen=-14h24m29s559ms window=+15m0s0ms repeatInterval=1200000 count=0 flags=0x0
+      policyWhenElapsed: requester=-14h24m29s559ms app_standby=+9h16m9s372ms device_idle=-13m21s794ms battery_saver=-26m58s830ms ssru=-14h43m50s464ms power_pending=+2d9h35m30s441ms
+      whenElapsed=+2d9h35m30s441ms maxWhenElapsed=+2d9h35m30s441ms
+      operation=PendingIntent{9f4121a: PendingIntentRecord{48bd14b com.xiaomi.hm.health startService}}
+    ELAPSED_WAKEUP #105: Alarm{2675a3f type 2 origWhen 94700090 whenElapsed 353905091 com.xiaomi.hm.health}
+      tag=*walarm*:com.xiaomi.hm.health.WAKE_UP
+      type=ELAPSED_WAKEUP origWhen=-14h9m29s578ms window=+56m15s0ms repeatInterval=4500000 count=0 flags=0x0
+      policyWhenElapsed: requester=-14h9m24s577ms app_standby=+9h16m9s372ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-14h43m50s466ms power_pending=+2d9h50m35s423ms
+      whenElapsed=+2d9h50m35s423ms maxWhenElapsed=+2d9h50m35s423ms
+      operation=PendingIntent{a9a5c3f: PendingIntentRecord{38ea90c com.xiaomi.hm.health broadcastIntent}}
+    RTC #106: Alarm{e8da5a3 type 1 origWhen 1786921200000 whenElapsed 364054458 android}
+      tag=*alarm*:BatteryStatsImpl
+      type=RTC origWhen=2026-08-17 02:00:00.000 window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x8
+      policyWhenElapsed: requester=+2d12h39m44s790ms app_standby=-13m19s843ms device_idle=-- battery_saver=-- ssru=-13m19s843ms power_pending=--
+      whenElapsed=+2d12h39m44s790ms maxWhenElapsed=+2d13h39m44s790ms
+      listener=android.app.AlarmManager$ListenerWrapper@b893468
+    ELAPSED_WAKEUP #107: Alarm{8f83086 type 2 origWhen 143375876 whenElapsed 402575876 com.facebook.services}
+      tag=*walarm*:com.facebook.rti.fbns.intent.ACTION_ALARM.FBNS_SCHEDULED_BROADCAST_TIMEOUT
+      type=ELAPSED_WAKEUP origWhen=-38m13s792ms window=+7m29s999ms repeatInterval=0 count=0 flags=0x20
+      policyWhenElapsed: requester=-38m13s792ms app_standby=-48m13s791ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-48m13s791ms power_pending=+2d23h21m46s208ms
+      whenElapsed=+2d23h21m46s208ms maxWhenElapsed=+2d23h21m46s208ms
+      operation=PendingIntent{7d33081: PendingIntentRecord{a1a842f com.facebook.services broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=-1, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=1, android:broadcast.flags=8}]
+    RTC #108: Alarm{4722af3 type 1 origWhen 1786714629000 whenElapsed 416683458 com.hsv.freeadblockerbrowser}
+      tag=*alarm*:name.rocketshield.chromium.notifications.unimportant_storage_size.ACTION_UNIMPORTANT_CACHE_SIZE_EXCEEDED
+      type=RTC origWhen=2026-08-14 16:37:09.000 window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x20
+      policyWhenElapsed: requester=+3h16m53s790ms app_standby=-13h43m50s628ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-19h16m0s602ms power_pending=+3d3h16m53s790ms
+      whenElapsed=+3d3h16m53s790ms maxWhenElapsed=+3d3h16m53s790ms
+      operation=PendingIntent{2792526: PendingIntentRecord{2da0202 com.hsv.freeadblockerbrowser broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=-1, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=1, android:broadcast.flags=8}]
+    RTC_WAKEUP #109: Alarm{84a9567 type 0 origWhen 1786727574178 whenElapsed 429900000 com.android.vending}
+      tag=*walarm*:com.google.android.finsky.gamestreaks.ACTION_STREAK_AT_RISK_CHECK
+      type=RTC_WAKEUP origWhen=2026-08-14 20:12:54.178 window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+6h57m10s332ms app_standby=-15h22m21s23ms device_idle=-13m21s795ms battery_saver=-3m40s599ms ssru=-15h22m21s23ms power_pending=+3d6h57m10s332ms
+      whenElapsed=+3d6h57m10s332ms maxWhenElapsed=+3d6h57m10s332ms
+      operation=PendingIntent{5f12f14: PendingIntentRecord{18153bd com.android.vending broadcastIntent}}
+    RTC #110: Alarm{c1524c6 type 1 origWhen 1786730400558 whenElapsed 432455016 com.hsv.freeadblockerbrowser}
+      tag=*alarm*:action_rocket_cleaner_notification
+      type=RTC origWhen=2026-08-14 21:00:00.558 window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x20
+      policyWhenElapsed: requester=+7h39m45s348ms app_standby=-13h43m50s628ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-14h43m49s651ms power_pending=+3d7h39m45s348ms
+      whenElapsed=+3d7h39m45s348ms maxWhenElapsed=+3d7h39m45s348ms
+      operation=PendingIntent{cc26db2: PendingIntentRecord{f2665f0 com.hsv.freeadblockerbrowser broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=-1, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=1, android:broadcast.flags=8}]
+    RTC #111: Alarm{5e12103 type 1 origWhen 1786741414797 whenElapsed 443700000 com.google.android.calendar}
+      tag=*alarm*:com.google.android.calendar.intent.action.MIDNIGHT
+      type=RTC origWhen=2026-08-15 00:03:34.797 window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+10h47m10s332ms app_standby=-1h13m53s929ms device_idle=-13m21s795ms battery_saver=-4m5s170ms ssru=-2h20m13s177ms power_pending=+3d10h47m10s332ms
+      whenElapsed=+3d10h47m10s332ms maxWhenElapsed=+3d10h47m10s332ms
+      operation=PendingIntent{43c2880: PendingIntentRecord{4f46eb9 com.google.android.calendar broadcastIntent}}
+    ELAPSED #112: Alarm{1e5b2fe type 3 origWhen 335340890 whenElapsed 594600000 com.facebook.appmanager}
+      tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_BATTERY_CALLBACK
+      type=ELAPSED origWhen=+2d4h41m11s222ms window=+2d6h0m0s0ms repeatInterval=259200000 count=0 flags=0x0
+      policyWhenElapsed: requester=+2d4h42m10s332ms app_standby=-16h24m45s737ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-19h18m48s769ms power_pending=+5d4h42m10s332ms
+      whenElapsed=+5d4h42m10s332ms maxWhenElapsed=+5d4h42m10s332ms
+      operation=PendingIntent{9caca5f: PendingIntentRecord{97b4cac com.facebook.appmanager broadcastIntent}}
+    ELAPSED #113: Alarm{3e43d75 type 3 origWhen 335341441 whenElapsed 594600000 com.facebook.services}
+      tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_BATTERY_CALLBACK
+      type=ELAPSED origWhen=+2d4h41m11s773ms window=+2d6h0m0s0ms repeatInterval=259200000 count=0 flags=0x0
+      policyWhenElapsed: requester=+2d4h42m10s332ms app_standby=-48m13s800ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-19h18m48s224ms power_pending=+5d4h42m10s332ms
+      whenElapsed=+5d4h42m10s332ms maxWhenElapsed=+5d4h42m10s332ms
+      operation=PendingIntent{66010a: PendingIntentRecord{77bad7b com.facebook.services broadcastIntent}}
+    RTC #114: Alarm{7ea963d type 1 origWhen 1786950649059 whenElapsed 652703516 com.facebook.appmanager}
+      tag=*alarm*:backupJobSchedulerCheck
+      type=RTC origWhen=2026-08-17 10:10:49.059 window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+2d20h50m33s848ms app_standby=-3h9m26s146ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-3h9m26s146ms power_pending=+5d20h50m33s848ms
+      whenElapsed=+5d20h50m33s848ms maxWhenElapsed=+5d20h50m33s848ms
+      operation=PendingIntent{6a68798: PendingIntentRecord{9c83bf1 com.facebook.appmanager broadcastIntent}}
+    ELAPSED #115: Alarm{952b067 type 3 origWhen 441247208 whenElapsed 700447208 com.facebook.services}
+      tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_CONNECTIVITY_CALLBACK
+      type=ELAPSED origWhen=+3d10h6m17s540ms window=+2d15h0m0s0ms repeatInterval=302400000 count=0 flags=0x0
+      policyWhenElapsed: requester=+3d10h6m17s540ms app_standby=-48m13s800ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-1h53m42s436ms power_pending=+6d10h6m17s540ms
+      whenElapsed=+6d10h6m17s540ms maxWhenElapsed=+6d10h6m17s540ms
+      operation=PendingIntent{9eb23d6: PendingIntentRecord{b8da657 com.facebook.services broadcastIntent}}
+    ELAPSED #116: Alarm{cff55a2 type 3 origWhen 441249646 whenElapsed 700449646 com.facebook.appmanager}
+      tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_CONNECTIVITY_CALLBACK
+      type=ELAPSED origWhen=+3d10h6m19s978ms window=+2d15h0m0s0ms repeatInterval=302400000 count=0 flags=0x0
+      policyWhenElapsed: requester=+3d10h6m19s978ms app_standby=-1h53m40s8ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-1h53m40s8ms power_pending=+6d10h6m19s978ms
+      whenElapsed=+6d10h6m19s978ms maxWhenElapsed=+6d10h6m19s978ms
+      operation=PendingIntent{2488544: PendingIntentRecord{813a62d com.facebook.appmanager broadcastIntent}}
+    RTC_WAKEUP #117: Alarm{cda762 type 0 origWhen 1787261913762 whenElapsed 705000000 com.miui.msa.global}
+      tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+      type=RTC_WAKEUP origWhen=2026-08-21 00:38:33.762 window=+5d10h55m0s0ms repeatInterval=628464720 count=0 flags=0x8
+      policyWhenElapsed: requester=+6d11h22m10s332ms app_standby=-16h24m45s737ms device_idle=-13m21s795ms battery_saver=-25m59s53ms ssru=-19h16m6s167ms power_pending=--
+      whenElapsed=+6d11h22m10s332ms maxWhenElapsed=+11d22h17m10s332ms
+      operation=PendingIntent{85c50f3: PendingIntentRecord{b1f24de com.miui.msa.global startService}}
+    ELAPSED_WAKEUP #118: Alarm{f974b79 type 2 origWhen 1449327356 whenElapsed 1449327356 com.whatsapp}
+      tag=*walarm*:com.whatsapp.action.ROTATE_SENDER_KEYS
+      type=ELAPSED_WAKEUP origWhen=+15d2h7m37s688ms window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+15d2h7m37s688ms app_standby=-3h14m12s902ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-3h14m12s902ms power_pending=--
+      whenElapsed=+15d2h7m37s688ms maxWhenElapsed=+15d2h7m37s688ms
+      operation=PendingIntent{eeab1b0: PendingIntentRecord{a317829 com.whatsapp broadcastIntent}}
+    ELAPSED_WAKEUP #119: Alarm{4a7022f type 2 origWhen 1473502966 whenElapsed 1473502966 com.whatsapp}
+      tag=*walarm*:com.whatsapp.action.ROTATE_SIGNED_PREKEY
+      type=ELAPSED_WAKEUP origWhen=+15d8h50m33s298ms window=0 exactAllowReason=allow-listed repeatInterval=0 count=0 flags=0x9
+      policyWhenElapsed: requester=+15d8h50m33s298ms app_standby=-3h14m12s960ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-3h14m12s960ms power_pending=--
+      whenElapsed=+15d8h50m33s298ms maxWhenElapsed=+15d8h50m33s298ms
+      operation=PendingIntent{262d7ae: PendingIntentRecord{61094f com.whatsapp broadcastIntent}}
+    ELAPSED_WAKEUP #120: Alarm{a7069c3 type 2 origWhen 315440660227 whenElapsed 315440660227 com.google.android.gms}
+      tag=*walarm*:com.google.android.gms/.pay.security.storagekey.service.StorageKeyCacheService
+      type=ELAPSED_WAKEUP origWhen=+3649d5h56m30s559ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+3649d5h56m30s559ms app_standby=-3m13s322ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-18h3m29s439ms power_pending=--
+      whenElapsed=+3649d5h56m30s559ms maxWhenElapsed=+3649d6h56m30s559ms
+      operation=PendingIntent{c4138dc: PendingIntentRecord{d406de5 com.google.android.gms/com.google.android.gms.pay startService}}
+    ELAPSED_WAKEUP #121: Alarm{f8bbd69 type 2 origWhen 315440779210 whenElapsed 315440779210 com.google.android.gms}
+      tag=*walarm*:com.google.android.gms/com.google.android.contextmanager.service.ContextManagerService
+      type=ELAPSED_WAKEUP origWhen=+3649d5h58m29s542ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+3649d5h58m29s542ms app_standby=-3m13s322ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-18h1m30s456ms power_pending=--
+      whenElapsed=+3649d5h58m29s542ms maxWhenElapsed=+3649d6h58m29s542ms
+      operation=PendingIntent{a08c0ba: PendingIntentRecord{a4eeb6b com.google.android.gms/com.google.android.gms.contextmanager startService}}
+    ELAPSED_WAKEUP #122: Alarm{45c2333 type 2 origWhen 315440780378 whenElapsed 315440780378 com.google.android.gms}
+      tag=*walarm*:com.google.android.gms/.semanticlocation.service.SemanticLocationService
+      type=ELAPSED_WAKEUP origWhen=+3649d5h58m30s710ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+3649d5h58m30s710ms app_standby=-3m13s322ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-18h1m29s253ms power_pending=--
+      whenElapsed=+3649d5h58m30s710ms maxWhenElapsed=+3649d6h58m30s710ms
+      operation=PendingIntent{f1706c8: PendingIntentRecord{78f0361 com.google.android.gms/com.google.android.gms.semanticlocation startService}}
+    ELAPSED_WAKEUP #123: Alarm{9bef02a type 2 origWhen 315445655449 whenElapsed 315445655449 com.google.android.gms}
+      tag=*walarm*:com.google.android.gms/.tapandpay.security.StorageKeyCacheService
+      type=ELAPSED_WAKEUP origWhen=+3649d7h19m45s781ms window=+1h0m0s0ms repeatInterval=0 count=0 flags=0x0
+      policyWhenElapsed: requester=+3649d7h19m45s781ms app_standby=-3m13s322ms device_idle=-13m21s795ms battery_saver=-26m58s830ms ssru=-16h40m14s203ms power_pending=--
+      whenElapsed=+3649d7h19m45s781ms maxWhenElapsed=+3649d8h19m45s781ms
+      operation=PendingIntent{8f22e86: PendingIntentRecord{aeed347 com.google.android.gms/com.google.android.gms.tapandpay startService}}
+    RTC #124: Alarm{624d3bd type 1 origWhen 9223372036854775807 whenElapsed 9223370250297630264 com.google.android.googlequicksearchbox}
+      tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver
+      type=RTC origWhen=292278994-08-17 10:12:55.807 window=0 exactAllowReason=permission repeatInterval=0 count=0 flags=0x5
+      policyWhenElapsed: requester=+24855d3h14m7s596ms app_standby=-3m27s981ms device_idle=-- battery_saver=-3m27s981ms ssru=-3m27s981ms power_pending=--
+      whenElapsed=+24855d3h14m7s596ms maxWhenElapsed=+24855d3h14m7s596ms
+      operation=PendingIntent{1fed580: PendingIntentRecord{f8e17b9 com.google.android.googlequicksearchbox broadcastIntent}}
+      idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=302, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+  LazyAlarmStore stats:
+    GET_NEXT_DELIVERY_TIME: count=44558, total=98,0ms, avg=0,002ms, max calls/s=32004 max dur/s=82,5ms max time=7,0ms
+    GET_NEXT_WAKEUP_DELIVERY_TIME: count=44558, total=357,6ms, avg=0,008ms, max calls/s=218 max dur/s=19,5ms max time=19,4ms
+    GET_COUNT: count=0, total=0,0ms, avg=0,000ms, max calls/s=0 max dur/s=0,0ms max time=0,0ms
+  
+  Pending user blocked background alarms: 
+    none
+  
+  Pending alarms per uid: [1000:20, 1001:1, 1002:1, 1073:3, u0a87:2, u0a104:3, u0a120:3, u0a145:20, u0a156:1, u0a166:2, u0a167:2, u0a170:4, u0a184:14, u0a200:1, u0a284:1, u0a317:2, u0a325:7, u0a342:2, u0a375:3]
+  
+  App Alarm history:
+    com.android.providers.calendar, u0: -1h23m45s907ms, -1h52m51s618ms, 
+    org.telegram.messenger, u0: -1h4m26s317ms, 
+    com.ichi2.anki, u0: -1d3h59m26s95ms, 
+    com.northcube.sleepcycle, u0: -51s559ms, -4m47s990ms, -5m51s691ms, -6m39s105ms, -9m45s469ms, -10m13s859ms, 
+    com.google.android.configupdater, u0: -1d16h1m21s960ms, 
+    com.instagram.android, u0: -1h24m36s880ms, -1h52m51s618ms, 
+    com.miui.cleaner, u0: -13h17m45s184ms, 
+    com.facebook.services, u0: -48m13s804ms, -1h4m26s317ms, 
+    com.google.android.gms, u0: -3m13s329ms, -3m42s861ms, -6m48s231ms, -9m14s115ms, -12m53s237ms, -13m11s892ms, -13m42s907ms, -18m16s910ms, -18m26s152ms, -22m27s911ms, -23m43s840ms, -23m43s906ms, -26m42s908ms, -26m47s372ms, -26m55s837ms, -33m43s908ms, -41m1s537ms, -43m44s844ms, -53m25s118ms, -53m44s845ms, -56m13s532ms, 
+    com.google.android.calendar, u0: -12h17m35s119ms, 
+    com.hsv.freeadblockerbrowser, u0: -14h43m50s628ms, 
+    com.xiaomi.calendar, u0: -1h18m28s72ms, -1h24m40s910ms, 
+    com.xiaomi.hm.health, u0: -14h43m50s628ms, 
+  
+  Temporary Quota Reserves:
+  
+  Next wake from idle: Alarm{b0bc985 type 0 origWhen 1786734000000 whenElapsed 176854458 com.android.providers.calendar}
+    tag=*walarm*:android.intent.action.EVENT_REMINDER
+    type=RTC_WAKEUP origWhen=2026-08-14 22:00:00.000 window=0 exactAllowReason=policy_permission repeatInterval=0 count=0 flags=0x3
+    policyWhenElapsed: requester=+8h39m44s790ms app_standby=-1h23m45s852ms device_idle=-13m21s794ms battery_saver=-- ssru=-3h50m13s741ms power_pending=--
+    whenElapsed=+8h39m44s790ms maxWhenElapsed=+8h39m44s790ms
+    Alarm clock:
+      triggerTime=2026-08-14 22:00:00.000
+      showIntent=PendingIntent{7b3b58f: PendingIntentRecord{470101c com.android.providers.calendar startService}}
+    operation=PendingIntent{a479425: PendingIntentRecord{93b89fa com.android.providers.calendar broadcastIntent}}
+    idle-options=Bundle[{android.pendingIntent.backgroundActivityAllowed=2, android:broadcast.temporaryAppAllowlistReasonCode=301, android:broadcast.temporaryAppAllowlistDuration=10000, android:broadcast.temporaryAppAllowlistReason=, android:broadcast.temporaryAppAllowlistType=0, android:broadcast.flags=8}]
+  
+  Past-due non-wakeup alarms: (none)
+    Number of delayed alarms: 2569, total delay time: +1d3h13m43s159ms
+    Max delay time: +10m2s318ms, max non-interactive time: +8h51m51s639ms
+  
+  Broadcast ref count: 0
+  PendingIntent send count: 2480
+  PendingIntent finish count: 2480
+  Listener send count: 2990
+  Listener finish count: 2990
+  
+  Allow while idle history:
+    com.google.android.googlequicksearchbox, u0: -28m26s909ms, 
+    com.google.android.calendar, u0: -2h20m13s909ms, 
+  
+  Allow while idle compat history:
+    com.android.providers.calendar, u0: -1d2h6m8s908ms, 
+    com.facebook.services, u0: -15h32m48s908ms, -15h52m48s908ms, -16h12m48s909ms, 
+    com.google.android.gms, u0: -13m42s907ms, -33m43s908ms, 
+  
+  Last priority alarm dispatches:
+    UID: u0a145: -5h39m11s135ms
+  Removal history:
+    1000:
+      #1: Reason=alarm_cancelled elapsed=-12s213ms rtc=2026-08-14 13:20:02.998
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:FoldCoordinator.fold 
+          policyWhenElapsed: requester=+5h59m47s663ms app_standby=-12s217ms device_idle=-- battery_saver=-- ssru=-12s217ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-12s224ms rtc=2026-08-14 13:20:02.986
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:FoldCoordinator.fold 
+          policyWhenElapsed: requester=+5h59m47s457ms app_standby=-12s524ms device_idle=-- battery_saver=-- ssru=-12s524ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-12s541ms rtc=2026-08-14 13:20:02.669
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:FoldCoordinator.fold 
+          policyWhenElapsed: requester=+5h59m46s890ms app_standby=-13s88ms device_idle=-- battery_saver=-- ssru=-13s87ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-12s932ms rtc=2026-08-14 13:20:02.278
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:JS idleness 
+          policyWhenElapsed: requester=+29m23s313ms app_standby=-1m36s687ms device_idle=-- battery_saver=-- ssru=-1m36s687ms power_pending=--
+      #5: Reason=alarm_cancelled elapsed=-12s939ms rtc=2026-08-14 13:20:02.272
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:JS idleness 
+          policyWhenElapsed: requester=+23s292ms app_standby=-1m36s702ms device_idle=-- battery_saver=-- ssru=-1m36s702ms power_pending=--
+      #6: Reason=alarm_cancelled elapsed=-13s108ms rtc=2026-08-14 13:20:02.102
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:FoldCoordinator.fold 
+          policyWhenElapsed: requester=+5h59m45s896ms app_standby=-14s98ms device_idle=-- battery_saver=-- ssru=-14s98ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-13s670ms rtc=2026-08-14 13:20:01.540
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.miui.powerkeeper.clean_app 
+          policyWhenElapsed: requester=+18m22s947ms app_standby=-1m37s46ms device_idle=-- battery_saver=-- ssru=-1m37s46ms power_pending=--
+      #8: Reason=alarm_cancelled elapsed=-14s100ms rtc=2026-08-14 13:20:01.110
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:FoldCoordinator.fold 
+          policyWhenElapsed: requester=+5h59m45s741ms app_standby=-14s253ms device_idle=-- battery_saver=-- ssru=-14s253ms power_pending=--
+      #9: Reason=alarm_cancelled elapsed=-14s256ms rtc=2026-08-14 13:20:00.954
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:FoldCoordinator.fold 
+          policyWhenElapsed: requester=+5h56m23s455ms app_standby=-3m36s500ms device_idle=-- battery_saver=-- ssru=-3m36s500ms power_pending=--
+      #10: Reason=alarm_cancelled elapsed=-14s510ms rtc=2026-08-14 13:20:00.700
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:ScheduleConditionProvider.EVALUATE 
+          policyWhenElapsed: requester=+9h39m44s790ms app_standby=-3m37s259ms device_idle=-- battery_saver=-- ssru=-3m37s259ms power_pending=--
+    1002:
+      #1: Reason=pi_cancelled elapsed=-15h10m27s554ms rtc=2026-08-13 22:09:47.656
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com_android_bluetooth_onetrack 
+          policyWhenElapsed: requester=-7h15m45s22ms app_standby=-16h24m45s737ms device_idle=-15h10m28s900ms battery_saver=-- ssru=-19h15m45s21ms power_pending=--
+      #2: Reason=pi_cancelled elapsed=-19h15m45s23ms rtc=2026-08-13 18:04:30.188
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com_android_bluetooth_onetrack 
+          policyWhenElapsed: requester=-7h15m59s443ms app_standby=-19h15m59s443ms device_idle=-- battery_saver=-- ssru=-19h15m59s443ms power_pending=--
+      #3: Reason=pi_cancelled elapsed=-19h15m59s443ms rtc=2026-08-13 18:04:15.767
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com_android_bluetooth_onetrack 
+          policyWhenElapsed: requester=-16h0m47s511ms app_standby=-1d4h0m47s510ms device_idle=-19h18m53s30ms battery_saver=-- ssru=-1d4h0m47s510ms power_pending=--
+    1073:
+      #1: Reason=alarm_cancelled elapsed=-12m58s413ms rtc=2026-08-14 13:07:16.797
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:IpClient.wlan0.EVENT_DHCPACTION_TIMEOUT 
+          policyWhenElapsed: requester=-12m40s443ms app_standby=-12m58s443ms device_idle=-- battery_saver=-- ssru=-12m58s443ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-12m58s414ms rtc=2026-08-14 13:07:16.796
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:DhcpClient.wlan0.KICK 
+          policyWhenElapsed: requester=-12m57s501ms app_standby=-12m58s427ms device_idle=-- battery_saver=-- ssru=-12m58s427ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-42m58s454ms rtc=2026-08-14 12:37:16.756
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:IpClient.wlan0.EVENT_DHCPACTION_TIMEOUT 
+          policyWhenElapsed: requester=-42m40s509ms app_standby=-42m58s508ms device_idle=-- battery_saver=-- ssru=-42m58s508ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-42m58s456ms rtc=2026-08-14 12:37:16.755
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:DhcpClient.wlan0.KICK 
+          policyWhenElapsed: requester=-42m57s451ms app_standby=-42m58s488ms device_idle=-- battery_saver=-- ssru=-42m58s488ms power_pending=--
+      #5: Reason=alarm_cancelled elapsed=-1h12m58s517ms rtc=2026-08-14 12:07:16.693
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:IpClient.wlan0.EVENT_DHCPACTION_TIMEOUT 
+          policyWhenElapsed: requester=-1h12m40s550ms app_standby=-1h12m58s550ms device_idle=-- battery_saver=-- ssru=-1h12m58s550ms power_pending=--
+      #6: Reason=alarm_cancelled elapsed=-1h12m58s518ms rtc=2026-08-14 12:07:16.693
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:DhcpClient.wlan0.KICK 
+          policyWhenElapsed: requester=-1h12m57s434ms app_standby=-1h12m58s532ms device_idle=-- battery_saver=-- ssru=-1h12m58s532ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-1h42m58s561ms rtc=2026-08-14 11:37:16.649
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:IpClient.wlan0.EVENT_DHCPACTION_TIMEOUT 
+          policyWhenElapsed: requester=-1h42m40s848ms app_standby=-1h42m58s847ms device_idle=-1h42m58s847ms battery_saver=-- ssru=-1h42m58s847ms power_pending=--
+      #8: Reason=alarm_cancelled elapsed=-1h42m58s563ms rtc=2026-08-14 11:37:16.647
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:DhcpClient.wlan0.KICK 
+          policyWhenElapsed: requester=-1h42m57s754ms app_standby=-1h42m58s824ms device_idle=-1h42m58s824ms battery_saver=-- ssru=-1h42m58s824ms power_pending=--
+      #9: Reason=alarm_cancelled elapsed=-2h12m59s799ms rtc=2026-08-14 11:07:15.411
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:IpClient.wlan0.EVENT_DHCPACTION_TIMEOUT 
+          policyWhenElapsed: requester=-2h12m41s850ms app_standby=-2h12m59s848ms device_idle=-2h12m59s848ms battery_saver=-- ssru=-2h12m59s848ms power_pending=--
+      #10: Reason=alarm_cancelled elapsed=-2h12m59s801ms rtc=2026-08-14 11:07:15.409
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:DhcpClient.wlan0.KICK 
+          policyWhenElapsed: requester=-2h12m58s782ms app_standby=-2h12m59s832ms device_idle=-2h12m59s833ms battery_saver=-- ssru=-2h12m59s832ms power_pending=--
+    u0a104:
+      #1: Reason=alarm_cancelled elapsed=-1h53m42s475ms rtc=2026-08-14 11:26:32.735
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_CONNECTIVITY_CALLBACK 
+          policyWhenElapsed: requester=+2d9h57m10s332ms app_standby=-3h5m18s837ms device_idle=-1h53m46s720ms battery_saver=-3h13m21s236ms ssru=-1d2h7m0s531ms power_pending=+5d9h57m10s332ms
+      #2: Reason=alarm_cancelled elapsed=-3h40m30s553ms rtc=2026-08-14 09:39:44.657
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.facebook.rti.fbns.intent.REGISTER_RETRY 
+          policyWhenElapsed: requester=-3h38m31s219ms app_standby=-3h40m31s209ms device_idle=-- battery_saver=-3h40m31s209ms ssru=-3h40m31s209ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-14h56m51s747ms rtc=2026-08-13 22:23:23.463
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.facebook.rti.fbns.intent.REGISTER_RETRY 
+          policyWhenElapsed: requester=-14h52m49s668ms app_standby=-14h56m52s63ms device_idle=-- battery_saver=-14h56m52s63ms ssru=-14h56m52s63ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-19h18m48s230ms rtc=2026-08-13 18:01:26.980
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_BATTERY_CALLBACK 
+          policyWhenElapsed: requester=+1d7h34m48s224ms app_standby=-1d3h16m22s883ms device_idle=-19h18m53s30ms battery_saver=-1d4h14m9s735ms ssru=-1d16h25m11s745ms power_pending=+4d7h34m48s224ms
+      #5: Reason=alarm_cancelled elapsed=-1d2h7m0s543ms rtc=2026-08-13 11:13:14.667
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_CONNECTIVITY_CALLBACK 
+          policyWhenElapsed: requester=+1d19h34m48s282ms app_standby=-1d3h16m22s883ms device_idle=-1d2h7m3s909ms battery_saver=-1d4h14m9s735ms ssru=-1d16h25m11s497ms power_pending=+4d19h34m48s282ms
+      #6: Reason=alarm_cancelled elapsed=-1d4h14m55s627ms rtc=2026-08-13 09:05:19.583
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.facebook.rti.fbns.intent.REGISTER_RETRY 
+          policyWhenElapsed: requester=-1d4h12m55s802ms app_standby=-1d4h14m55s788ms device_idle=-- battery_saver=-1d4h14m55s788ms ssru=-1d4h14m55s787ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-1d16h24m6s197ms rtc=2026-08-12 20:56:09.013
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.facebook.rti.fbns.intent.REGISTER_RETRY 
+          policyWhenElapsed: requester=-1d16h22m6s584ms app_standby=-1d16h24m6s582ms device_idle=-- battery_saver=-1d16h24m6s582ms ssru=-1d16h24m6s582ms power_pending=--
+    u0a120:
+      #1: Reason=alarm_cancelled elapsed=-1h53m40s31ms rtc=2026-08-14 11:26:35.179
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_CONNECTIVITY_CALLBACK 
+          policyWhenElapsed: requester=+2d9h57m10s332ms app_standby=-16h24m45s737ms device_idle=-1h53m46s720ms battery_saver=-5h9m3s774ms ssru=-1d2h6m56s481ms power_pending=+5d9h57m10s332ms
+      #2: Reason=alarm_cancelled elapsed=-19h18m48s780ms rtc=2026-08-13 18:01:26.430
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_BATTERY_CALLBACK 
+          policyWhenElapsed: requester=+1d7h34m50s20ms app_standby=-1d16h25m9s793ms device_idle=-19h18m53s30ms battery_saver=-1d4h14m48s249ms ssru=-1d16h25m9s793ms power_pending=+4d7h34m50s20ms
+      #3: Reason=alarm_cancelled elapsed=-1d2h6m56s532ms rtc=2026-08-13 11:13:18.678
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.facebook.oxygen.appmanager.periodicwork.GUARD_CONNECTIVITY_CALLBACK 
+          policyWhenElapsed: requester=+1d19h34m50s215ms app_standby=-1d16h25m9s738ms device_idle=-1d2h7m3s909ms battery_saver=-1d4h14m48s249ms ssru=-1d16h25m9s738ms power_pending=+4d19h34m50s215ms
+    u0a144:
+      #1: Reason=alarm_cancelled elapsed=-1d14h13m2s117ms rtc=2026-08-12 23:07:13.093
+        Snapshot:
+          type=RTC tag=*alarm*:com.miui.cleaner_TMF_TMS-Main_action.ka.ase 
+          policyWhenElapsed: requester=-1d14h7m49s668ms app_standby=-1d14h13m9s643ms device_idle=-- battery_saver=-1d14h13m9s643ms ssru=-1d14h13m9s643ms power_pending=--
+    u0a145:
+      #1: Reason=alarm_cancelled elapsed=-13s488ms rtc=2026-08-14 13:20:01.722
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.gms.gcm.TRIGGER_IDLE 
+          policyWhenElapsed: requester=+13m22s762ms app_standby=-1m37s237ms device_idle=-- battery_saver=-1m37s237ms ssru=-1m37s237ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-2m29s55ms rtc=2026-08-14 13:17:46.155
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:GCM_HB_ALARM 
+          policyWhenElapsed: requester=+9m30s942ms app_standby=-2m29s57ms device_idle=-- battery_saver=-2m29s57ms ssru=-2m29s57ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-2m29s58ms rtc=2026-08-14 13:17:46.152
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:GCM_HB_ALARM 
+          policyWhenElapsed: requester=-1m19s455ms app_standby=-3m13s322ms device_idle=-- battery_saver=-13m19s453ms ssru=-13m19s453ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-2m39s501ms rtc=2026-08-14 13:17:35.709
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.chimera.container.IntentOperationService.SAVED_INTENT 
+          policyWhenElapsed: requester=+3649d23h56m17s218ms app_standby=-3m13s322ms device_idle=-- battery_saver=-3m42s780ms ssru=-3m42s780ms power_pending=--
+      #5: Reason=alarm_cancelled elapsed=-3m6s310ms rtc=2026-08-14 13:17:08.900
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.chimera.container.IntentOperationService.SAVED_INTENT 
+          policyWhenElapsed: requester=+3649d23h56m46s680ms app_standby=-3m13s319ms device_idle=-- battery_saver=-3m13s319ms ssru=-3m13s319ms power_pending=--
+      #6: Reason=alarm_cancelled elapsed=-3m32s493ms rtc=2026-08-14 13:16:42.717
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.chimera.container.IntentOperationService.SAVED_INTENT 
+          policyWhenElapsed: requester=+3649d23h56m20s403ms app_standby=-3m39s587ms device_idle=-- battery_saver=-3m39s587ms ssru=-3m39s587ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-3m40s755ms rtc=2026-08-14 13:16:34.455
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.gms.gcm.TRIGGER_IDLE 
+          policyWhenElapsed: requester=+10m1s674ms app_standby=-3m42s852ms device_idle=-- battery_saver=-4m58s314ms ssru=-4m58s314ms power_pending=--
+      #8: Reason=alarm_cancelled elapsed=-5m13s820ms rtc=2026-08-14 13:15:01.391
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.gms.gcm.TRIGGER_IDLE 
+          policyWhenElapsed: requester=+8m46s612ms app_standby=-6m13s364ms device_idle=-- battery_saver=-6m13s364ms ssru=-6m13s364ms power_pending=--
+      #9: Reason=alarm_cancelled elapsed=-5m14s450ms rtc=2026-08-14 13:15:00.761
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.google.android.location.intent.action.ONLINE_CHECKIN_ALARM 
+          policyWhenElapsed: requester=+53m11s793ms app_standby=-6m48s205ms device_idle=-- battery_saver=-6m48s205ms ssru=-6m48s205ms power_pending=--
+      #10: Reason=alarm_cancelled elapsed=-9m7s90ms rtc=2026-08-14 13:11:08.120
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.google.android.chimera.container.IntentOperationService.SAVED_INTENT 
+          policyWhenElapsed: requester=+3649d23h50m45s895ms app_standby=-9m14s104ms device_idle=-- battery_saver=-9m14s104ms ssru=-9m14s104ms power_pending=--
+    u0a166:
+      #1: Reason=pi_cancelled elapsed=-3m27s982ms rtc=2026-08-14 13:16:47.228
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=+24855d3h14m7s597ms app_standby=-3m28s17ms device_idle=-- battery_saver=-3m28s17ms ssru=-3m28s17ms power_pending=--
+      #2: Reason=pi_cancelled elapsed=-28m26s676ms rtc=2026-08-14 12:51:48.534
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=+24855d3h14m7s596ms app_standby=-50m15s27ms device_idle=-28m26s846ms battery_saver=-50m15s27ms ssru=-50m15s27ms power_pending=--
+      #3: Reason=pi_cancelled elapsed=-1h20m15s20ms rtc=2026-08-14 12:00:00.190
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=-1h18m28s72ms app_standby=-1h48m48s850ms device_idle=-1h24m40s909ms battery_saver=-1h48m48s850ms ssru=-1h48m48s850ms power_pending=--
+      #4: Reason=pi_cancelled elapsed=-1h48m48s852ms rtc=2026-08-14 11:31:26.358
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=-1h18m28s72ms app_standby=-1h48m48s853ms device_idle=-1h48m48s853ms battery_saver=-1h48m48s853ms ssru=-1h48m48s853ms power_pending=--
+      #5: Reason=pi_cancelled elapsed=-1h48m48s855ms rtc=2026-08-14 11:31:26.355
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=-1h18m28s72ms app_standby=-1h48m48s892ms device_idle=-1h48m48s892ms battery_saver=-1h48m48s892ms ssru=-1h48m48s892ms power_pending=--
+      #6: Reason=pi_cancelled elapsed=-1h48m48s896ms rtc=2026-08-14 11:31:26.314
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=-1h47m49s668ms app_standby=-2h16m37s987ms device_idle=-1h48m49s127ms battery_saver=-2h16m37s987ms ssru=-2h16m37s987ms power_pending=--
+      #7: Reason=pi_cancelled elapsed=-2h16m37s988ms rtc=2026-08-14 11:03:37.222
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=+24855d3h14m7s597ms app_standby=-3h17m49s265ms device_idle=-2h53m38s255ms battery_saver=-3h17m49s265ms ssru=-3h17m49s265ms power_pending=--
+      #8: Reason=pi_cancelled elapsed=-3h17m49s266ms rtc=2026-08-14 10:02:25.944
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=+24855d3h14m7s597ms app_standby=-3h17m49s284ms device_idle=-- battery_saver=-3h17m49s284ms ssru=-3h17m49s284ms power_pending=--
+      #9: Reason=pi_cancelled elapsed=-3h47m49s368ms rtc=2026-08-14 09:32:25.843
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=-3h17m49s668ms app_standby=-3h47m49s371ms device_idle=-- battery_saver=-3h47m49s371ms ssru=-3h47m49s371ms power_pending=--
+      #10: Reason=pi_cancelled elapsed=-3h47m49s369ms rtc=2026-08-14 09:32:25.841
+        Snapshot:
+          type=RTC tag=*alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver 
+          policyWhenElapsed: requester=+24855d3h14m7s332ms app_standby=-3h47m49s545ms device_idle=-- battery_saver=-3h47m49s545ms ssru=-3h47m49s545ms power_pending=--
+    u0a167:
+      #1: Reason=alarm_cancelled elapsed=-3h36m10s361ms rtc=2026-08-14 09:44:04.849
+        Snapshot:
+          type=RTC tag=*alarm*:com.miui.analytics/.internal.WakeupService 
+          policyWhenElapsed: requester=-2h57m49s668ms app_standby=-4h42m45s906ms device_idle=-3h40m59s700ms battery_saver=-3h36m10s432ms ssru=-4h42m45s906ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-3h36m10s372ms rtc=2026-08-14 09:44:04.838
+        Snapshot:
+          type=RTC tag=*alarm*:com.miui.analytics/.internal.WakeupService 
+          policyWhenElapsed: requester=+3h32m10s332ms app_standby=-8h27m49s610ms device_idle=-3h40m59s700ms battery_saver=-3h36m10s432ms ssru=-8h27m49s610ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-1d15h52m2s161ms rtc=2026-08-12 21:28:13.049
+        Snapshot:
+          type=RTC tag=*alarm*:com.miui.analytics/.internal.WakeupService 
+          policyWhenElapsed: requester=-1d15h2m29s700ms app_standby=-1d16h25m19s227ms device_idle=-1d16h1m48s191ms battery_saver=-1d15h52m2s196ms ssru=-1d16h25m19s227ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-1d15h52m2s164ms rtc=2026-08-12 21:28:13.046
+        Snapshot:
+          type=RTC tag=*alarm*:com.miui.analytics/.internal.WakeupService 
+          policyWhenElapsed: requester=-1d10h8m46s969ms app_standby=-1d16h25m19s466ms device_idle=-1d16h1m48s191ms battery_saver=-1d15h52m2s196ms ssru=-1d16h25m19s466ms power_pending=--
+    u0a184:
+      #1: Reason=alarm_cancelled elapsed=-19h16m6s71ms rtc=2026-08-13 18:04:09.139
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService 
+          policyWhenElapsed: requester=-18h2m49s668ms app_standby=-21h43m10s278ms device_idle=-19h18m53s30ms battery_saver=-19h16m7s622ms ssru=-21h43m10s278ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-19h16m6s167ms rtc=2026-08-13 18:04:09.043
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService 
+          policyWhenElapsed: requester=-15h27m49s668ms app_standby=-20h18m37s739ms device_idle=-19h18m53s30ms battery_saver=-19h16m7s622ms ssru=-20h18m37s739ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-1d3h15m49s739ms rtc=2026-08-13 10:04:25.471
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService 
+          policyWhenElapsed: requester=-8h39m15s65ms app_standby=-1d16h24m14s575ms device_idle=-1d4h5m12s930ms battery_saver=-1d3h37m45s77ms ssru=-1d16h24m14s575ms power_pending=--
+    u0a200:
+      #1: Reason=alarm_cancelled elapsed=-14h43m52s373ms rtc=2026-08-13 22:36:22.837
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.xiaomi.push.PING_TIMER 
+          policyWhenElapsed: requester=-14h37m49s668ms app_standby=-14h47m49s624ms device_idle=-- battery_saver=-14h47m49s624ms ssru=-14h47m49s624ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-19h14m27s571ms rtc=2026-08-13 18:05:47.639
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.xiaomi.push.PING_TIMER 
+          policyWhenElapsed: requester=-19h7m49s668ms app_standby=-19h17m48s817ms device_idle=-- battery_saver=-19h17m48s818ms ssru=-19h17m48s817ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-1d4h0m2s49ms rtc=2026-08-13 09:20:13.161
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.xiaomi.push.PING_TIMER 
+          policyWhenElapsed: requester=-1d3h57m49s668ms app_standby=-1d4h7m48s828ms device_idle=-1d4h5m12s930ms battery_saver=-1d4h7m48s828ms ssru=-1d4h7m48s828ms power_pending=--
+    u0a284:
+      #1: Reason=alarm_cancelled elapsed=-14h58m56s367ms rtc=2026-08-13 22:21:18.843
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-14h50m15s210ms app_standby=-15h8m55s96ms device_idle=-14h59m55s682ms battery_saver=-15h8m55s96ms ssru=-15h8m55s96ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-15h8m55s99ms rtc=2026-08-13 22:11:20.111
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-14h47m49s668ms app_standby=-15h37m12s223ms device_idle=-15h10m28s900ms battery_saver=-15h17m57s964ms ssru=-15h37m12s223ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-15h37m12s224ms rtc=2026-08-13 21:43:02.986
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-14h47m49s668ms app_standby=-16h24m45s737ms device_idle=-15h38m11s354ms battery_saver=-16h17m29s716ms ssru=-16h26m2s915ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-16h26m2s922ms rtc=2026-08-13 20:54:12.288
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-16h17m49s668ms app_standby=-16h36m2s607ms device_idle=-- battery_saver=-16h26m45s846ms ssru=-16h36m2s607ms power_pending=--
+      #5: Reason=alarm_cancelled elapsed=-20h12m36s84ms rtc=2026-08-13 17:07:39.126
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-18h17m49s668ms app_standby=-1d2h6m7s975ms device_idle=-20h14m8s962ms battery_saver=-1d2h6m0s245ms ssru=-1d2h6m7s975ms power_pending=--
+      #6: Reason=alarm_cancelled elapsed=-1d2h6m7s980ms rtc=2026-08-13 11:14:07.230
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-16h20m15s210ms app_standby=-1d3h10m39s387ms device_idle=-1d0h6m33s366ms battery_saver=-1d2h6m51s364ms ssru=-1d3h10m39s387ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-1d3h10m39s390ms rtc=2026-08-13 10:09:35.820
+        Snapshot:
+          type=RTC tag=*alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE 
+          policyWhenElapsed: requester=-19h47m49s668ms app_standby=-1d3h12m45s0ms device_idle=-1d3h11m36s20ms battery_saver=-1d3h11m23s92ms ssru=-1d3h12m45s0ms power_pending=--
+    u0a325:
+      #1: Reason=alarm_cancelled elapsed=-3h4m12s835ms rtc=2026-08-14 10:16:02.375
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.whatsapp.alarm.CLIENT_PING_PERIODIC 
+          policyWhenElapsed: requester=-3h1m18s759ms app_standby=-3h5m18s758ms device_idle=-- battery_saver=-3h5m18s758ms ssru=-3h5m18s758ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-3h5m18s760ms rtc=2026-08-14 10:14:56.450
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.whatsapp.alarm.CLIENT_PING_TIMEOUT 
+          policyWhenElapsed: requester=-3h4m46s823ms app_standby=-3h5m18s820ms device_idle=-- battery_saver=-3h5m18s820ms ssru=-3h5m18s820ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-3h9m26s412ms rtc=2026-08-14 10:10:48.798
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.whatsapp.alarm.CLIENT_PING_TIMEOUT 
+          policyWhenElapsed: requester=-3h8m54s472ms app_standby=-3h9m26s468ms device_idle=-- battery_saver=-3h9m26s468ms ssru=-3h9m26s468ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-3h13m46s848ms rtc=2026-08-14 10:06:28.363
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.whatsapp.alarm.CLIENT_PING_TIMEOUT 
+          policyWhenElapsed: requester=-3h13m14s928ms app_standby=-3h13m46s927ms device_idle=-- battery_saver=-3h13m46s927ms ssru=-3h13m46s927ms power_pending=--
+      #5: Reason=alarm_cancelled elapsed=-3h14m13s192ms rtc=2026-08-14 10:06:02.018
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.whatsapp.alarm.CLIENT_PING_PERIODIC 
+          policyWhenElapsed: requester=-3h10m31s959ms app_standby=-3h14m31s957ms device_idle=-- battery_saver=-3h14m31s957ms ssru=-3h14m31s957ms power_pending=--
+      #6: Reason=alarm_cancelled elapsed=-3h14m31s962ms rtc=2026-08-14 10:05:43.248
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.whatsapp.alarm.CLIENT_PING_TIMEOUT 
+          policyWhenElapsed: requester=-3h14m0s33ms app_standby=-3h14m32s29ms device_idle=-- battery_saver=-3h14m32s29ms ssru=-3h14m32s29ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-3h20m59s890ms rtc=2026-08-14 09:59:15.321
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.whatsapp.alarm.CLIENT_PING_TIMEOUT 
+          policyWhenElapsed: requester=-3h20m27s992ms app_standby=-3h20m59s988ms device_idle=-- battery_saver=-3h20m59s988ms ssru=-3h20m59s988ms power_pending=--
+      #8: Reason=alarm_cancelled elapsed=-5h37m49s299ms rtc=2026-08-14 07:42:25.912
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.whatsapp.alarm.CLIENT_PING_PERIODIC 
+          policyWhenElapsed: requester=-5h32m49s668ms app_standby=-5h39m11s22ms device_idle=-5h39m11s22ms battery_saver=-5h39m11s22ms ssru=-5h39m11s22ms power_pending=--
+      #9: Reason=alarm_cancelled elapsed=-5h39m11s24ms rtc=2026-08-14 07:41:04.186
+        Snapshot:
+          type=ELAPSED_WAKEUP tag=*walarm*:com.whatsapp.alarm.CLIENT_PING_TIMEOUT 
+          policyWhenElapsed: requester=-5h38m39s103ms app_standby=-5h39m11s98ms device_idle=-5h39m11s98ms battery_saver=-5h39m11s98ms ssru=-5h39m11s98ms power_pending=--
+      #10: Reason=alarm_cancelled elapsed=-10h12m49s237ms rtc=2026-08-14 03:07:25.973
+        Snapshot:
+          type=ELAPSED tag=*alarm*:com.whatsapp.alarm.CLIENT_PING_PERIODIC 
+          policyWhenElapsed: requester=-10h12m49s668ms app_standby=-10h17m15s237ms device_idle=-10h13m58s664ms battery_saver=-10h17m15s237ms ssru=-10h17m15s237ms power_pending=--
+    u0a375:
+      #1: Reason=alarm_cancelled elapsed=-5m9s987ms rtc=2026-08-14 13:15:05.223
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm 
+          policyWhenElapsed: requester=+3m43s382ms app_standby=-5m51s671ms device_idle=-- battery_saver=-6m16s606ms ssru=-6m16s606ms power_pending=--
+      #2: Reason=alarm_cancelled elapsed=-10m7s442ms rtc=2026-08-14 13:10:07.768
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm 
+          policyWhenElapsed: requester=-48s602ms app_standby=-10m48s601ms device_idle=-- battery_saver=-10m48s601ms ssru=-10m48s601ms power_pending=--
+      #3: Reason=alarm_cancelled elapsed=-5h9m7s69ms rtc=2026-08-14 08:11:08.141
+        Snapshot:
+          type=RTC tag=*alarm*:com.northcube.sleepcycle.intent.BRAZE_SESSION_SHOULD_SEAL 
+          policyWhenElapsed: requester=-5h8m57s914ms app_standby=-5h9m8s188ms device_idle=-- battery_saver=-5h9m8s188ms ssru=-5h9m8s188ms power_pending=--
+      #4: Reason=alarm_cancelled elapsed=-5h9m10s641ms rtc=2026-08-14 08:11:04.569
+        Snapshot:
+          type=RTC tag=*alarm*:com.northcube.sleepcycle.intent.BRAZE_SESSION_SHOULD_SEAL 
+          policyWhenElapsed: requester=-5h9m1s108ms app_standby=-5h9m11s389ms device_idle=-4h23m23s364ms battery_saver=-5h9m11s389ms ssru=-5h9m11s389ms power_pending=--
+      #5: Reason=alarm_cancelled elapsed=-5h9m13s509ms rtc=2026-08-14 08:11:01.701
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle.CANNOT_SNOOZE 
+          policyWhenElapsed: requester=-4h50m15s171ms app_standby=-5h9m33s772ms device_idle=-5h9m33s692ms battery_saver=-- ssru=-5h9m33s772ms power_pending=--
+      #6: Reason=alarm_cancelled elapsed=-5h9m13s518ms rtc=2026-08-14 08:11:01.692
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm 
+          policyWhenElapsed: requester=-5h2m49s668ms app_standby=-5h10m12s710ms device_idle=-5h9m33s692ms battery_saver=-5h10m12s710ms ssru=-5h10m12s710ms power_pending=--
+      #7: Reason=alarm_cancelled elapsed=-5h9m33s693ms rtc=2026-08-14 08:10:41.518
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle.ACTIVATE_ALARM 
+          policyWhenElapsed: requester=-4h53m15s171ms app_standby=-5h16m5s99ms device_idle=-5h13m25s49ms battery_saver=-- ssru=-5h16m5s99ms power_pending=--
+      #8: Reason=alarm_cancelled elapsed=-5h10m12s717ms rtc=2026-08-14 08:10:02.493
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm 
+          policyWhenElapsed: requester=-5h7m49s668ms app_standby=-5h15m12s722ms device_idle=-5h13m25s49ms battery_saver=-5h15m12s722ms ssru=-5h15m12s722ms power_pending=--
+      #9: Reason=alarm_cancelled elapsed=-5h15m12s726ms rtc=2026-08-14 08:05:02.484
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm 
+          policyWhenElapsed: requester=-5h12m49s668ms app_standby=-5h20m12s730ms device_idle=-5h18m26s524ms battery_saver=-5h20m12s730ms ssru=-5h20m12s730ms power_pending=--
+      #10: Reason=alarm_cancelled elapsed=-5h20m12s733ms rtc=2026-08-14 08:00:02.477
+        Snapshot:
+          type=RTC_WAKEUP tag=*walarm*:com.northcube.sleepcycle/.service.KeepAliveAlarm 
+          policyWhenElapsed: requester=-5h17m49s668ms app_standby=-5h25m12s736ms device_idle=-5h25m12s736ms battery_saver=-5h25m12s736ms ssru=-5h25m12s736ms power_pending=--
+  
+  Top Alarms:
+    +47s675ms running, 0 wakeups, 13 alarms: u0a292:com.instagram.android
+      *alarm*:com.instagram.warm_heartbeat
+    +41s345ms running, 239 wakeups, 239 alarms: u0a200:com.xiaomi.xmsf
+      *walarm*:com.xiaomi.push.PING_TIMER
+    +30s751ms running, 0 wakeups, 1093 alarms: 1000:android
+      *alarm*:TIME_TICK
+    +21s152ms running, 0 wakeups, 446 alarms: 1000:com.miui.powerkeeper
+      *alarm*:miui.intent.action.powerkeeper_alarm
+    +13s175ms running, 0 wakeups, 231 alarms: 1000:com.miui.misightservice
+      *alarm*:com.miui.misightservice/.MiSightManagerService
+    +12s717ms running, 16 wakeups, 16 alarms: u0a170:com.google.android.calendar
+      *walarm*:com.google.android.calendar.intent.action.CHECK_NOTIFICATIONS
+    +10s637ms running, 27 wakeups, 27 alarms: u0a87:com.android.providers.calendar
+      *walarm*:android.intent.action.EVENT_REMINDER
+    +10s188ms running, 0 wakeups, 81 alarms: 1000:android
+      *alarm*:com.android.server.action.NETWORK_STATS_POLL
+    +10s110ms running, 12 wakeups, 12 alarms: u0a87:com.android.providers.calendar
+      *walarm*:android.intent.action.PROVIDER_CHANGED
+    +10s91ms running, 258 wakeups, 258 alarms: 1000:android
+      *walarm*:miui.intent.action.CYCLE_CHECK
+  
+  Alarm Stats:
+  1000:com.miui.powerkeeper +22s297ms running, 1 wakeups:
+    +21s152ms 0 wakes 446 alarms, last -4m47s990ms:
+      *alarm*:miui.intent.action.powerkeeper_alarm
+    +1s630ms 0 wakes 15 alarms, last -1h28m26s909ms:
+      *alarm*:com.miui.powerkeeper.clean_app
+    +304ms 0 wakes 4 alarms, last -6h19m28s249ms:
+      *alarm*:miui.intent.action.powerkeeper_schedule
+    +204ms 0 wakes 3 alarms, last -13h37m49s668ms:
+      *alarm*:com.miui.powerkeeper.night_clean
+    +138ms 1 wakes 1 alarms, last -19h18m53s29ms:
+      *walarm*:settlement
+  1000:com.miui.securitycenter +11s342ms running, 42 wakeups:
+    +7s543ms 0 wakes 125 alarms, last -6m39s105ms:
+      *alarm*:com.miui.powercenter.action.BATTERYHISTORY_CHECKRESET
+    +1s673ms 0 wakes 2 alarms, last -16h25m2s234ms:
+      *alarm*:com.miui.action.REFRESH_DATA_USAGE_DAILY
+    +1s497ms 40 wakes 40 alarms, last -19m39s242ms:
+      *walarm*:com.miui.powercenter.action.BATTERYHISTORY_RECORD
+    +759ms 0 wakes 2 alarms, last -16h25m2s234ms:
+      *alarm*:com.miui.securitycenter/.service.CloudDataUpdateService
+    +119ms 2 wakes 2 alarms, last -6h20m15s210ms:
+      *walarm*:com.miui.powercenter.RESET_BOOT_TIME
+    +42ms 0 wakes 1 alarms, last -19h12m51s888ms:
+      *alarm*:com.miui.securitycenter/.receiver.CleanerReceiver
+  1000:android +1m11s653ms running, 838 wakeups:
+    +30s751ms 0 wakes 1093 alarms, last -14s550ms:
+      *alarm*:TIME_TICK
+    +10s188ms 0 wakes 81 alarms, last -26m42s908ms:
+      *alarm*:com.android.server.action.NETWORK_STATS_POLL
+    +10s91ms 258 wakes 258 alarms, last -21s525ms:
+      *walarm*:miui.intent.action.CYCLE_CHECK
+    +8s564ms 114 wakes 114 alarms, last -3m6s945ms:
+      *walarm*:miui.extm.action.mark
+    +8s198ms 0 wakes 191 alarms, last -6m39s105ms:
+      *alarm*:*job.delay*
+    +7s668ms 0 wakes 210 alarms, last -51s559ms:
+      *alarm*:*CountQuotaTracker.cleanup*
+    +7s99ms 152 wakes 152 alarms, last -17m10s909ms:
+      *walarm*:DeviceIdleController.deep
+    +4s232ms 0 wakes 121 alarms, last -5m21s670ms:
+      *alarm*:*job.flexibility_check*
+    +3s740ms 53 wakes 53 alarms, last -26m54s215ms:
+      *walarm*:*job.deadline*
+    +3s165ms 56 wakes 56 alarms, last -17m10s909ms:
+      *walarm*:JS idleness
+    +2s753ms 132 wakes 132 alarms, last -41m46s905ms:
+      *walarm*:com.android.server.audio.action.CHECK_MUSIC_ACTIVE
+    +2s333ms 0 wakes 51 alarms, last -6m39s105ms:
+      *alarm*:*job.cleanup*
+    +1s605ms 0 wakes 2 alarms, last -15h53m13s908ms:
+      *alarm*:upload_dark_mode_switch
+    +1s504ms 27 wakes 27 alarms, last -2h57m41s909ms:
+      *walarm*:DeviceIdleController.light
+    +1s350ms 0 wakes 20 alarms, last -1h53m46s710ms:
+      *alarm*:miui.intent.action.CHECK_TIME_UP
+    +1s158ms 0 wakes 34 alarms, last -13h51m23s572ms:
+      *alarm*:*usage.launchTime*
+    +1s85ms 1 wakes 1 alarms, last -13h19m34s745ms:
+      *walarm*:miui.intent.action.transferFboTrigger
+    +856ms 14 wakes 14 alarms, last -26m42s908ms:
+      *walarm*:WriteBufferAlarm
+    +691ms 0 wakes 14 alarms, last -1h33m44s908ms:
+      *alarm*:*job.quota_check*
+    +606ms 0 wakes 9 alarms, last -3h41m1s373ms:
+      *alarm*:PowerStats
+    +517ms 0 wakes 2 alarms, last -13h20m15s209ms:
+      *alarm*:android.intent.action.DATE_CHANGED
+    +420ms 4 wakes 4 alarms, last -6h20m15s210ms:
+      *walarm*:ScheduleConditionProvider.EVALUATE
+    +276ms 3 wakes 3 alarms, last -4h18m58s906ms:
+      *walarm*:NetworkStatsReporter
+    +192ms 0 wakes 2 alarms, last -4h18m58s906ms:
+      *alarm*:NetworkTimeUpdateService.POLL
+    +181ms 1 wakes 1 alarms, last -18h22m56s199ms:
+      *walarm*:WifiConnectivityManager Restart Scan
+    +129ms 0 wakes 2 alarms, last -15h53m13s908ms:
+      *alarm*:upload_shortcut_status
+    +118ms 0 wakes 2 alarms, last -14h7m49s666ms:
+      *alarm*:WifiHealthMonitor Schedule Daily Detection Timer
+    +110ms 1 wakes 1 alarms, last -3h49m12s906ms:
+      *walarm*:action collect data
+    +97ms 0 wakes 2 alarms, last -10h19m33s559ms:
+      *alarm*:GraphicsStatsService
+    +96ms 0 wakes 2 alarms, last -4h24m17s911ms:
+      *alarm*:android.net.wifi.24htimeup
+    +94ms 1 wakes 1 alarms, last -8h19m33s662ms:
+      *walarm*:miui.intent.action.stop
+    +88ms 1 wakes 1 alarms, last -8h52m49s668ms:
+      *walarm*:android.appwidget.action.APPWIDGET_UPDATE
+    +87ms 0 wakes 2 alarms, last -16h26m3s573ms:
+      *alarm*:android.intent.action.UPDATE_CT_LOGS
+    +86ms 1 wakes 1 alarms, last -12h49m33s663ms:
+      *walarm*:miui.intent.action.start
+    +86ms 2 wakes 2 alarms, last -4h26m52s909ms:
+      *walarm*:report_switch_stats
+    +80ms 0 wakes 1 alarms, last -16h22m5s905ms:
+      *alarm*:upload_transition_execution_time
+    +75ms 1 wakes 1 alarms, last -1d3h15m23s859ms:
+      *walarm*:NETWORK_LINGER_COMPLETE.144
+    +70ms 1 wakes 1 alarms, last -16h26m3s573ms:
+      *walarm*:AutomaticOnOffKeepaliveTracker
+    +59ms 2 wakes 2 alarms, last -16h26m40s610ms:
+      *walarm*:miui.intent.action.UPDATE_BATTERY_DATA
+    +57ms 1 wakes 1 alarms, last -14h42m40s108ms:
+      *walarm*:NETWORK_LINGER_COMPLETE.164
+    +56ms 1 wakes 1 alarms, last -18h21m37s368ms:
+      *walarm*:NETWORK_LINGER_COMPLETE.162
+    +50ms 0 wakes 2 alarms, last -16h26m46s30ms:
+      *alarm*:WIFI_SCAN_REPORT_ALARM
+    +37ms 0 wakes 1 alarms, last -16h25m32s272ms:
+      *alarm*:report_tap_and_double_click_drag
+    +30ms 1 wakes 1 alarms, last -16h26m3s573ms:
+      *walarm*:action upload data
+    +27ms 1 wakes 1 alarms, last -16h26m40s642ms:
+      *walarm*:report_power_statistic
+    +25ms 1 wakes 1 alarms, last -3h57m14s75ms:
+      *walarm*:$android.alarm.generated:1000:131435593
+    +23ms 3 wakes 3 alarms, last -3m16s783ms:
+      *walarm*:miui.intent.action.LIMIT_TIME
+    +23ms 1 wakes 1 alarms, last -15h21m33s865ms:
+      *walarm*:$android.alarm.generated:1000:90375803
+    +23ms 0 wakes 1 alarms, last -16h26m51s242ms:
+      *alarm*:report_scheduled_task_dfs
+    +21ms 0 wakes 1 alarms, last -1d16h26m9s345ms:
+      *alarm*:WifiHealthMonitor Schedule Post-Boot Detection Timer
+    +12ms 1 wakes 1 alarms, last -1d10h10m58s549ms:
+      *walarm*:$android.alarm.generated:1000:22611119
+    +9ms 1 wakes 1 alarms, last -16h26m54s388ms:
+      *walarm*:sched_latency_data_alarm
+    +7ms 1 wakes 1 alarms, last -1d15h15m57s749ms:
+      *walarm*:$android.alarm.generated:1000:4311919
+    +4ms 1 wakes 1 alarms, last -1d16h26m33s244ms:
+      *walarm*:$android.alarm.generated:1000:76424
+  1000:com.android.settings +805ms running, 2 wakeups:
+    +805ms 2 wakes 2 alarms, last -16h19m50s272ms:
+      *walarm*:com.android.settings/.wifi.OneTrackService
+  1000:com.miui.misightservice +13s175ms running, 0 wakeups:
+    +13s175ms 0 wakes 231 alarms, last -13m21s313ms:
+      *alarm*:com.miui.misightservice/.MiSightManagerService
+  1000:com.android.systemui +12s546ms running, 373 wakeups:
+    +6s754ms 265 wakes 265 alarms, last -1m32s671ms:
+      *walarm*:MiuiGxzwTransparentTimer
+    +2s990ms 0 wakes 82 alarms, last -13s580ms:
+      *alarm*:lock_screen_next_alarm
+    +2s138ms 80 wakes 80 alarms, last -1m26s821ms:
+      *walarm*:AODUpdatePositionController
+    +607ms 27 wakes 27 alarms, last -42m15s210ms:
+      *walarm*:doze_time_tick
+    +57ms 1 wakes 1 alarms, last -8h3m22s557ms:
+      *walarm*:FoldCoordinator.fold
+  1001:com.android.phone +8ms running, 1 wakeups:
+    +8ms 1 wakes 1 alarms, last -17h26m45s355ms:
+      *walarm*:SatelliteController
+  1002:com.android.bluetooth +13ms running, 1 wakeups:
+    +13ms 1 wakes 1 alarms, last -3h5m18s850ms:
+      *walarm*:com_android_bluetooth_onetrack
+  1073:com.google.android.networkstack +2s580ms running, 103 wakeups:
+    +2s474ms 91 wakes 91 alarms, last -12m58s447ms:
+      *walarm*:DhcpClient.wlan0.RENEW
+    +88ms 9 wakes 9 alarms, last -14h43m9s98ms:
+      *walarm*:DhcpClient.wlan0.KICK
+    +18ms 3 wakes 3 alarms, last -14h43m6s926ms:
+      *walarm*:DhcpClient.wlan0.TIMEOUT
+  u0a87:com.android.providers.calendar +22s662ms running, 56 wakeups:
+    +10s637ms 27 wakes 27 alarms, last -50m15s210ms:
+      *walarm*:android.intent.action.EVENT_REMINDER
+    +10s110ms 12 wakes 12 alarms, last -1h23m45s907ms:
+      *walarm*:android.intent.action.PROVIDER_CHANGED
+    +1s987ms 17 wakes 17 alarms, last -1h53m39s198ms:
+      *walarm*:com.android.providers.calendar.intent.CalendarProvider2
+  u0a104:com.facebook.services +3s513ms running, 24 wakeups:
+    +3s447ms 23 wakes 23 alarms, last -48m13s804ms:
+      *walarm*:com.facebook.rti.fbns.intent.ACTION_ALARM.FBNS_SCHEDULED_BROADCAST_TIMEOUT
+    +66ms 1 wakes 1 alarms, last -15h32m48s908ms:
+      *walarm*:com.facebook.rti.fbns.intent.REGISTER_RETRY
+  u0a129:com.google.android.configupdater +146ms running, 0 wakeups:
+    +146ms 0 wakes 1 alarms, last -1d16h1m21s960ms:
+      *alarm*:com.google.android.configupdater.DELAYED_FLAG_COMMIT
+  u0a144:com.miui.cleaner +67ms running, 0 wakeups:
+    +67ms 0 wakes 2 alarms, last -13h17m45s184ms:
+      *alarm*:com.miui.cleaner_TMF_TMS-Main_action.ka.ase
+  u0a145:com.google.android.gms +27s201ms running, 451 wakeups:
+    +9s259ms 212 wakes 212 alarms, last -3m42s861ms:
+      *walarm*:FusedLocation:throttling_delivery
+    +5s619ms 97 wakes 97 alarms, last -13m11s892ms:
+      *walarm*:com.google.android.location.ALARM_WAKEUP_ACTIVITY_DETECTION
+    +4s921ms 0 wakes 86 alarms, last -41m1s537ms:
+      *alarm*:com.google.android.gms.gcm.ACTION_CHECK_QUEUE
+    +2s453ms 87 wakes 87 alarms, last -2h46m13s906ms:
+      *walarm*:NetworkLocationScanner
+    +1s790ms 0 wakes 62 alarms, last -3m13s329ms:
+      *alarm*:com.google.android.gms.auth.authzen.cryptauth.DEVICE_STATE_CHECK_DELAY_COMPLETE
+    +1s313ms 0 wakes 9 alarms, last -1h24m40s851ms:
+      *alarm*:com.google.android.gms.gcm.TRIGGER_IDLE
+    +977ms 0 wakes 8 alarms, last -3h1m28s148ms:
+      *alarm*:com.google.android.gms.westworld.action.METADATA_ALARM
+    +788ms 0 wakes 6 alarms, last -3h57m48s909ms:
+      *alarm*:com.google.android.gms.common.operation.LOG_CORE_ANALYTICS
+    +759ms 30 wakes 30 alarms, last -3h40m12s724ms:
+      *walarm*:GCM_HB_ALARM
+    +749ms 0 wakes 7 alarms, last -1h53m46s710ms:
+      *alarm*:NetworkLocationSensorUploader
+    +617ms 9 wakes 9 alarms, last -2h50m42s908ms:
+      *walarm*:FusionEngineFlush
+    +521ms 0 wakes 7 alarms, last -23m43s906ms:
+      *alarm*:CMAlarm
+    +210ms 0 wakes 5 alarms, last -3h20m15s716ms:
+      *alarm*:NetworkLocationBurstCollectionTrigger
+    +196ms 0 wakes 1 alarms, last -18h22m56s199ms:
+      *alarm*:com.google.android.gms.auth.authzen.CHECK_REGISTRATION
+    +169ms 1 wakes 1 alarms, last -23h23m5s908ms:
+      *walarm*:com.google.android.chimera.IntentOperation.TARGETED_INTENT
+    +123ms 0 wakes 4 alarms, last -2h56m25s909ms:
+      *alarm*:NetworkLocationInOutCollector
+    +113ms 8 wakes 8 alarms, last -1h24m24s911ms:
+      *walarm*:GCM_CONN_ALARM
+    +105ms 0 wakes 3 alarms, last -1h53m46s720ms:
+      *alarm*:NetworkLocationSCollector
+    +102ms 2 wakes 2 alarms, last -13h20m15s209ms:
+      *walarm*:com.google.android.gms.reminders.notification.ACTION_REFRESH_TIME_REMINDERS
+    +83ms 0 wakes 1 alarms, last -16h22m5s905ms:
+      *alarm*:com.google.android.gms.stats.eastworld.action.EASTWORLD_ALARM
+    +47ms 0 wakes 2 alarms, last -15h37m53s300ms:
+      *alarm*:com.google.android.gms.platformconfigurator.POST_BOOT
+    +47ms 2 wakes 2 alarms, last -6m48s231ms:
+      *walarm*:com.google.android.location.intent.action.ONLINE_CHECKIN_ALARM
+    +18ms 3 wakes 3 alarms, last -17h59m28s971ms:
+      *walarm*:FusedLocation:delay_request
+    +6ms 0 wakes 2 alarms, last -16h39m38s397ms:
+      *alarm*:NetworkLocationBurstCollector
+  u0a166:com.google.android.googlequicksearchbox +9s186ms running, 0 wakeups:
+    +6s904ms 0 wakes 48 alarms, last -3m28s71ms:
+      *alarm*:TIME TRIGGER ALLOW IDLE ACTION
+    +3s820ms 0 wakes 14 alarms, last -3m28s71ms:
+      *alarm*:com.google.android.googlequicksearchbox/com.google.android.apps.search.assistant.platform.pcp.validity.ValidityController_Receiver
+  u0a167:com.miui.analytics +1s148ms running, 0 wakeups:
+    +1s148ms 0 wakes 24 alarms, last -1h33m44s908ms:
+      *alarm*:com.miui.analytics/.internal.WakeupService
+  u0a170:com.google.android.calendar +23s664ms running, 16 wakeups:
+    +12s717ms 16 wakes 16 alarms, last -5m15s210ms:
+      *walarm*:com.google.android.calendar.intent.action.CHECK_NOTIFICATIONS
+    +7s279ms 0 wakes 2 alarms, last -12h17m35s119ms:
+      *alarm*:com.google.android.calendar.intent.action.MIDNIGHT
+    +4s135ms 0 wakes 5 alarms, last -5h47m49s668ms:
+      *alarm*:com.google.android.calendar.intent.action.CHECK_NOTIFICATIONS_WHEN_AWAKE
+  u0a184:com.miui.msa.global +2s594ms running, 64 wakeups:
+    +2s594ms 64 wakes 64 alarms, last -27m4s813ms:
+      *walarm*:com.miui.msa.global/com.xiaomi.ad.internal.server.WakeupService
+  u0a200:com.xiaomi.xmsf +41s345ms running, 239 wakeups:
+    +41s345ms 239 wakes 239 alarms, last -8m28s72ms:
+      *walarm*:com.xiaomi.push.PING_TIMER
+  u0a271:com.android.deskclock +340ms running, 8 wakeups:
+    +340ms 8 wakes 8 alarms, last -1h5m36s318ms:
+      *walarm*:com.android.deskclock.TIMER_ALERT
+  u0a284:com.xiaomi.calendar +1s144ms running, 2 wakeups:
+    +927ms 2 wakes 2 alarms, last -13h20m15s209ms:
+      *walarm*:com.miui.action.MIDNIGHT
+    +217ms 0 wakes 7 alarms, last -1h18m28s72ms:
+      *alarm*:com.xiaomi.calendar.APPWIDGET_SCHEDULED_UPDATE
+  u0a292:com.instagram.android +49s373ms running, 9 wakeups:
+    +47s675ms 0 wakes 13 alarms, last -1h52m51s618ms:
+      *alarm*:com.instagram.warm_heartbeat
+    +1s705ms 9 wakes 9 alarms, last -1h24m36s880ms:
+      *walarm*:action_batch_upload
+  u0a317:com.hsv.freeadblockerbrowser +1s494ms running, 0 wakeups:
+    +918ms 0 wakes 1 alarms, last -14h43m50s628ms:
+      *alarm*:action_rocket_cleaner_notification
+    +576ms 0 wakes 1 alarms, last -19h16m1s239ms:
+      *alarm*:name.rocketshield.chromium.notifications.unimportant_storage_size.ACTION_UNIMPORTANT_CACHE_SIZE_EXCEEDED
+  u0a320:org.telegram.messenger +236ms running, 4 wakeups:
+    +236ms 4 wakes 4 alarms, last -1h4m26s317ms:
+      *walarm*:org.telegram.messenger/.NotificationRepeat
+  u0a322:com.ichi2.anki +1s230ms running, 1 wakeups:
+    +1s230ms 1 wakes 1 alarms, last -1d3h59m26s95ms:
+      *walarm*:com.ichi2.widget.ACTION_ROLLOVER
+  u0a325:com.whatsapp +9s208ms running, 35 wakeups:
+    +5s667ms 0 wakes 40 alarms, last -18m26s152ms:
+      *alarm*:com.whatsapp.action.HOURLY_CRON
+    +2s363ms 0 wakes 49 alarms, last -3h5m18s850ms:
+      *alarm*:com.whatsapp.alarm.CLIENT_PING_PERIODIC
+    +1s249ms 28 wakes 28 alarms, last -3h4m13s99ms:
+      *walarm*:com.whatsapp.MessageHandler.LOGOUT_ACTION
+    +176ms 2 wakes 2 alarms, last -15h42m48s908ms:
+      *walarm*:com.whatsapp.action.HEARTBEAT_WAKEUP
+    +129ms 2 wakes 2 alarms, last -11h17m49s668ms:
+      *walarm*:com.whatsapp.action.BACKUP_MESSAGES
+    +114ms 2 wakes 2 alarms, last -13h17m49s668ms:
+      *walarm*:com.whatsapp.action.DAILY_CRON
+    +77ms 0 wakes 1 alarms, last -1d0h11m45s907ms:
+      *alarm*:com.whatsapp.action.UPDATE_NTP
+    +61ms 1 wakes 1 alarms, last -13h1m11s64ms:
+      *walarm*:com.whatsapp.MessageHandler.RECONNECT_ACTION
+  u0a342:com.xiaomi.hm.health +587ms running, 3 wakeups:
+    +587ms 2 wakes 2 alarms, last -14h43m50s628ms:
+      *walarm*:com.xiaomi.hm.health.WAKE_UP
+    +243ms 1 wakes 1 alarms, last -14h43m50s628ms:
+      *walarm*:android.intent.action.HMCoreService.KEEP_ALIVE
+  u0a375:com.northcube.sleepcycle +1s523ms running, 5 wakeups:
+    +1s360ms 0 wakes 11 alarms, last -51s559ms:
+      *alarm*:com.northcube.sleepcycle.intent.BRAZE_SESSION_SHOULD_SEAL
+    +163ms 5 wakes 5 alarms, last -14s550ms:
+      *walarm*:com.northcube.sleepcycle.ACTIVATE_ALARM
+  
+  Alarm manager stats:
+    REORDER_ALARMS_FOR_STANDBY: count=2990, total=1045,7ms, avg=0,350ms, max calls/s=90 max dur/s=23,0ms max time=23,0ms
+    HAS_SCHEDULE_EXACT_ALARM: count=4592, total=849,7ms, avg=0,185ms, max calls/s=216 max dur/s=47,2ms max time=15,6ms

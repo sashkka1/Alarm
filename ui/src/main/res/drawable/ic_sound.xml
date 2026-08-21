@@ -1,0 +1,14 @@
+<!-- Звук: столбики эквалайзера. Перенесено из макета Claude Design.
+     Цвет ставится тинтом на месте: в меню светлый, в шапке страницы акцентный. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#ECE5E0">
+    <path
+        android:pathData="M3,10v4M8,6v12M13,3v18M18,8v8M22,11v2"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="2.4"
+        android:strokeLineCap="round" />
+</vector>
