@@ -19,8 +19,12 @@ sealed interface MelodySource {
 /**
  * Настройки звонка.
  *
- * [secondsPerPercent] — скорость нарастания: сколько секунд уходит на +1% громкости.
- * 1 — самое быстрое (1% в секунду), 5 — самое медленное (1% за 5 секунд).
+ * [percentPerSecondTenths] — скорость нарастания в десятых долях процента в секунду:
+ * 5 — самое медленное (0,5% в секунду), 30 — самое быстрое (3% в секунду).
+ *
+ * ⚠️ Окно расширено владельцем 2026-08-25 взамен прежнего «1% в секунду … 1% за
+ * 5 секунд»: быстрый край втрое выше — даже 1% в секунду не успевал разогнать
+ * звонок до дедлайна бэкапа. Десятые доли нужны ради шага в полпроцента.
  */
 data class SoundSettings(
     /**
@@ -32,25 +36,28 @@ data class SoundSettings(
      */
     val enabled: Boolean,
     val startVolumePercent: Int,
-    val secondsPerPercent: Int,
+    val percentPerSecondTenths: Int,
     val vibrate: Boolean,
     val melody: MelodySource,
 ) {
     init {
         require(startVolumePercent in 0..100) { "громкость вне диапазона: $startVolumePercent" }
-        require(secondsPerPercent in MIN_SECONDS_PER_PERCENT..MAX_SECONDS_PER_PERCENT) {
-            "скорость нарастания вне диапазона: $secondsPerPercent"
+        require(percentPerSecondTenths in MIN_PERCENT_PER_SECOND_TENTHS..MAX_PERCENT_PER_SECOND_TENTHS) {
+            "скорость нарастания вне диапазона: $percentPerSecondTenths"
         }
     }
 
     companion object {
-        const val MIN_SECONDS_PER_PERCENT = 1
-        const val MAX_SECONDS_PER_PERCENT = 5
+        const val MIN_PERCENT_PER_SECOND_TENTHS = 5
+        const val MAX_PERCENT_PER_SECOND_TENTHS = 30
+
+        /** Шаг ползунка — полпроцента в секунду: 0,5 / 1 / 1,5 / 2 / 2,5 / 3. */
+        const val PERCENT_PER_SECOND_STEP_TENTHS = 5
 
         val DEFAULT = SoundSettings(
             enabled = true,
             startVolumePercent = 20,
-            secondsPerPercent = 3,
+            percentPerSecondTenths = 15,
             vibrate = true,
             melody = MelodySource.SystemAlarm,
         )

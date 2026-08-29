@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Alarm" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/white</item>
-        <item name="android:statusBarColor">@android:color/white</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
+    <!-- ⚠️ windowBackground — это то, что видно, пока Compose не отрисовал первый
+         кадр: при старте окна и при каждом его пересоздании. Белым он быть не может
+         (владелец, 2026-08-25): любая заминка старта читалась как «приложение
+         сломалось, остался белый экран». Цвет — фон самого приложения, поэтому
+         заминки не видно вовсе. -->
+    <style name="Theme.Alarm" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/app_background</item>
+        <item name="android:statusBarColor">@color/app_background</item>
+        <item name="android:navigationBarColor">@color/app_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 
-    <!-- Экран тревоги: тот же белый, но без анимации появления —
-         он должен возникать мгновенно, а не выезжать. -->
+    <!-- Экран тревоги: сигнальный красный ещё до первого кадра, и без анимации
+         появления — он должен возникать мгновенно, а не выезжать. Иконки системных
+         панелей тёмные: по этому красному чёрное читается, белое нет. -->
     <style name="Theme.Alarm.FullScreen" parent="Theme.Alarm">
+        <item name="android:windowBackground">@color/alarm_signal</item>
+        <item name="android:statusBarColor">@color/alarm_signal</item>
+        <item name="android:navigationBarColor">@color/alarm_signal</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 

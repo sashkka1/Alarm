@@ -65,8 +65,13 @@ object AlarmNotifications {
             val fullScreen = PendingIntent.getActivity(
                 context,
                 2001,
+                // ⚠️ Не CLEAR_TASK: он уничтожает уже открытый экран тревоги и
+                // поднимает новый с нуля. Полноэкранное намерение система пускает в
+                // ход как раз тогда, когда экран потеряли, — и убивать им же
+                // стартующий экран значит крутить его старт по кругу. Тот же приём и
+                // по той же причине в `AlarmService.launchAlarmScreen`.
                 Intent(context, alarmActivity).addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP,
                 ),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )

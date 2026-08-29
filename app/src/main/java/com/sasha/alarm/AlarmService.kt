@@ -12,6 +12,9 @@ import android.view.WindowManager
 import android.util.Log
 import com.sasha.alarm.core.Challenge
 import com.sasha.alarm.core.EffortVolume
+import com.sasha.alarm.core.EventType
+import com.sasha.alarm.core.GuideCircle
+import com.sasha.alarm.core.LogValue
 import com.sasha.alarm.core.MathGenerator
 import com.sasha.alarm.core.ReactionMeter
 import com.sasha.alarm.core.ReactionSettings
@@ -34,8 +37,10 @@ import com.sasha.alarm.platform.AlarmStateStore
 import com.sasha.alarm.platform.AlarmVibrator
 import com.sasha.alarm.platform.AndroidClock
 import com.sasha.alarm.platform.DeviceOwner
+import com.sasha.alarm.platform.EventLog
 import com.sasha.alarm.platform.MelodyStore
 import com.sasha.alarm.platform.Permissions
+import com.sasha.alarm.platform.ReleaseWatcher
 import com.sasha.alarm.platform.Speaker
 import com.sasha.alarm.platform.SystemAlarmVolume
 import com.sasha.alarm.ui.R as UiR
@@ -83,6 +88,15 @@ class AlarmService : Service() {
     }
     private val statusBarBlocker by lazy { StatusBarBlocker(this) }
 
+    private val eventLog by lazy { EventLog(this) }
+
+    /**
+     * Спрашивает компьютер, не нажали ли там «Освободить» (ADR-0008).
+     *
+     * Живёт ровно столько, сколько идёт тревога: вне её освобождать нечего.
+     */
+    private var releaseWatcher: ReleaseWatcher? = null
+
     private var sound: SoundSettings = SoundSettings.DEFAULT
     private var startedAtMillis: Long = 0L
     private var deadlineMillis: Long = 0L
@@ -120,6 +134,19 @@ class AlarmService : Service() {
     /** Сколько всего времени звонок простоял приглушённым — на это нарастание не идёт. */
     private var effortHoldMillis: Long = 0L
 
+    /**
+     * Круг-поводырь на метках: держит ли его палец, когда экран сообщил об этом в
+     * последний раз и когда сорвался.
+     *
+     * ⚠️ [guideHeartbeatAtMillis] обязателен: пока палец держит круг, звонка нет
+     * вовсе, и один зависший флаг оставил бы будильник молчать до дедлайна. Экран
+     * сообщает о круге каждым кадром; молчит дольше [GUIDE_STALE_MS] — тишина
+     * снимается сама (P0 №7).
+     */
+    private var guideHolding: Boolean = false
+    private var guideHeartbeatAtMillis: Long = 0L
+    private var guideReleasedAtMillis: Long = 0L
+
     /** Трясёт ли телефон прямо сейчас. Нужно, чтобы не перезапускать узор каждый такт. */
     private var vibrating: Boolean = false
 
@@ -140,6 +167,19 @@ class AlarmService : Service() {
      * вообще лёг на пол (владелец, 2026-08-18: «в начале мне сразу 3 засчитало»).
      */
     private var poseStartedAtMillis: Long = 0L
+
+    /**
+     * Наблюдение «двигается, а повторы не идут» — признак слишком низко стоящего
+     * телефона (см. [PoseDiagnosis.cameraTooLow]).
+     *
+     * Копим размах глубины за окно и время с последнего засчитанного повтора.
+     * Окно сбрасывается вместе со сказанной подсказкой: мерить надо то, что
+     * происходит **после** неё, иначе она повторялась бы по старым данным.
+     */
+    private var motionLow: Float = Float.MAX_VALUE
+    private var motionHigh: Float = -Float.MAX_VALUE
+    private var lastProgressAtMillis: Long = 0L
+    private var lowPhoneSaidAtMillis: Long = 0L
 
     /**
      * Кружок выныривает в случайном месте через случайную паузу.
@@ -236,8 +276,12 @@ class AlarmService : Service() {
         effortMovedAtMillis = 0L
         effortHoldMillis = 0L
         lastVolumeAtMillis = 0L
+        guideHolding = false
+        guideHeartbeatAtMillis = 0L
+        guideReleasedAtMillis = 0L
 
         AlarmRuntime.onCircleTap = { quiet() }
+        AlarmRuntime.onGuideHold = { holding -> onGuideHold(holding) }
         AlarmRuntime.onKey = { onKey(it) }
         AlarmRuntime.preview = run.preview
         AlarmRuntime.answer = ""
@@ -247,6 +291,18 @@ class AlarmService : Service() {
         // Испытание ставит startChallenge: оно может подменить выбранное на примеры,
         // если выполнить выбранное сейчас нечем.
         startChallenge(state)
+
+        // Освобождение по сети (ADR-0008): пока тревога идёт, телефон сам спрашивает
+        // компьютер, не нажали ли там «Освободить». Не дозвонились — ничего не меняется,
+        // тревогу снимет сторож по дедлайну.
+        releaseWatcher?.stop()
+        releaseWatcher = ReleaseWatcher(this) {
+            handler.post {
+                Log.i(TAG, "освобождение по сети — снимаю тревогу")
+                AlarmController.dismiss(this, AlarmController.REASON_ESCAPE)
+            }
+        }.also { it.start() }
+
         scheduleCircle()
 
         acquireWakeLock()
@@ -270,6 +326,8 @@ class AlarmService : Service() {
     }
 
     override fun onDestroy() {
+        releaseWatcher?.stop()
+        releaseWatcher = null
         handler.removeCallbacksAndMessages(null)
         player.stop()
         vibrator.stop()
@@ -311,6 +369,57 @@ class AlarmService : Service() {
         Log.i(TAG, "тише: сбито всего $quietDeduction%, громкость ${AlarmRuntime.volumePercent}%")
     }
 
+    /**
+     * Экран сообщил, держит ли палец круг-поводырь.
+     *
+     * Зовётся каждым кадром экрана меток, поэтому здесь только запись: решение
+     * «тихо или громко» принимается в [applyVolume] по своему такту.
+     */
+    private fun onGuideHold(holding: Boolean) {
+        val now = AndroidClock.nowMillis()
+        guideHeartbeatAtMillis = now
+        if (guideHolding && !holding) releaseGuide(now)
+        guideHolding = holding
+    }
+
+    /**
+     * Палец сорвался с круга.
+     *
+     * Кроме плавного возврата тишины здесь **обнуляется нарастание**: звук пойдёт с
+     * начальной громкости из настроек, а не с той, что набежала до тишины (владелец,
+     * 2026-08-27). Всё прошедшее время записывается в простой — это и есть «нарастание
+     * не шло ни секунды».
+     *
+     * ⚠️ [effortHoldMillis] здесь именно присваивается, а не прибавляется: на метках
+     * ничто другое его не двигает ([effortMovedAtMillis] двигают только кадры камеры),
+     * и присвоенное значение всё равно не меньше накопленного.
+     */
+    private fun releaseGuide(atMillis: Long) {
+        guideReleasedAtMillis = atMillis
+        effortHoldMillis = GuideCircle.rampHoldAfterRelease(startedAtMillis, atMillis)
+        // Пара с нарастанием: сбитое кружком считается от него. На метках кружка нет,
+        // но рассогласованными эти два числа оставлять нельзя.
+        grownAtLastTap = 0L
+    }
+
+    /**
+     * Не пропало ли сердцебиение экрана, пока палец держал круг.
+     *
+     * Активити могли убить с прижатым пальцем, окно — подменить заслонкой, экран —
+     * погасить. Во всех этих случаях кадры кончаются, и снимать тишину больше
+     * некому: без этой проверки будильник молчал бы до дедлайна (P0 №7).
+     */
+    private fun syncGuide(nowMillis: Long) {
+        if (!guideHolding) return
+        if (nowMillis - guideHeartbeatAtMillis <= GUIDE_STALE_MS) return
+
+        Log.w(TAG, "экран перестал сообщать про круг — снимаю тишину")
+        guideHolding = false
+        // Возврат считаем с последней вести, а не с этой секунды: иначе к паузе
+        // добавилась бы ещё и вся протухшая тишина.
+        releaseGuide(guideHeartbeatAtMillis)
+    }
+
     private fun scheduleCircle() {
         handler.removeCallbacks(showCircle)
 
@@ -318,6 +427,11 @@ class AlarmService : Service() {
         // лежал бы он поверх картинки с камеры — ровно там, где человек смотрит
         // на себя. Тишину здесь зарабатывают движением, а не пальцем.
         if (AlarmRuntime.challenge == Challenge.PUSHUPS) return
+
+        // На метках его тоже нет (владелец, 2026-08-25): человек ходит по квартире
+        // с телефоном в руке, и попадать на ходу по мечущейся точке нечем. Тишину
+        // там даёт круг-поводырь — за ним ведут пальцем, не отпуская.
+        if (AlarmRuntime.challenge == Challenge.NFC) return
 
         val pause = VolumeCurve.QUIET_PAUSE_MIN_MS +
             random.nextLong(VolumeCurve.QUIET_PAUSE_MAX_MS - VolumeCurve.QUIET_PAUSE_MIN_MS + 1)
@@ -350,6 +464,8 @@ class AlarmService : Service() {
         AlarmRuntime.pushupState = PushupState.START
         // Отсчёт прогрева: пока камера наводится, повторы не считаем.
         poseStartedAtMillis = AndroidClock.nowMillis()
+        resetMotionWindow(poseStartedAtMillis)
+        lowPhoneSaidAtMillis = 0L
         AlarmRuntime.pushupVisible = false
         AlarmRuntime.pushupProblem = PoseProblem.NO_POSE
         AlarmRuntime.poseFrame = null
@@ -378,6 +494,15 @@ class AlarmService : Service() {
             else -> state.challenge
         }
         AlarmRuntime.challenge = challenge
+
+        // Пишем именно выбранное, а не назначенное в настройках: выше оно могло смениться
+        // на примеры, если камеры нет или маршрут меток не собран. В журнале должно
+        // стоять то, что человек реально проходил.
+        eventLog.write(
+            EventType.CHALLENGE_STARTED,
+            "kind" to LogValue.of(challenge.name.lowercase()),
+            "asked" to LogValue.of(state.challenge.name.lowercase()),
+        )
 
         when (challenge) {
             Challenge.REACTION -> handler.post(reactionTick)
@@ -458,17 +583,17 @@ class AlarmService : Service() {
      */
     private fun onPoseFrame(frame: PoseFrame?) {
         val now = AndroidClock.nowMillis()
-        val angle = frame?.let { PushupCounter.frameAngle(it) }
+        val depth = frame?.let { PushupCounter.frameDepth(it) }
 
         AlarmRuntime.poseFrame = frame
-        AlarmRuntime.pushupVisible = angle != null
+        AlarmRuntime.pushupVisible = depth != null
 
         // Прогрев. Кадр показываем, но в счёт не берём: пока камера наводится,
         // точки прыгают, и счётчик успевает выдать повторы до начала подхода.
         if (now - poseStartedAtMillis < POSE_WARMUP_MS) return
 
         val before = AlarmRuntime.pushupState
-        val tick = PushupCounter.next(before, angle, now)
+        val tick = PushupCounter.next(before, depth, now)
         val after = tick.state
         AlarmRuntime.pushupState = after
 
@@ -496,6 +621,8 @@ class AlarmService : Service() {
                 spokenProblem = null
                 pendingProblem = null
                 effortMovedAtMillis = now
+                // Счёт идёт — про высоту телефона говорить не о чем.
+                resetMotionWindow(now)
 
                 if (after.reps >= AlarmRuntime.pushupTarget) {
                     Log.i(TAG, "отжимания сделаны — снимаю тревогу")
@@ -517,15 +644,48 @@ class AlarmService : Service() {
             RepOutcome.NONE -> Unit
         }
 
-        // Постоянные придирки — только когда считать нечем. Пока угол считается,
+        // Постоянные придирки — только когда считать нечем. Пока глубина считается,
         // человек уже всё делает правильно, и говорить ему по ходу движения нечего:
         // за поток команд владелец не слышал собственный счёт (2026-08-18).
-        if (angle != null) {
+        if (depth != null) {
             spokenProblem = null
             pendingProblem = null
+            watchForLowPhone(depth, now)
             return
         }
         speakProblem(problem, now)
+    }
+
+    /**
+     * Человек виден и двигается, а повторы не идут — значит телефон стоит слишком низко.
+     *
+     * ⚠️ Не придирка к технике, а единственный честный выход из тупика, который не
+     * лечится ни моделью, ни порогами: с телефона на полу движение в кадре сжимается
+     * почти в ноль (разбор видео владельца 2026-08-25). Молчать здесь — значит
+     * оставить человека перед экраном, который просто не считает.
+     */
+    private fun watchForLowPhone(depth: Float, nowMillis: Long) {
+        motionLow = minOf(motionLow, depth)
+        motionHigh = maxOf(motionHigh, depth)
+
+        val stuck = PoseDiagnosis.cameraTooLow(
+            spanSeen = motionHigh - motionLow,
+            sinceProgressMillis = nowMillis - lastProgressAtMillis,
+        )
+        if (!stuck) return
+        if (nowMillis - lowPhoneSaidAtMillis < LOW_PHONE_REPEAT_MS) return
+
+        lowPhoneSaidAtMillis = nowMillis
+        Log.i(TAG, "движение есть, повторов нет — говорю про высоту телефона")
+        say(getString(UiR.string.pushup_problem_low_phone), nowMillis)
+        // Мерить заново: подсказка про то, что будет после неё, а не до.
+        resetMotionWindow(nowMillis)
+    }
+
+    private fun resetMotionWindow(nowMillis: Long) {
+        motionLow = Float.MAX_VALUE
+        motionHigh = -Float.MAX_VALUE
+        lastProgressAtMillis = nowMillis
     }
 
     /**
@@ -564,6 +724,17 @@ class AlarmService : Service() {
         spokenProblem = problem
         spokenAtMillis = nowMillis
         say(getString(problem.textRes()), nowMillis)
+
+        // ⚠️ Пишем ровно здесь, а не на каждом отвергнутом кадре. Кадров приходит
+        // десяток в секунду, и запись каждого дала бы тысячи строк за подход — журнал
+        // стал бы бесполезен. Сюда же попадает только то, что человек реально услышал:
+        // выдержки [PROBLEM_HOLD_MS] и [PROBLEM_REPEAT_MS] отсекают мигание и повторы.
+        eventLog.write(
+            EventType.POSE_REJECTED,
+            "verdict" to LogValue.of(problem.name.lowercase()),
+            "reps" to LogValue.of(AlarmRuntime.pushupReps.toLong()),
+            "sinceStartMs" to LogValue.of((nowMillis - poseStartedAtMillis).coerceAtLeast(0L)),
+        )
     }
 
     private fun PoseProblem.textRes(): Int = when (this) {
@@ -586,7 +757,7 @@ class AlarmService : Service() {
      * закрыться. Снятие сторожем по дедлайну сюда не заходит — там победы не было.
      */
     private fun win() {
-        AlarmRuntime.victory = VictoryStats(
+        val stats = VictoryStats(
             challenge = AlarmRuntime.challenge,
             startedAtMillis = startedAtMillis,
             finishedAtMillis = AndroidClock.nowMillis(),
@@ -598,7 +769,35 @@ class AlarmService : Service() {
             pushupReps = AlarmRuntime.pushupReps,
             pushupTarget = AlarmRuntime.pushupTarget,
         )
+        AlarmRuntime.victory = stats
+        logChallengeFinished(stats)
         AlarmController.dismiss(this)
+    }
+
+    /** Журнал: испытание пройдено. Пишется до снятия — снятие останавливает сервис. */
+    private fun logChallengeFinished(stats: VictoryStats) {
+        val data = LinkedHashMap<String, LogValue>()
+        data["kind"] = LogValue.of(stats.challenge.name.lowercase())
+        data["ms"] = LogValue.of(stats.durationMillis)
+        when (stats.challenge) {
+            Challenge.PUSHUPS -> {
+                data["reps"] = LogValue.of(stats.pushupReps.toLong())
+                data["target"] = LogValue.of(stats.pushupTarget.toLong())
+            }
+
+            Challenge.MATH -> {
+                data["reps"] = LogValue.of(stats.mathSolved.toLong())
+                data["failures"] = LogValue.of(stats.mathWrong.toLong())
+            }
+
+            Challenge.REACTION -> {
+                data["reps"] = LogValue.of(stats.reactionHits.toLong())
+                data["failures"] = LogValue.of(stats.reactionMisses.toLong())
+            }
+
+            Challenge.NFC -> data["reps"] = LogValue.of(stats.nfcSteps.toLong())
+        }
+        eventLog.write(EventType.CHALLENGE_FINISHED, data)
     }
 
     /** Нажата клавиша на цифровой клавиатуре экрана решения. */
@@ -664,11 +863,16 @@ class AlarmService : Service() {
 
     private fun applyVolume() {
         val now = AndroidClock.nowMillis()
+        syncGuide(now)
 
         // Время, которое человек провёл в работе, нарастанию не засчитывается:
         // иначе за подход набежало бы столько, что после паузы звук вернулся бы
-        // не туда, откуда стих, а заметно выше.
-        if (!EffortVolume.rampRuns(effortMovedAtMillis, now)) {
+        // не туда, откуда стих, а заметно выше. Круг-поводырь на метках — та же
+        // работа: пока палец ведёт его, нарастание стоит. ⚠️ И там оно сверх того
+        // обнуляется при срыве — см. [releaseGuide].
+        val ramp = EffortVolume.rampRuns(effortMovedAtMillis, now) &&
+            GuideCircle.rampRuns(guideHolding)
+        if (!ramp) {
             val since = (now - lastVolumeAtMillis).coerceIn(0L, MAX_HOLD_STEP_MS)
             if (lastVolumeAtMillis != 0L) effortHoldMillis += since
         }
@@ -676,7 +880,12 @@ class AlarmService : Service() {
 
         val elapsed = rampElapsed(now)
         val base = VolumeCurve.percentAt(sound, elapsed, quietDeduction)
-        val factor = EffortVolume.factor(effortMovedAtMillis, now)
+        // Из двух приглушений берём то, что тише: испытания разные, и работают эти
+        // множители в разных, но правило одно — заработанная тишина не отменяется.
+        val factor = minOf(
+            EffortVolume.factor(effortMovedAtMillis, now),
+            GuideCircle.factor(guideHolding, guideReleasedAtMillis, now),
+        )
         val percent = EffortVolume.percent(base, factor)
 
         AlarmRuntime.volumePercent = percent
@@ -787,11 +996,22 @@ class AlarmService : Service() {
         launchAlarmScreen()
     }
 
+    /**
+     * ⚠️ **Без `FLAG_ACTIVITY_CLEAR_TASK`** (владелец, 2026-08-25). Он уничтожает
+     * текущий экземпляр экрана и поднимает новый с нуля, а зовём мы экран раз в
+     * [RELAUNCH_INTERVAL_MS]. Стоило старту не уложиться в этот срок — и следующий зов
+     * убивал экран, который ещё только рисовался: получался вечный круг, в котором
+     * окно всё время в стадии старта, то есть на экране голый фон окна и нажать
+     * нечего. Разрывалось это только выключением и включением экрана вручную.
+     *
+     * `SINGLE_TOP` при `launchMode="singleInstance"` возвращает существующий экземпляр
+     * на передний план через `onNewIntent` — без пересоздания и без потери испытания.
+     */
     private fun launchAlarmScreen() {
         try {
             startActivity(
                 Intent(this, AlarmActivity::class.java).addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP,
                 ),
             )
         } catch (e: Exception) {
@@ -842,8 +1062,31 @@ class AlarmService : Service() {
          */
         const val POSE_WARMUP_MS = 1_500L
 
-        /** Как часто пересчитывается громкость. */
-        const val VOLUME_TICK_MS = 200L
+        /**
+         * Как часто можно повторять подсказку про высоту телефона.
+         *
+         * Реже, чем обычные претензии: чтобы её выполнить, нужно встать и переставить
+         * телефон, и торопить с этим бессмысленно.
+         */
+        const val LOW_PHONE_REPEAT_MS = 20_000L
+
+        /**
+         * Как часто пересчитывается громкость.
+         *
+         * Сто миллисекунд, а не двести (2026-08-25): возврат после круга-поводыря
+         * укладывается в полторы секунды, и на двухсотмиллисекундном такте он
+         * распадался бы на семь ступеней — слышно как лесенка, а не как подъём.
+         */
+        const val VOLUME_TICK_MS = 100L
+
+        /**
+         * Сколько живёт последняя весть экрана про круг-поводырь.
+         *
+         * Экран шлёт её каждым кадром, то есть раз в 16 мс; полсекунды — это
+         * тридцать пропущенных кадров подряд, после которых экрана считай что нет.
+         * Дальше тишину держать не на чем, и она снимается сама (P0 №7).
+         */
+        const val GUIDE_STALE_MS = 500L
 
         /** Выше этой доли экрана шарики внимания не появляются: там шкала и часы. */
         const val REACTION_TOP = 0.22f

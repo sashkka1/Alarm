@@ -16,12 +16,30 @@ class NfcRouteTest {
     // ──────────────────────────── регистрация меток ────────────────────────────
 
     @Test
-    fun `метки нумеруются по порядку прикладывания`() {
+    fun `метки нумеруются по порядку прикладывания начиная с нуля`() {
+        // Нумерация с нуля — решение владельца 2026-08-25: нулевая метка уличная,
+        // значит первая же зарегистрированная получает ноль и вешается у двери.
         var settings = NfcSettings.DEFAULT
         settings = NfcRules.register(settings, "AA")
         settings = NfcRules.register(settings, "BB")
-        assertEquals(listOf(1, 2), settings.tags.map { it.number })
+        assertEquals(listOf(NfcRules.STREET_NUMBER, 1), settings.tags.map { it.number })
         assertEquals(listOf("AA", "BB"), settings.tags.map { it.id })
+    }
+
+    @Test
+    fun `первая метка становится уличной`() {
+        val settings = NfcRules.register(NfcSettings.DEFAULT, "AA")
+        assertEquals(NfcRules.STREET_NUMBER, settings.tags.single().number)
+    }
+
+    @Test
+    fun `удаление уличной метки не сдвигает остальные`() {
+        // Номера подписаны на самих наклейках — переприсваивать их нельзя.
+        var settings = NfcSettings.DEFAULT
+        repeat(3) { i -> settings = NfcRules.register(settings, "T$i") }
+        settings = NfcRules.forget(settings, NfcRules.STREET_NUMBER)
+        assertEquals(listOf(1, 2), settings.tags.map { it.number })
+        assertEquals(3, NfcRules.nextNumber(settings))
     }
 
     @Test

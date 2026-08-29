@@ -29,6 +29,24 @@ object DeviceOwner {
     private fun manager(context: Context): DevicePolicyManager? =
         context.getSystemService(DevicePolicyManager::class.java)
 
+    /**
+     * Один шаг политики, отдельно от остальных.
+     *
+     * ⚠️ Каждый вызов обёрнут **по одному** намеренно. Вендорные прошивки любят
+     * отказывать в отдельно взятой политике, и общий `try` на весь блок означал бы,
+     * что первый же отказ молча выбрасывает всё, что шло после него. Особенно
+     * больно это в [releaseHardLock] и [release]: там недоделанная уборка — это
+     * телефон, с которого не уйти.
+     */
+    private inline fun step(what: String, action: () -> Unit) {
+        try {
+            action()
+            Log.i(TAG, "политика применена: $what")
+        } catch (e: Exception) {
+            Log.e(TAG, "политика не применилась: $what", e)
+        }
+    }
+
     fun admin(context: Context): ComponentName =
         ComponentName(context.packageName, ADMIN_CLASS)
 
@@ -54,14 +72,21 @@ object DeviceOwner {
         val dpm = manager(context) ?: return
         if (!isActive(context)) return
         val admin = admin(context)
-        try {
-            // Приложение нельзя удалить с самого телефона — только через кабель, сняв права.
-            dpm.setUninstallBlocked(admin, context.packageName, true)
-            // Safe Mode отключил бы сторонние приложения вместе с нашим.
-            dpm.addUserRestriction(admin, UserManager.DISALLOW_SAFE_BOOT)
-            Log.i(TAG, "постоянные политики применены")
-        } catch (e: Exception) {
-            Log.e(TAG, "не удалось применить постоянные политики", e)
+        // Приложение нельзя удалить с самого телефона — только через кабель, сняв права.
+        step("запрет удаления") { dpm.setUninstallBlocked(admin, context.packageName, true) }
+        // Safe Mode отключил бы сторонние приложения вместе с нашим.
+        step("запрет Safe Mode") { dpm.addUserRestriction(admin, UserManager.DISALLOW_SAFE_BOOT) }
+        // Разрешения выдаются молча и **отозвать их с телефона нельзя**. Отозванная
+        // ночью камера или уведомления — это молчащий будильник наутро (P0 №7, №8).
+        for (permission in AUTO_GRANTED) {
+            step("выдача $permission") {
+                dpm.setPermissionGrantState(
+                    admin,
+                    context.packageName,
+                    permission,
+                    DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED,
+                )
+            }
         }
     }
 
@@ -74,13 +99,34 @@ object DeviceOwner {
     fun engageHardLock(context: Context) {
         val dpm = manager(context) ?: return
         if (!isActive(context)) return
-        try {
-            dpm.setLockTaskPackages(admin(context), arrayOf(context.packageName))
-            dpm.setStatusBarDisabled(admin(context), true)
-            Log.i(TAG, "жёсткий режим включён: шторка отключена, закрепление разрешено")
-        } catch (e: Exception) {
-            Log.e(TAG, "жёсткий режим не включился", e)
+        val admin = admin(context)
+        step("закрепление разрешено") {
+            dpm.setLockTaskPackages(admin, arrayOf(context.packageName))
         }
+        // ⚠️ Единственное, чем Android даёт закрыть меню питания: пока экран
+        // закреплён и снят LOCK_TASK_FEATURE_GLOBAL_ACTIONS, долгое нажатие на
+        // питание не открывает ничего — то есть выключить и перезагрузить телефон
+        // из меню нельзя. Аппаратное удержание ~10 с этим не закрывается, это
+        // прошивка; после такой перезагрузки экран поднимает BootReceiver.
+        //
+        // Нулём разом снимаются: меню питания, Home, Recents, шторка, системные
+        // значки и замок экрана. Замок здесь не лишний: без него метки NFC не
+        // читаются вовсе (система не поллит считыватель на запертом экране).
+        step("системные кнопки отключены") {
+            dpm.setLockTaskFeatures(admin, DevicePolicyManager.LOCK_TASK_FEATURE_NONE)
+        }
+        step("шторка отключена") { dpm.setStatusBarDisabled(admin, true) }
+        // Приложение нельзя ни остановить, ни выкинуть из недавних. Закрывает
+        // дыру, проверенную в бою 2026-08-14: «очистить всё» убивало процесс.
+        step("защита от остановки") {
+            dpm.setUserControlDisabledPackages(admin, listOf(context.packageName))
+        }
+        // ⛔ `DISALLOW_ADJUST_VOLUME` здесь НЕ ставится и ставиться не должно.
+        // Документация Android про него: «If set, the master volume will be muted».
+        // То есть запрет менять громкость глушит звук целиком — это буквально
+        // тишина вместо будильника, худший из возможных отказов (P0 №7). Заодно он
+        // отобрал бы громкость и у нас: `SystemAlarmVolume.raiseIfSilent` поднимает
+        // системный ноль через тот же `setStreamVolume`.
     }
 
     /**
@@ -96,17 +142,20 @@ object DeviceOwner {
         val dpm = manager(context) ?: return
         if (!isActive(context)) return
         val admin = admin(context)
-        try {
-            dpm.setLockTaskPackages(admin, emptyArray())
-            Log.i(TAG, "закрепление разорвано")
-        } catch (e: Exception) {
-            Log.e(TAG, "не удалось разорвать закрепление", e)
+        // Сначала самое главное: без пакета в списке система выходит из Lock Task сама.
+        step("закрепление разорвано") { dpm.setLockTaskPackages(admin, emptyArray()) }
+        // Меню питания обратно на место — телефон снова можно выключить.
+        step("меню питания возвращено") {
+            dpm.setLockTaskFeatures(admin, DevicePolicyManager.LOCK_TASK_FEATURE_GLOBAL_ACTIONS)
         }
-        try {
-            dpm.setStatusBarDisabled(admin, false)
-            Log.i(TAG, "шторка возвращена")
-        } catch (e: Exception) {
-            Log.e(TAG, "шторка не вернулась", e)
+        step("шторка возвращена") { dpm.setStatusBarDisabled(admin, false) }
+        step("остановка снова разрешена") {
+            dpm.setUserControlDisabledPackages(admin, emptyList())
+        }
+        // Снимаем на случай, если ограничение осталось от прежней сборки: пока оно
+        // стоит, система держит звук замьюченным целиком.
+        step("громкость снова меняется") {
+            dpm.clearUserRestriction(admin, UserManager.DISALLOW_ADJUST_VOLUME)
         }
     }
 
@@ -122,12 +171,29 @@ object DeviceOwner {
             Log.i(TAG, "прав владельца устройства и так нет")
             return true
         }
-        return try {
-            val admin = admin(context)
-            dpm.setStatusBarDisabled(admin, false)
+        val admin = admin(context)
+        // ⚠️ Каждый шаг сам по себе, и `clearDeviceOwnerApp` идёт последним при
+        // любом исходе предыдущих. Один общий `try` означал бы, что первый же
+        // отказ вендорной прошивки оставляет права владельца на месте — то есть
+        // ровно то, ради чего этот метод существует, не происходит.
+        releaseHardLock(context)
+        step("запрет удаления снят") {
             dpm.setUninstallBlocked(admin, context.packageName, false)
+        }
+        step("Safe Mode разрешён") {
             dpm.clearUserRestriction(admin, UserManager.DISALLOW_SAFE_BOOT)
-            dpm.setLockTaskPackages(admin, emptyArray())
+        }
+        for (permission in AUTO_GRANTED) {
+            step("$permission отдано обратно пользователю") {
+                dpm.setPermissionGrantState(
+                    admin,
+                    context.packageName,
+                    permission,
+                    DevicePolicyManager.PERMISSION_GRANT_STATE_DEFAULT,
+                )
+            }
+        }
+        return try {
             dpm.clearDeviceOwnerApp(context.packageName)
             Log.i(TAG, "права владельца устройства сняты, приложение можно удалять")
             true
@@ -136,6 +202,17 @@ object DeviceOwner {
             false
         }
     }
+
+    /**
+     * Разрешения, которые владелец устройства выдаёт себе сам.
+     *
+     * Оба нужны критическому пути: без камеры не считаются отжимания, без
+     * уведомлений не поднимется экран через full-screen intent.
+     */
+    private val AUTO_GRANTED = listOf(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.POST_NOTIFICATIONS,
+    )
 
     /** Полное имя класса-администратора. Держим строкой: класс живёт в модуле `:app`. */
     private const val ADMIN_CLASS = "com.sasha.alarm.AlarmDeviceAdminReceiver"

@@ -124,6 +124,14 @@ object AlarmRuntime {
     /** Тап по кружку. Подставляет сервис, зовёт экран. */
     var onCircleTap: () -> Unit = {}
 
+    /**
+     * Держит ли палец круг-поводырь на экране меток.
+     *
+     * Зовётся каждым кадром экрана, а не по смене состояния: для сервиса это ещё и
+     * признак, что экран жив и тишину есть кому отменить.
+     */
+    var onGuideHold: (Boolean) -> Unit = {}
+
     /** Нажата цифра, «стереть» или «ввод». Подставляет сервис. */
     var onKey: (Key) -> Unit = {}
 
@@ -155,6 +163,7 @@ object AlarmRuntime {
         alarmActive = false
         foreignDismissRequested = false
         onCircleTap = {}
+        onGuideHold = {}
         onKey = {}
     }
 }

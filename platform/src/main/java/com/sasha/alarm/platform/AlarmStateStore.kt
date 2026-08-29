@@ -219,8 +219,16 @@ class AlarmStateStore(context: Context) {
             enabled = json.optBoolean(KEY_SOUND_ENABLED, true),
             startVolumePercent = json.optInt(KEY_START_VOLUME, SoundSettings.DEFAULT.startVolumePercent)
                 .coerceIn(0, 100),
-            secondsPerPercent = json.optInt(KEY_SECONDS_PER_PERCENT, SoundSettings.DEFAULT.secondsPerPercent)
-                .coerceIn(SoundSettings.MIN_SECONDS_PER_PERCENT, SoundSettings.MAX_SECONDS_PER_PERCENT),
+            // ⚠️ Ключ новый (2026-08-25): прежний «secondsPerPercent» хранил секунды на
+            // процент и в новое окно не переводится — старая настройка молча заменяется
+            // умолчанием, а не читается наугад.
+            percentPerSecondTenths = json.optInt(
+                KEY_PERCENT_PER_SECOND_TENTHS,
+                SoundSettings.DEFAULT.percentPerSecondTenths,
+            ).coerceIn(
+                SoundSettings.MIN_PERCENT_PER_SECOND_TENTHS,
+                SoundSettings.MAX_PERCENT_PER_SECOND_TENTHS,
+            ),
             vibrate = json.optBoolean(KEY_VIBRATE, SoundSettings.DEFAULT.vibrate),
             melody = melody,
         )
@@ -250,16 +258,18 @@ class AlarmStateStore(context: Context) {
         json.optJSONArray(KEY_NFC_TAGS)?.let { array ->
             for (i in 0 until array.length()) {
                 val item = array.optJSONObject(i) ?: continue
-                val number = item.optInt(KEY_NFC_TAG_NUMBER, 0)
+                // ⚠️ Ноль — законный номер: нумерация меток идёт с нуля, и нулевая
+                // метка уличная. Поэтому «нет номера» обозначено -1, а не нулём.
+                val number = item.optInt(KEY_NFC_TAG_NUMBER, -1)
                 val id = item.optString(KEY_NFC_TAG_ID)
-                if (number > 0 && id.isNotEmpty()) tags += NfcTag(number, id)
+                if (number >= 0 && id.isNotEmpty()) tags += NfcTag(number, id)
             }
         }
 
         val route = mutableListOf<Int>()
         json.optJSONArray(KEY_NFC_ROUTE)?.let { array ->
             for (i in 0 until array.length()) {
-                val number = array.optInt(i, 0)
+                val number = array.optInt(i, -1)
                 // Шаг на метку, которой больше нет, молча выпадает: маршрут обязан
                 // состоять только из того, что реально можно приложить.
                 if (tags.any { it.number == number }) route += number
@@ -278,7 +288,7 @@ class AlarmStateStore(context: Context) {
         put(KEY_MANUAL, JSONArray(state.manualPermissions.toList()))
         put(KEY_SOUND_ENABLED, state.sound.enabled)
         put(KEY_START_VOLUME, state.sound.startVolumePercent)
-        put(KEY_SECONDS_PER_PERCENT, state.sound.secondsPerPercent)
+        put(KEY_PERCENT_PER_SECOND_TENTHS, state.sound.percentPerSecondTenths)
         put(KEY_VIBRATE, state.sound.vibrate)
         // ⚠️ Пишутся всегда, в том числе пустыми. Раньше при системной мелодии ключей
         // просто не было — а теперь запись идёт поверх прежнего файла, и «не написать»
@@ -349,7 +359,7 @@ class AlarmStateStore(context: Context) {
         const val KEY_MANUAL = "manual"
         const val KEY_SOUND_ENABLED = "soundEnabled"
         const val KEY_START_VOLUME = "startVolume"
-        const val KEY_SECONDS_PER_PERCENT = "secondsPerPercent"
+        const val KEY_PERCENT_PER_SECOND_TENTHS = "percentPerSecondTenths"
         const val KEY_VIBRATE = "vibrate"
         const val KEY_MELODY_FILE = "melodyFile"
         const val KEY_MELODY_NAME = "melodyName"

@@ -4,9 +4,12 @@ import android.app.Notification
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.sasha.alarm.core.EventType
 import com.sasha.alarm.core.ForeignAlarmRule
+import com.sasha.alarm.core.LogValue
 import com.sasha.alarm.platform.AlarmStateStore
 import com.sasha.alarm.platform.AndroidClock
+import com.sasha.alarm.platform.EventLog
 import com.sasha.alarm.platform.ForeignAudioWatcher
 
 /**
@@ -47,6 +50,16 @@ class SleepCycleListener : NotificationListenerService() {
             )
             if (updated != state.foreignRingingSinceMillis) {
                 Log.i(TAG, if (updated != null) "Sleep Cycle зазвонил" else "Sleep Cycle больше не звонит")
+                if (updated != null) {
+                    EventLog(applicationContext).write(
+                        EventType.FOREIGN_RING,
+                        "source" to LogValue.of("notification"),
+                    )
+                    // Будильник зазвонил — ночь на этом кончилась (решение владельца
+                    // 2026-08-26). Это и есть основной способ остановить запись: свой
+                    // экран поднимется позже, а спал владелец до вот этой секунды.
+                    NightRecordingService.stop(applicationContext, "ring")
+                }
             }
             if (updated != null) requestForeignDismiss()
             state.copy(foreignRingingSinceMillis = updated)
@@ -88,6 +101,12 @@ class SleepCycleListener : NotificationListenerService() {
         }
 
         Log.i(TAG, "Sleep Cycle выключен владельцем — поднимаю наш экран")
+        EventLog(applicationContext).write(
+            EventType.FOREIGN_DISMISSED,
+            // Сколько он звонил до того, как погас — по этому числу видно, смахнула ли
+            // его наша служба жестов или владелец дотянулся сам.
+            "ringingMs" to LogValue.of(since?.let { (now - it).coerceAtLeast(0L) } ?: 0L),
+        )
         store.update { it.copy(foreignRingingSinceMillis = null) }
         AlarmController.onForeignAlarmDismissed(applicationContext)
     }
@@ -124,6 +143,14 @@ class SleepCycleListener : NotificationListenerService() {
                 val updated = ForeignAlarmRule.onNotification(true, now, state.foreignRingingSinceMillis)
                 if (updated != state.foreignRingingSinceMillis) {
                     Log.i(TAG, "чужой будильник зазвонил (услышал по звуку)")
+                    EventLog(applicationContext).write(
+                        EventType.FOREIGN_RING,
+                        "source" to LogValue.of("audio"),
+                    )
+                    // Второй, независимый путь остановить запись: уведомление могло не
+                    // дойти (слушатель не привязался после установки — бывало 2026-08-19),
+                    // а звук будильника слышен всегда.
+                    NightRecordingService.stop(applicationContext, "ring")
                 }
                 if (updated != null) requestForeignDismiss()
                 state.copy(foreignRingingSinceMillis = updated)

@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Alarm</string>
+
+    <!-- Запись ночи. Уведомление висит всю ночь, поэтому текст короткий и спокойный. -->
+    <string name="night_recording_channel">Запись ночи</string>
+    <string name="night_recording_title">Записываю ночь</string>
+    <string name="night_recording_text">Остановится, когда зазвонит будильник</string>
+    <string name="night_recording_stop">Остановить</string>
 </resources>

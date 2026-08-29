@@ -20,12 +20,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.sasha.alarm.core.Challenge
+import com.sasha.alarm.core.EventType
+import com.sasha.alarm.core.LogValue
 import com.sasha.alarm.core.VictoryStats
 import com.sasha.alarm.platform.AndroidClock
 import com.sasha.alarm.platform.DeviceOwner
+import com.sasha.alarm.platform.EventLog
+import com.sasha.alarm.platform.LightSensor
 import com.sasha.alarm.platform.NfcReader
 import com.sasha.alarm.ui.AlarmTheme
 import com.sasha.alarm.ui.VictoryScreen
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Экран тревоги.
@@ -56,6 +61,9 @@ class AlarmActivity : ComponentActivity() {
 
     private var locked = false
 
+    /** Номер этого экземпляра. Зачем — см. [foregroundInstance]. */
+    private val instanceId = nextInstanceId.incrementAndGet()
+
     private val nfcReader by lazy { NfcReader(this) }
 
     private val keyguard by lazy { getSystemService(KeyguardManager::class.java) }
@@ -66,6 +74,9 @@ class AlarmActivity : ComponentActivity() {
 
     /** Итог пройденного испытания. Не null — на экране победа, а не тревога. */
     private var victory by mutableStateOf<VictoryStats?>(null)
+
+    /** Чем остановить наблюдение за освещённостью. Не null — датчик сейчас включён. */
+    private var stopLight: (() -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,12 +118,30 @@ class AlarmActivity : ComponentActivity() {
                     cameraContent = { PushupCamera(Modifier.fillMaxSize()) },
                     onExit = {
                         releaseLock()
-                        AlarmController.dismiss(this@AlarmActivity)
+                        // Кнопка «Выйти» есть только в проверочном показе. Раньше это
+                        // писалось в журнал как снятие по дедлайну — неправда.
+                        AlarmController.dismiss(this@AlarmActivity, AlarmController.REASON_EXIT)
                         finish()
                     },
                 )
             }
         }
+    }
+
+    /**
+     * Нас позвали заново, а экземпляр тот же.
+     *
+     * Так и задумано: сторож зовёт экран обратно по нескольку раз, и пересоздавать
+     * его на каждый зов нельзя (см. `AlarmService.launchAlarmScreen`). Сбросить нужно
+     * одно — итог прошлого испытания: без этого новая тревога открылась бы на экране
+     * победы от предыдущей. Всё остальное экран берёт из общего состояния и
+     * перерисовывает сам.
+     */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        victory = AlarmRuntime.victory
+        NfcRuntime.begin(AlarmController.state(this))
     }
 
     override fun onStart() {
@@ -129,11 +158,43 @@ class AlarmActivity : ComponentActivity() {
      */
     override fun onResume() {
         super.onResume()
+        foregroundInstance = instanceId
         isShowing = true
         if (NfcRuntime.run != null) {
             nfcReader.start { id -> onNfcTag(id) }
             requestUnlockForNfc()
+            watchLight()
         }
+    }
+
+    /**
+     * Освещённость всё время, пока идёт испытание метками.
+     *
+     * ⚠️ **Единственное место, где свет пишется рядом, а не по касанию** (владелец,
+     * 2026-08-27). Испытание метками — это проход по квартире с телефоном в руке, то есть
+     * ровно тот случай, когда датчик показывает комнату, а не карман. Разовый замер по
+     * касанию отвечает «где он был в эту секунду»; ряд отвечает «через что он прошёл».
+     *
+     * ⚠️ Тип события тот же, что у разового замера, — различает их `moment`. Так протокол
+     * журнала не меняется, а значит не расходятся его копии на телефоне и на компьютере
+     * (P0 «протокол лежит копией»).
+     */
+    private fun watchLight() {
+        if (stopLight != null) return
+        val log = EventLog(applicationContext)
+        stopLight = LightSensor(applicationContext).watch { lux ->
+            log.write(
+                EventType.LIGHT_SAMPLE,
+                "lux" to LogValue.of(lux.toDouble()),
+                "moment" to LogValue.of(MOMENT_CHALLENGE),
+            )
+        }
+    }
+
+    /** Отпустить датчик света. Зовётся отовсюду, откуда экран уходит: датчик не должен пережить испытание. */
+    private fun releaseLight() {
+        stopLight?.invoke()
+        stopLight = null
     }
 
     /**
@@ -191,9 +252,12 @@ class AlarmActivity : ComponentActivity() {
      * приходит сразу: и когда ушли на другой экран, и когда погасили кнопкой питания.
      */
     override fun onPause() {
-        isShowing = false
+        // Гасит флаг только тот, кто его и зажёг: чужой onPause, доигравший позже
+        // нашего onResume, обязан промолчать (см. [foregroundInstance]).
+        if (foregroundInstance == instanceId) isShowing = false
         handler.removeCallbacks(retryUnlock)
         nfcReader.stop()
+        releaseLight()
         super.onPause()
     }
 
@@ -204,6 +268,7 @@ class AlarmActivity : ComponentActivity() {
      * живёт на активити, и момент победы известен только ей.
      */
     private fun onNfcTag(id: String) {
+        logTag(id)
         if (!NfcRuntime.onTag(id, AndroidClock.nowMillis())) return
         Log.i(TAG, "маршрут меток пройден — снимаю тревогу")
         AlarmRuntime.victory = VictoryStats(
@@ -215,12 +280,39 @@ class AlarmActivity : ComponentActivity() {
         AlarmController.dismiss(this)
     }
 
+    /**
+     * Касание метки во время тревоги — в журнал.
+     *
+     * Пишется **каждое** касание, а не только зачтённое: «приложил не ту метку» и
+     * «приложил ту же дважды» — ровно то, из-за чего испытание метками затягивается,
+     * и по журналу это должно быть видно.
+     *
+     * Освещённость меряется заодно: телефон в руке и смотрит наружу.
+     */
+    private fun logTag(id: String) {
+        val number = AlarmController.store(this).read().nfc.tags
+            .firstOrNull { it.id.equals(id, ignoreCase = true) }
+            ?.number
+        LightSensor(applicationContext).sample { lux ->
+            val data = LinkedHashMap<String, LogValue>()
+            data["index"] = LogValue.of((number ?: -1).toLong())
+            data["duringAlarm"] = LogValue.of(true)
+            data["expected"] = LogValue.of((NfcRuntime.run?.expected ?: -1).toLong())
+            if (lux != null) data["lux"] = LogValue.of(lux.toDouble())
+            EventLog(applicationContext).write(EventType.NFC_TAG, data)
+        }
+    }
+
     override fun onStop() {
         super.onStop()
     }
 
     override fun onDestroy() {
+        // Залипший «экран на месте» опаснее лишней заслонки: с ним тревогу не
+        // возвращает никто, и на экране остаётся что угодно, кроме испытания.
+        if (foregroundInstance == instanceId) isShowing = false
         handler.removeCallbacksAndMessages(null)
+        releaseLight()
         releaseLock()
         runCatching { unregisterReceiver(dismissReceiver) }
         super.onDestroy()
@@ -298,9 +390,33 @@ class AlarmActivity : ComponentActivity() {
         /** Через сколько просить снять замок заново, если прошлую просьбу отклонили. */
         private const val UNLOCK_RETRY_MS = 10_000L
 
+        /**
+         * Пометка замера света, снятого во время испытания.
+         *
+         * ⚠️ Слово общее для телефона и компьютера: по нему компьютер отличает ряд
+         * замеров от разового. Меняешь здесь — меняй и в `DayLight` на той стороне.
+         */
+        private const val MOMENT_CHALLENGE = "challenge"
+
         /** Читается сервисом из того же процесса, чтобы решить, нужен ли оверлей. */
         @Volatile
         var isShowing: Boolean = false
             private set
+
+        /**
+         * Кто из экземпляров последним вышел на передний план.
+         *
+         * ⚠️ Экран тревоги живёт не в одном экземпляре: система пересоздаёт его, а
+         * сторож зовёт обратно. Старый экземпляр умеет доиграть свой `onPause` уже
+         * ПОСЛЕ того, как новый отчитался в `onResume`, — и безусловная запись
+         * `false` в этот момент гасила [isShowing] навсегда. Дальше заслонка ложилась
+         * поверх живого экрана, а снять её было некому: снимают её только по
+         * `isShowing == true`. Помогало единственное — погасить и зажечь экран
+         * вручную, потому что это давало новый `onResume` (владелец, 2026-08-25).
+         */
+        @Volatile
+        private var foregroundInstance: Int = 0
+
+        private val nextInstanceId = AtomicInteger()
     }
 }

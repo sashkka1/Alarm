@@ -38,7 +38,7 @@ object VolumeCurve {
 
     /** Сколько процентов набежало нарастанием к моменту [elapsedMs]. */
     fun grown(settings: SoundSettings, elapsedMs: Long): Long =
-        elapsedMs.coerceAtLeast(0L) / (settings.secondsPerPercent * 1_000L)
+        elapsedMs.coerceAtLeast(0L) * settings.percentPerSecondTenths / 10_000L
 
     fun percentAt(settings: SoundSettings, elapsedMs: Long, quietDeduction: Int): Int {
         val raw = settings.startVolumePercent + grown(settings, elapsedMs) - quietDeduction

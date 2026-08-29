@@ -1,13 +1,13 @@
 package com.sasha.alarm
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.PixelFormat
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -17,6 +17,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.sasha.alarm.ui.AlarmColors
 import com.sasha.alarm.ui.AlarmTheme
 
 /**
@@ -55,8 +56,8 @@ class OverlayWindow(
             buildChallengeView()
         } catch (e: Exception) {
             // Тишина и пустота хуже любой заглушки (P0 №7): не собрался Compose —
-            // закрываем экран хотя бы белым листом, чтобы уйти всё равно не вышло.
-            Log.e(TAG, "испытание на заслонке не собралось, кладу белый лист", e)
+            // закрываем экран хотя бы ровным листом, чтобы уйти всё равно не вышло.
+            Log.e(TAG, "испытание на заслонке не собралось, кладу ровный лист", e)
             buildBlankView()
         }
         try {
@@ -91,7 +92,10 @@ class OverlayWindow(
         // Compose тянет цвета и размеры из темы; у контекста службы её может не быть.
         val themed = ContextThemeWrapper(context, R.style.Theme_Alarm)
         return ComposeView(themed).apply {
-            setBackgroundColor(Color.WHITE)
+            // Тот же красный, что и на самом экране тревоги: подложка видна ровно в те
+            // мгновения, пока Compose не нарисовал первый кадр, и белой ей быть нельзя —
+            // белый лист читается как поломка, а не как будильник (владелец, 2026-08-25).
+            setBackgroundColor(AlarmColors.Signal.toArgb())
             setViewTreeLifecycleOwner(treeOwner)
             setViewTreeSavedStateRegistryOwner(treeOwner)
             setContent {
@@ -100,7 +104,7 @@ class OverlayWindow(
                         // Камеру держит активити: два владельца одной камеры —
                         // это отказ у обоих.
                         cameraContent = {},
-                        onExit = { AlarmController.dismiss(context) },
+                        onExit = { AlarmController.dismiss(context, AlarmController.REASON_EXIT) },
                     )
                 }
             }
@@ -108,7 +112,7 @@ class OverlayWindow(
     }
 
     private fun buildBlankView(): View =
-        FrameLayout(context).apply { setBackgroundColor(Color.WHITE) }
+        FrameLayout(context).apply { setBackgroundColor(AlarmColors.Signal.toArgb()) }
 
     private fun releaseOwner() {
         owner?.stop()

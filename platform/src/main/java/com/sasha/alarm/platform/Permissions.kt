@@ -2,6 +2,7 @@ package com.sasha.alarm.platform
 
 import android.Manifest
 import android.app.AlarmManager
+import android.app.AppOpsManager
 import android.app.NotificationManager
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
@@ -40,12 +41,33 @@ enum class PermissionId {
     CAMERA,
 
     /**
+     * Микрофон для записи ночи.
+     *
+     * ⚠️ Тоже разрешение времени выполнения, и отказ здесь выглядит особенно
+     * подло: `AudioRecord` создаётся, `startRecording` не бросает исключения, а в файл
+     * идёт **ровная тишина**. Узнать об этом наутро по пустой записи — значит потерять ночь.
+     */
+    MICROPHONE,
+
+    /**
      * NFC для испытания «метки».
      *
      * Само разрешение выдаётся при установке, спрашивать нечего — но выключенный в
      * системе NFC не читает ни одной метки, и узнать об этом надо не в момент звонка.
      */
     NFC,
+
+    /**
+     * Доступ к статистике использования — для журнала, а не для тревоги.
+     *
+     * По нему видно, чем телефон был занят после подъёма: лёг обратно, залип в экран
+     * или ушёл на улицу. ⚠️ Система хранит эту историю около недели, поэтому её
+     * приходится переписывать к себе раз в сутки.
+     *
+     * Тревоге не нужен вовсе: без него всё звонит и блокирует как прежде, беднее
+     * становится только статистика.
+     */
+    USAGE_STATS,
 
     XIAOMI_AUTOSTART,
     XIAOMI_BACKGROUND_POPUP,
@@ -88,6 +110,10 @@ object Permissions {
             readable(PermissionId.OVERLAY, Settings.canDrawOverlays(context)),
             readable(PermissionId.EXACT_ALARM, exactAlarmsAllowed(context)),
             readable(PermissionId.BATTERY, batteryUnrestricted(context)),
+            readable(PermissionId.USAGE_STATS, usageStatsAllowed(context)),
+            // Микрофон в списке всегда: кнопка записи ночи стоит на главном экране и
+            // доступна каждый вечер, а не зависит от выбранного испытания.
+            readable(PermissionId.MICROPHONE, microphoneAllowed(context)),
         )
         if (needsCamera) {
             list += readable(PermissionId.CAMERA, cameraAllowed(context))
@@ -108,6 +134,10 @@ object Permissions {
 
     fun cameraAllowed(context: Context): Boolean =
         context.checkSelfPermission(Manifest.permission.CAMERA) ==
+            PackageManager.PERMISSION_GRANTED
+
+    fun microphoneAllowed(context: Context): Boolean =
+        context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) ==
             PackageManager.PERMISSION_GRANTED
 
     /** Открывает системный экран, где выдаётся конкретное разрешение. */
@@ -173,7 +203,17 @@ object Permissions {
         // владелец уже отказал — тогда единственный путь через системный экран.
         PermissionId.CAMERA -> emptyList()
 
+        // Как и камера: спрашивается диалогом времени выполнения.
+        PermissionId.MICROPHONE -> emptyList()
+
         PermissionId.NFC -> listOf(Intent(Settings.ACTION_NFC_SETTINGS))
+
+        PermissionId.USAGE_STATS -> listOf(
+            // Первый — сразу на нашу строку, второй — общий список: на части прошивок
+            // адресный вариант не открывается.
+            Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, packageUri(context)),
+            Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+        )
 
         PermissionId.XIAOMI_AUTOSTART -> listOf(
             Intent().setComponent(
@@ -237,6 +277,26 @@ object Permissions {
     private fun batteryUnrestricted(context: Context): Boolean =
         context.getSystemService(PowerManager::class.java)
             .isIgnoringBatteryOptimizations(context.packageName)
+
+    /**
+     * Выдан ли доступ к статистике использования.
+     *
+     * Спрашивается у `AppOpsManager`, а не у `checkSelfPermission`: это особый доступ,
+     * который выдаётся тумблером в системных настройках, и обычная проверка про него
+     * ничего не знает.
+     */
+    fun usageStatsAllowed(context: Context): Boolean = try {
+        val ops = context.getSystemService(AppOpsManager::class.java)
+        val mode = ops?.unsafeCheckOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            context.packageName,
+        )
+        mode == AppOpsManager.MODE_ALLOWED
+    } catch (e: Exception) {
+        Log.w(TAG, "не удалось прочитать доступ к статистике использования", e)
+        false
+    }
 
     private fun packageUri(context: Context): Uri = Uri.parse("package:${context.packageName}")
 

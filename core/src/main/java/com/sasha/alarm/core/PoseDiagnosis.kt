@@ -91,7 +91,7 @@ object PoseDiagnosis {
         // Прежде проверки шли в обратном порядке — сначала кадрирование, потом
         // счёт, — и приложение ругалось на обрезанное тело, прекрасно при этом
         // всё считая.
-        if (PushupCounter.frameAngle(frame) != null) return depthAdvice(state)
+        if (PushupCounter.frameDepth(frame) != null) return depthAdvice(state)
 
         // Считать не выходит. Разбираемся почему — **сначала причины, потом
         // следствия**. «Не вижу плечи» и «слишком близко» обычно случаются вместе,
@@ -125,13 +125,46 @@ object PoseDiagnosis {
      * к каждому кадру спуска.
      */
     private fun depthAdvice(state: PushupState): PoseProblem {
-        val deepest = state.deepestAngle
+        val deepest = state.deepestDrop
         val shallow = state.phase == PushupPhase.UP &&
-            deepest != PushupState.NO_ANGLE &&
-            deepest > PushupCounter.DOWN_ANGLE &&
-            deepest < PushupCounter.UP_ANGLE
+            deepest != PushupState.NO_DEPTH &&
+            deepest > PushupCounter.ATTEMPT_DEPTH &&
+            deepest < PushupCounter.DOWN_DEPTH
         return if (shallow) PoseProblem.NOT_LOW_ENOUGH else PoseProblem.NONE
     }
+
+    /**
+     * Сколько человек должен двигаться впустую, прежде чем сказать про телефон.
+     *
+     * Десять секунд — это заведомо больше одного отжимания и заведомо меньше, чем
+     * нужно, чтобы бросить попытки.
+     */
+    const val STUCK_MS = 10_000L
+
+    /**
+     * Какой размах признака глубины считается «человек явно двигается».
+     *
+     * Снято с видео владельца 2026-08-25: при съёмке с пола признак ходил в пределах
+     * 0.35, при этом ни один повтор не засчитывался. Лежащий неподвижно даёт размах
+     * около нуля, поэтому отдыхающего эта проверка не трогает.
+     */
+    const val MOVING_SPAN = 0.25f
+
+    /**
+     * Телефон стоит слишком низко: человек двигается, а повторы не идут.
+     *
+     * ⚠️ Это не «он плохо отжимается», а именно про ракурс. С телефона, лежащего на
+     * полу, подъём и спуск в кадре сжимаются почти в ноль — на видео владельца
+     * (2026-08-25) счётчик не брал ни одного повтора из пяти, причём **скелет был
+     * правильный**. Ни одна модель и ни один порог этого не чинят: чинится только
+     * высотой, на которой стоит телефон. Значит единственное честное поведение —
+     * сказать об этом вслух, а не молчать до дедлайна.
+     *
+     * @param spanSeen размах глубины за последнее окно наблюдения
+     * @param sinceProgressMillis сколько прошло с последнего засчитанного повтора
+     */
+    fun cameraTooLow(spanSeen: Float, sinceProgressMillis: Long): Boolean =
+        sinceProgressMillis >= STUCK_MS && spanSeen >= MOVING_SPAN
 
     /** Высота корпуса: от плеча до таза, по той стороне, что видно лучше. */
     fun torsoHeight(frame: PoseFrame): Float {

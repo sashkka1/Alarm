@@ -31,6 +31,22 @@
          и телефон при этом в режиме «Не беспокоить». -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
+    <!--
+      Единственное сетевое разрешение и единственное сетевое действие: отдать собственный
+      журнал компьютеру владельца в его домашней сети (P0 №6 в уставе, ADR-0006).
+      Ни серверов, ни аккаунтов, ни аналитики; телефон при этом только клиент и портов
+      не слушает. Всё, что уходит наружу, — строки нашего же журнала, и не дальше LAN.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Только для журнала: чем телефон был занят после подъёма — встал или лёг обратно.
+         Тревоге не нужно вовсе; без него беднеет статистика, но всё звонит как прежде.
+         Выдаётся тумблером в системных настройках, не диалогом. -->
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
+
     <!-- Пережить перезагрузку и спящий режим -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission
@@ -39,6 +55,14 @@
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- Запись звука ночи целиком: по ней владелец будет строить свой разбор сна и сверять
+         его со Sleep Cycle. Микрофон включается ТОЛЬКО кнопкой и только на время записи;
+         ни одного автоматического включения нет и не появляется.
+         ⚠️ FOREGROUND_SERVICE_MICROPHONE обязателен: с Android 14 без него служба с типом
+         microphone не стартует вовсе, а с Android 11 фоновое приложение получает тишину. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
 
     <!-- testOnly даёт главную страховку жёсткой блокировки: с таким приложением
          команда `adb shell dpm remove-active-admin` снимает права владельца устройства
@@ -85,6 +109,30 @@
                 android:value="alarm_screen" />
         </service>
 
+        <!-- Запись ночи. Отдельная служба от AlarmService: та живёт вместе с тревогой,
+             а эта начинается вечером и должна пережить всё, что случится за ночь. -->
+        <service
+            android:name=".NightRecordingService"
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
+
+        <!-- Девять утра: запись встаёт, даже если будильник так и не прозвонил. -->
+        <receiver
+            android:name=".NightDeadlineReceiver"
+            android:exported="false" />
+
+        <!-- Проверка записи по кабелю. Открыт наружу как пара к TEST_TRIGGER, но закрыт
+             разрешением DUMP: оно есть у оболочки adb и нет у обычных приложений, поэтому
+             включить микрофон чужой программе этот путь не даёт. -->
+        <receiver
+            android:name=".NightRecordTestReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="com.sasha.alarm.NIGHT_RECORD" />
+            </intent-filter>
+        </receiver>
+
         <!-- Второй слой блокировки: мгновенный возврат экрана тревоги.
              Содержимое чужих окон не читается, нужен только факт смены окна. -->
         <service
@@ -126,10 +174,19 @@
         </receiver>
 
         <!-- Путь к отступлению через кабель. Открыт наружу намеренно: иначе
-             `am broadcast` с компьютера до него не достучится. Защищён ключом. -->
+             `am broadcast` с компьютера до него не достучится. Ключей и подтверждений
+             нет — это запрет P0, каждая «защита» здесь лишь повод однажды не сработать.
+
+             ⚠️ Живёт в процессе `:guard`, а не в основном (владелец, 2026-08-25).
+             Причина: `dpm remove-active-admin` — вторая страховка побега — на HyperOS
+             работает только при включённой «Отладке по USB (Настройки безопасности)»,
+             а она держится на Mi-аккаунте и может отвалиться. Значит остаётся один
+             бродкаст, и он обязан доходить даже когда основной процесс завис намертво:
+             в общем процессе такой бродкаст просто лёг бы в очередь навсегда. -->
         <receiver
             android:name=".EscapeReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:process=":guard">
             <intent-filter>
                 <action android:name="com.sasha.alarm.ESCAPE" />
             </intent-filter>
@@ -155,6 +212,61 @@
             android:exported="false"
             android:process=":guard" />
 
+        <!--
+          Приём экспорта Sleep Cycle: их «Поделиться» → Alarm. Sleep Cycle не пишет
+          в Health Connect (проверено 2026-08-26), поэтому файл — единственный способ
+          получить их данные, и задача лишь в том, чтобы он стоил двух касаний.
+        -->
+        <activity
+            android:name=".ImportActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/csv" />
+                <data android:mimeType="text/comma-separated-values" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="application/csv" />
+                <data android:mimeType="application/octet-stream" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          Касание метки вне тревоги: уличную метку прикладывают, когда приложение закрыто,
+          и ловить её может только система. Окна нет — тема прозрачная, работа занимает
+          доли секунды. Чужие метки активити отпускает молча.
+        -->
+        <activity
+            android:name=".TagActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
+        </activity>
+
+        <!-- Ежедневная отдача журнала компьютеру. Открыт наружу как пара к TEST_TRIGGER:
+             чтобы проверять передачу по кабелю, не трогая телефон руками. Опасного
+             ничего не делает — только отдаёт свой же журнал в домашнюю сеть. -->
+        <receiver
+            android:name=".SyncReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.sasha.alarm.SYNC_NOW" />
+            </intent-filter>
+        </receiver>
+
         <receiver
             android:name=".BootReceiver"
             android:exported="true">
@@ -163,6 +275,9 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.TIME_SET" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <!-- Только для журнала: ночь с выключенным телефоном иначе выглядит
+                     просто дырой. Расписание при выключении не трогается. -->
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
             </intent-filter>
         </receiver>
 

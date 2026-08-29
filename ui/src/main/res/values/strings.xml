@@ -6,6 +6,35 @@
     <string name="menu_permissions_all">все выданы</string>
     <string name="menu_permissions_missing">выдано %1$d из %2$d</string>
 
+    <!-- Передача журнала на компьютер -->
+    <string name="sync_now">Передать статистику</string>
+    <string name="sync_never">ещё не передавалась</string>
+
+    <!-- Запись ночи -->
+    <string name="night_record_start">Записать ночь</string>
+    <string name="night_record_stop">Остановить запись</string>
+    <string name="night_record_hint">микрофон включится до звонка будильника</string>
+    <string name="night_record_running">идёт запись · встанет в 9:00 или по звонку</string>
+    <string name="night_record_stored">записей на телефоне: %1$d</string>
+    <string name="night_record_no_mic">нужен доступ к микрофону</string>
+    <string name="sync_sending">ищу компьютер…</string>
+    <string name="sync_done">отдано %1$d, принято %2$d · %3$s</string>
+    <string name="sync_not_found">компьютер не отозвался — открой на нём приложение</string>
+    <string name="sync_empty">журнал пуст</string>
+    <string name="sync_failed">не вышло: %1$s</string>
+
+    <!-- Приём экспорта Sleep Cycle -->
+    <string name="import_no_file">Файл не приложен</string>
+    <string name="import_unreadable">Файл не прочитался</string>
+    <string name="import_not_sleep_cycle">Это не экспорт Sleep Cycle</string>
+    <string name="import_done">Принято ночей: %1$d</string>
+    <!--
+      Владелец делится экспортом руками и по настроению, значит один и тот же файл
+      будет приходить снова и снова. «Принято ночей: 0» на это читается как отказ,
+      хотя всё в порядке — поэтому у случая «всё уже знакомо» свой ответ.
+    -->
+    <string name="import_known">Всё уже есть: %1$d ночей</string>
+
     <!-- Меню настроек: страницы, а не всплывающие окна -->
     <string name="menu_challenge">ИСПЫТАНИЕ</string>
     <string name="menu_sound">ЗВУК</string>
@@ -36,7 +65,9 @@
     <string name="perm_exact_alarm_title">Точные будильники</string>
     <string name="perm_battery_title">Без ограничений батареи</string>
     <string name="perm_camera_title">Камера</string>
+    <string name="perm_microphone_title">Микрофон</string>
     <string name="perm_nfc_title">NFC</string>
+    <string name="perm_usage_stats_title">Статистика использования</string>
     <string name="perm_xiaomi_autostart_title">Автозапуск (Xiaomi)</string>
     <string name="perm_xiaomi_popup_title">Всплывающие окна в фоне (Xiaomi)</string>
 
@@ -72,6 +103,9 @@
     <string name="pushup_problem_arms">Не разберу позу. Повернись к камере боком</string>
     <string name="pushup_problem_low">Ниже. Опускайся до конца</string>
     <string name="pushup_problem_none">Вижу тебя. Работай</string>
+    <!-- Телефон лежит слишком низко: движение есть, повторов нет. Ни модель, ни
+         пороги этого не чинят — чинится только высотой телефона. -->
+    <string name="pushup_problem_low_phone">Подними телефон повыше</string>
     <!-- Засчитанный повтор произносится голым числом, без слов: это отсчёт под
          нагрузкой, а не диктор. Строки для него нет намеренно. -->
     <string name="math_range_title">Диапазон чисел</string>

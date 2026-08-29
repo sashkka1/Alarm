@@ -51,8 +51,9 @@ fun AlarmContent(
         }
     }
 
-    // Испытание метками идёт своим экраном: на нём только шапка, лента маршрута
-    // и номер следующей метки — ни клавиатуры, ни кружков.
+    // Испытание метками идёт своим экраном: шапка, лента маршрута, номер следующей
+    // метки и круг-поводырь, за которым ведут пальцем ради тишины. Клавиатуры и
+    // прыгающего кружка с тапами здесь нет.
     NfcRuntime.run?.let { nfc ->
         NfcAlarmScreen(
             timeText = time,
@@ -61,6 +62,7 @@ fun AlarmContent(
             scan = NfcRuntime.lastScan,
             scanTick = NfcRuntime.scanTick,
             preview = AlarmRuntime.preview,
+            onGuideHold = { AlarmRuntime.onGuideHold(it) },
             onExit = onExit,
         )
         return

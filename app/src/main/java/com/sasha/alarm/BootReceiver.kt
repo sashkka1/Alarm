@@ -4,10 +4,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.os.SystemClock
+import com.sasha.alarm.core.EventType
+import com.sasha.alarm.core.LogEvent
 import com.sasha.alarm.platform.AlarmScheduling
 import com.sasha.alarm.platform.AlarmStateStore
 import com.sasha.alarm.platform.AndroidClock
 import com.sasha.alarm.platform.DeviceOwner
+import com.sasha.alarm.platform.EventLog
+import java.util.TimeZone
 
 /**
  * Загрузка телефона, обновление приложения, перевод часов.
@@ -27,7 +32,38 @@ class BootReceiver : BroadcastReceiver() {
         Log.i(TAG, "восстановление после ${intent.action}")
         val app = context.applicationContext
 
+        when (intent.action) {
+            Intent.ACTION_BOOT_COMPLETED -> {
+                // ⚠️ Время берём не «сейчас», а настоящий момент загрузки: HyperOS
+                // доставляет BOOT_COMPLETED повторно — проверено на телефоне 2026-08-25,
+                // где на одну загрузку пришло две записи с разницей в семь минут.
+                // С честным временем повторы дают побайтово одинаковую строку, и
+                // приёмник на компьютере отбрасывает их сам, без особого правила.
+                val bootedAt = System.currentTimeMillis() - SystemClock.elapsedRealtime()
+                EventLog(app).write(
+                    LogEvent(
+                        at = bootedAt,
+                        tzOffsetMinutes = TimeZone.getDefault().getOffset(bootedAt) / 60_000,
+                        type = EventType.PHONE_BOOT,
+                    )
+                )
+            }
+
+            Intent.ACTION_SHUTDOWN ->
+                // Выключение телефона перестало быть выходом (см. выше), но знать о нём
+                // надо: без этой отметки ночь с выключенным телефоном выглядит в журнале
+                // просто как дыра.
+                EventLog(app).write(EventType.PHONE_SHUTDOWN)
+        }
+
+        // Выключение телефона расписание не трогает: восстанавливать нечего, мы уходим.
+        if (intent.action == Intent.ACTION_SHUTDOWN) return
+
         DeviceOwner.applyPermanentPolicies(app)
+
+        // Таймеры не переживают перезагрузку и обновление приложения — ежедневную
+        // передачу журнала надо ставить заново вместе со всем остальным.
+        SyncReceiver.schedule(app)
 
         val state = AlarmStateStore(app).read()
         if (state.run == null) {

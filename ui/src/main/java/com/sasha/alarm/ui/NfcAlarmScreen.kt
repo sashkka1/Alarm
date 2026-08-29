@@ -2,9 +2,14 @@ package com.sasha.alarm.ui
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -26,18 +31,24 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sasha.alarm.core.GuideCircle
 import com.sasha.alarm.core.NfcScan
 import kotlinx.coroutines.delay
 
@@ -60,6 +71,14 @@ private val StepFutureInk = Color(0xFFECE5E0).copy(alpha = 0.28f)
 
 /** Блок вердикта: верный ответ оранжевый, ошибка — сигнально-красная. */
 private val BannerGood = Color(0xFFFF6A4D)
+
+/**
+ * Круг-поводырь — тот же зелёный, что у кружка громкости на остальных экранах.
+ * Зелёное в приложении означает «тише», и спутать его ни с чем нельзя.
+ * Обводка светлее заливки: на почти чёрном фоне тёмно-зелёное кольцо не видно.
+ */
+private val Guide = Color(0xFF2E7D32)
+private val GuideEdge = Color(0xFF57C46A)
 
 /**
  * Экран тревоги для испытания «обойти метки».
@@ -85,6 +104,11 @@ fun NfcAlarmScreen(
     /** Растёт с каждым касанием: одинаковый ответ подряд обязан показаться заново. */
     scanTick: Int,
     preview: Boolean,
+    /**
+     * Держит ли палец круг-поводырь. Зовётся **каждый кадр**, а не по смене:
+     * для сервиса это ещё и признак, что экран жив, — см. [GuideLayer].
+     */
+    onGuideHold: (Boolean) -> Unit,
     onExit: () -> Unit,
 ) {
     Column(
@@ -157,9 +181,97 @@ fun NfcAlarmScreen(
                     },
                 )
             }
+
+            GuideLayer(onHold = onGuideHold)
         }
 
         ScanBanner(scan, scanTick)
+    }
+}
+
+/**
+ * Круг-поводырь: тишина, пока палец ведёт его по экрану.
+ *
+ * Он всё время едет сам ([GuideCircle]), и держать его можно только рукой в
+ * движении — положить палец и уйти не выйдет. Оторвался или отстал за край —
+ * звонок возвращается за полторы секунды.
+ *
+ * ⚠️ Попадание проверяется **каждый кадр**, а не по событию касания: события
+ * приходят только когда палец двигается, а круг уезжает и из-под неподвижного
+ * пальца. Без покадровой проверки замерший палец давал бы вечную тишину.
+ *
+ * ⚠️ Тот же кадровый такт — сердцебиение для сервиса: [onHold] зовётся каждый
+ * раз, и по нему сервис понимает, что экран жив. Пропало сердцебиение — тишина
+ * снимается сама, чем бы её ни оборвало (P0 №7).
+ *
+ * ⚠️ Время берётся из часов кадров, а не из своего счётчика: они общие у активити
+ * и у заслонки, поэтому при подмене окна круг продолжает путь, а не прыгает.
+ */
+@Composable
+private fun BoxScope.GuideLayer(onHold: (Boolean) -> Unit) {
+    BoxWithConstraints(Modifier.matchParentSize()) {
+        val radiusPx = with(LocalDensity.current) { GuideCircle.RADIUS_DP.dp.toPx() }
+        val width = constraints.maxWidth.toFloat()
+        val height = constraints.maxHeight.toFloat()
+
+        // Палец читается из потока касаний, а сверяется с кругом в кадровом цикле,
+        // поэтому это состояние, а не локальная переменная.
+        val finger = remember { mutableStateOf<Offset?>(null) }
+        var center by remember { mutableStateOf(Offset(width / 2f, height / 2f)) }
+        var held by remember { mutableStateOf(false) }
+        val hold by rememberUpdatedState(onHold)
+
+        LaunchedEffect(width, height, radiusPx) {
+            while (true) {
+                val frameMs = withFrameMillis { it }
+                // Центр ходит в пределах, где круг помещается целиком: иначе он
+                // наполовину уезжал бы за край, и держать его было бы нечем.
+                val cx = radiusPx + (width - 2 * radiusPx) * GuideCircle.x(frameMs)
+                val cy = radiusPx + (height - 2 * radiusPx) * GuideCircle.y(frameMs)
+                center = Offset(cx, cy)
+
+                val touch = finger.value
+                val holding = touch != null &&
+                    GuideCircle.holds(touch.x - cx, touch.y - cy, radiusPx)
+                held = holding
+                hold(holding)
+            }
+        }
+
+        Canvas(
+            modifier = Modifier
+                .matchParentSize()
+                .pointerInput(Unit) {
+                    // Свой разбор касаний, а не detectDragGestures: тот начинает
+                    // считать только после порога сдвига, и первые миллиметры за
+                    // кругом шли бы мимо — то есть круг терялся бы в момент захвата.
+                    awaitEachGesture {
+                        val down = awaitFirstDown(requireUnconsumed = false)
+                        finger.value = down.position
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            val change = event.changes.firstOrNull { it.id == down.id } ?: break
+                            if (!change.pressed) break
+                            finger.value = change.position
+                        }
+                        finger.value = null
+                    }
+                },
+        ) {
+            // Держат — заливка плотная; нет — сквозь неё видно цифру метки, а она
+            // на этом экране главная.
+            drawCircle(
+                color = Guide.copy(alpha = if (held) 0.92f else 0.26f),
+                radius = radiusPx,
+                center = center,
+            )
+            drawCircle(
+                color = GuideEdge,
+                radius = radiusPx,
+                center = center,
+                style = Stroke(width = if (held) 5.dp.toPx() else 3.dp.toPx()),
+            )
+        }
     }
 }
 

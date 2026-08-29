@@ -1,6 +1,8 @@
 package com.sasha.alarm.core
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class PoseDiagnosisTest {
@@ -130,38 +132,63 @@ class PoseDiagnosisTest {
 
     @Test
     fun `недожатое отжимание объясняется словами`() {
-        // Опустился до 130° — ниже верхнего порога, но выше нижнего: повтор
-        // не засчитается, и человек обязан узнать почему.
-        val shallow = up.copy(deepestAngle = 130f)
+        // Плечо не дошло до локтя самую малость: повтор не засчитается, и человек
+        // обязан узнать почему.
+        val shallow = up.copy(deepestDrop = -0.05f)
         assertEquals(PoseProblem.NOT_LOW_ENOUGH, PoseDiagnosis.of(goodFrame, shallow))
     }
 
     @Test
     fun `дожатое отжимание претензий не вызывает`() {
-        val deep = up.copy(deepestAngle = 95f)
+        val deep = up.copy(deepestDrop = 0.05f)
         assertEquals(PoseProblem.NONE, PoseDiagnosis.of(goodFrame, deep))
+    }
+
+    @Test
+    fun `движение в верхней половине придиркой не считается`() {
+        // Раньше на такие кадры и сыпалось бесконечное «ниже» (владелец, 2026-08-25):
+        // человек просто шевелится наверху, опускаться он ещё и не начинал.
+        val idle = up.copy(deepestDrop = -0.6f)
+        assertEquals(PoseProblem.NONE, PoseDiagnosis.of(goodFrame, idle))
     }
 
     @Test
     fun `на спуске о глубине не напоминаем`() {
         // Посреди движения такая придирка сыпалась бы на каждый кадр.
-        val going = PushupState(PushupPhase.DOWN, reps = 0, lastRepAtMillis = 0L, deepestAngle = 130f)
+        val going = PushupState(PushupPhase.DOWN, reps = 0, lastRepAtMillis = 0L, deepestDrop = -0.05f)
         assertEquals(PoseProblem.NONE, PoseDiagnosis.of(goodFrame, going))
+    }
+
+    @Test
+    fun `двигается, а повторов нет — говорим про высоту телефона`() {
+        // Ровно случай съёмки с пола: размах глубины большой, счёт стоит.
+        assertTrue(PoseDiagnosis.cameraTooLow(spanSeen = 0.35f, sinceProgressMillis = 12_000L))
+    }
+
+    @Test
+    fun `лежащего неподвижно про телефон не спрашиваем`() {
+        // Отдых между подходами не повод переставлять телефон: движения нет вовсе.
+        assertFalse(PoseDiagnosis.cameraTooLow(spanSeen = 0.02f, sinceProgressMillis = 30_000L))
+    }
+
+    @Test
+    fun `пока повторы идут, про телефон молчим`() {
+        assertFalse(PoseDiagnosis.cameraTooLow(spanSeen = 0.9f, sinceProgressMillis = 2_000L))
     }
 
     @Test
     fun `счётчик копит глубину и обнуляет её на засчитанном повторе`() {
         var state = PushupState.START
-        fun feed(angle: Float, at: Long) {
-            repeat(PushupCounter.PHASE_FRAMES) { state = PushupCounter.next(state, angle, at).state }
+        fun feed(depth: Float, at: Long) {
+            repeat(PushupCounter.PHASE_FRAMES) { state = PushupCounter.next(state, depth, at).state }
         }
 
-        feed(170f, 0L)
-        feed(95f, 1_000L)
-        assertEquals(95f, state.deepestAngle, 0.1f)
+        feed(-0.9f, 0L)
+        feed(0.05f, 1_000L)
+        assertEquals(0.05f, state.deepestDrop, 0.01f)
 
-        feed(170f, 2_000L)
+        feed(-0.9f, 2_000L)
         assertEquals(1, state.reps)
-        assertEquals(PushupState.NO_ANGLE, state.deepestAngle, 0.1f)
+        assertEquals(PushupState.NO_DEPTH, state.deepestDrop, 0.01f)
     }
 }

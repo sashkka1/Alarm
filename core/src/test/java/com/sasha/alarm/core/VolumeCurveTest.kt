@@ -5,10 +5,10 @@ import org.junit.Test
 
 class VolumeCurveTest {
 
-    private fun settings(start: Int = 20, secondsPerPercent: Int = 3) = SoundSettings(
+    private fun settings(start: Int = 20, tenths: Int = 15) = SoundSettings(
         enabled = true,
         startVolumePercent = start,
-        secondsPerPercent = secondsPerPercent,
+        percentPerSecondTenths = tenths,
         vibrate = true,
         melody = MelodySource.SystemAlarm,
     )
@@ -34,15 +34,22 @@ class VolumeCurveTest {
     }
 
     @Test
-    fun `самое быстрое нарастание - процент в секунду`() {
-        val s = settings(start = 0, secondsPerPercent = 1)
-        assertEquals(10, VolumeCurve.percentAt(s, elapsedMs = 10_000L, quietDeduction = 0))
+    fun `самое быстрое нарастание - три процента в секунду`() {
+        val s = settings(start = 0, tenths = SoundSettings.MAX_PERCENT_PER_SECOND_TENTHS)
+        assertEquals(30, VolumeCurve.percentAt(s, elapsedMs = 10_000L, quietDeduction = 0))
     }
 
     @Test
-    fun `самое медленное нарастание - процент за пять секунд`() {
-        val s = settings(start = 0, secondsPerPercent = 5)
-        assertEquals(2, VolumeCurve.percentAt(s, elapsedMs = 10_000L, quietDeduction = 0))
+    fun `самое медленное нарастание - полпроцента в секунду`() {
+        val s = settings(start = 0, tenths = SoundSettings.MIN_PERCENT_PER_SECOND_TENTHS)
+        assertEquals(5, VolumeCurve.percentAt(s, elapsedMs = 10_000L, quietDeduction = 0))
+    }
+
+    @Test
+    fun `дробные ступени считаются честно`() {
+        val s = settings(start = 0, tenths = 25)
+        assertEquals(1, VolumeCurve.percentAt(s, elapsedMs = 500L, quietDeduction = 0))
+        assertEquals(25, VolumeCurve.percentAt(s, elapsedMs = 10_000L, quietDeduction = 0))
     }
 
     @Test
@@ -57,7 +64,7 @@ class VolumeCurveTest {
     fun `на нуле лишние нажатия ничего не копят`() {
         // Тот самый баг: раньше сбитое уходило в минус, и потом нарастанию
         // приходилось сначала отыграть невидимый долг.
-        val s = settings(start = 20, secondsPerPercent = 1)
+        val s = settings(start = 20, tenths = 20)
         val deduction = tap(s, elapsedMs = 0L, times = 50)
         assertEquals(20, deduction)
         assertEquals(0, VolumeCurve.percentAt(s, 0L, deduction))
@@ -65,24 +72,24 @@ class VolumeCurveTest {
 
     @Test
     fun `с нуля громкость растёт сразу, без задержки`() {
-        val s = settings(start = 20, secondsPerPercent = 1)
+        val s = settings(start = 20, tenths = 20)
         val deduction = tap(s, elapsedMs = 0L, times = 50)
         assertEquals(0, VolumeCurve.percentAt(s, 0L, deduction))
-        assertEquals(1, VolumeCurve.percentAt(s, 1_000L, deduction))
-        assertEquals(10, VolumeCurve.percentAt(s, 10_000L, deduction))
+        assertEquals(2, VolumeCurve.percentAt(s, 1_000L, deduction))
+        assertEquals(20, VolumeCurve.percentAt(s, 10_000L, deduction))
     }
 
     @Test
     fun `сбить можно и то, что успело набежать`() {
-        val s = settings(start = 0, secondsPerPercent = 1)
+        val s = settings(start = 0, tenths = 20)
         val deduction = tap(s, elapsedMs = 30_000L, times = 2)
         assertEquals(2 * VolumeCurve.QUIET_STEP_MAX_PERCENT, deduction)
-        assertEquals(30 - 2 * VolumeCurve.QUIET_STEP_MAX_PERCENT, VolumeCurve.percentAt(s, 30_000L, deduction))
+        assertEquals(60 - 2 * VolumeCurve.QUIET_STEP_MAX_PERCENT, VolumeCurve.percentAt(s, 30_000L, deduction))
     }
 
     @Test
     fun `громкость не уходит за сто процентов`() {
-        val s = settings(start = 5, secondsPerPercent = 1)
+        val s = settings(start = 5, tenths = 20)
         assertEquals(100, VolumeCurve.percentAt(s, 10 * 60_000L, quietDeduction = 0))
     }
 

@@ -2,4 +2,11 @@
 <resources>
     <!-- Запасной ровный фон, если вернуть <background android:drawable="@color/ic_launcher_background"/> -->
     <color name="ic_launcher_background">#FF0026</color>
+
+    <!-- Фон окна до первого кадра Compose. Тот же, что рисует потом сам экран:
+         белая простыня здесь читалась как «приложение сломалось». -->
+    <color name="app_background">#14110F</color>
+
+    <!-- Тот же сигнальный красный, что и на экране тревоги (ui/AlarmColors.Signal). -->
+    <color name="alarm_signal">#FF0026</color>
 </resources>

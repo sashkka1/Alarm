@@ -21,6 +21,7 @@ import com.sasha.alarm.core.AlarmState
 import com.sasha.alarm.core.Challenge
 import com.sasha.alarm.core.MelodySource
 import com.sasha.alarm.platform.AudioOutputs
+import com.sasha.alarm.platform.LogSender
 import com.sasha.alarm.platform.MelodyStore
 import com.sasha.alarm.platform.PermissionId
 import com.sasha.alarm.platform.PermissionStatus
@@ -49,6 +50,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Чистая установка не проходит через BOOT_COMPLETED, поэтому ежедневную передачу
+        // журнала ставим и отсюда. Повторный вызов просто переставляет тот же таймер.
+        SyncReceiver.schedule(this)
         setContent { AlarmTheme { AppRoot(resumeTick) } }
     }
 
@@ -68,6 +72,30 @@ private fun AppRoot(resumeTick: Int) {
     var headphones by remember { mutableStateOf(false) }
     var reloadTick by remember { mutableIntStateOf(0) }
 
+    // Передача журнала на компьютер. Состояние живёт на экране, а не на диске: это
+    // сообщение о последнем нажатии, а не настройка.
+    var syncCaption by remember { mutableStateOf("") }
+    var sending by remember { mutableStateOf(false) }
+    val sendingText = stringResource(UiR.string.sync_sending)
+    val describe: (LogSender.Result) -> String = { result ->
+        when (result) {
+            is LogSender.Result.Sent ->
+                context.getString(UiR.string.sync_done, result.lines, result.accepted, result.host)
+
+            LogSender.Result.NothingToSend -> context.getString(UiR.string.sync_empty)
+            is LogSender.Result.NotFound -> context.getString(UiR.string.sync_not_found)
+            is LogSender.Result.Failed -> context.getString(UiR.string.sync_failed, result.reason)
+        }
+    }
+
+    // Запись ночи. Состояние — в памяти службы, а не на диске: запись существует ровно
+    // столько, сколько жив её процесс, и врать об этом пережившим перезапуск флагом нельзя.
+    var nightRecording by remember { mutableStateOf(false) }
+    var nightRecordingCaption by remember { mutableStateOf("") }
+    val nightRunning = stringResource(UiR.string.night_record_running)
+    val nightHint = stringResource(UiR.string.night_record_hint)
+    val nightNoMic = stringResource(UiR.string.night_record_no_mic)
+
     LaunchedEffect(resumeTick, reloadTick) {
         state = withContext(Dispatchers.IO) { AlarmController.state(context) }
         permissions = withContext(Dispatchers.IO) {
@@ -79,6 +107,15 @@ private fun AppRoot(resumeTick: Int) {
             )
         }
         headphones = withContext(Dispatchers.IO) { AudioOutputs.headphonesConnected(context) }
+
+        nightRecording = NightRecordingService.active
+        val stored = withContext(Dispatchers.IO) { NightRecordingService.recordings(context).size }
+        nightRecordingCaption = when {
+            nightRecording -> nightRunning
+            !Permissions.microphoneAllowed(context) -> nightNoMic
+            stored > 0 -> context.getString(UiR.string.night_record_stored, stored)
+            else -> nightHint
+        }
     }
 
     val mutate: ((AlarmState) -> AlarmState) -> Unit = { block ->
@@ -104,6 +141,16 @@ private fun AppRoot(resumeTick: Int) {
         ActivityResultContracts.RequestPermission(),
     ) { reloadTick++ }
 
+    // Микрофон — то же самое, но с одним отличием: разрешив, запись начинаем сразу.
+    // Иначе владелец жмёт «Записать ночь», отвечает на диалог и остаётся ни с чем,
+    // не понимая, что нажать надо было второй раз.
+    val microphoneRequest = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { allowed ->
+        reloadTick++
+        if (allowed) NightRecordingService.start(context)
+    }
+
     SettingsScreen(
         state = SettingsUiState(
             masterEnabled = state.masterEnabled,
@@ -118,6 +165,9 @@ private fun AppRoot(resumeTick: Int) {
             failSafeMinutes = state.failSafeMinutes,
             resumeDelaySeconds = state.resumeDelaySeconds,
             permissions = permissionRows(permissions, state.manualPermissions),
+            syncCaption = syncCaption,
+            nightRecording = nightRecording,
+            nightRecordingCaption = nightRecordingCaption,
         ),
         actions = SettingsActions(
             onMasterChange = { enabled -> mutate { it.copy(masterEnabled = enabled) } },
@@ -166,6 +216,30 @@ private fun AppRoot(resumeTick: Int) {
                 }
             },
             onTest = { AlarmController.scheduleTest(context, TEST_DELAY_MS) },
+            onNightRecordingToggle = {
+                when {
+                    NightRecordingService.active ->
+                        NightRecordingService.stop(context, "manual")
+
+                    Permissions.microphoneAllowed(context) ->
+                        NightRecordingService.start(context)
+
+                    // Разрешения нет — спрашиваем; запись начнётся из ответа на диалог.
+                    else -> microphoneRequest.launch(android.Manifest.permission.RECORD_AUDIO)
+                }
+                reloadTick++
+            },
+            onSendLog = {
+                if (!sending) {
+                    sending = true
+                    syncCaption = sendingText
+                    scope.launch {
+                        val result = withContext(Dispatchers.IO) { LogSender(context).send() }
+                        syncCaption = describe(result)
+                        sending = false
+                    }
+                }
+            },
         ),
         // Метки рисует :app: считыватель работает только на активити, а она здесь.
         nfcContent = { NfcSetupSheet(onChanged = { reloadTick++ }) },
@@ -193,7 +267,9 @@ private fun permissionRows(
             PermissionId.EXACT_ALARM -> UiR.string.perm_exact_alarm_title
             PermissionId.BATTERY -> UiR.string.perm_battery_title
             PermissionId.CAMERA -> UiR.string.perm_camera_title
+            PermissionId.MICROPHONE -> UiR.string.perm_microphone_title
             PermissionId.NFC -> UiR.string.perm_nfc_title
+            PermissionId.USAGE_STATS -> UiR.string.perm_usage_stats_title
             PermissionId.XIAOMI_AUTOSTART -> UiR.string.perm_xiaomi_autostart_title
             PermissionId.XIAOMI_BACKGROUND_POPUP -> UiR.string.perm_xiaomi_popup_title
         }

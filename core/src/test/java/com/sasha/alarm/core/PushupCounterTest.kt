@@ -60,22 +60,28 @@ class PushupCounterTest {
         assertNull(PushupCounter.elbowAngle(collapsed))
     }
 
+    /** Верхняя точка: рука выпрямлена, плечо почти на длину кости выше локтя. */
+    private val top = -0.90f
+
+    /** Нижняя точка: плечо провалилось под локоть. */
+    private val bottom = 0.05f
+
     /**
-     * Прогнать углы через счётчик.
+     * Прогнать признаки глубины через счётчик.
      *
-     * Каждый угол подаётся [PushupCounter.PHASE_FRAMES] раз подряд: фаза меняется
+     * Каждое значение подаётся [PushupCounter.PHASE_FRAMES] раз подряд: фаза меняется
      * только после нескольких одинаковых кадров, и тест должен играть по тем же
      * правилам, что и камера.
      */
     private fun run(
-        vararg angles: Pair<Float?, Long>,
+        vararg depths: Pair<Float?, Long>,
         from: PushupState = PushupState.START,
     ): Pair<PushupState, List<RepOutcome>> {
         var state = from
         val outcomes = mutableListOf<RepOutcome>()
-        angles.forEach { (angle, at) ->
+        depths.forEach { (depth, at) ->
             repeat(PushupCounter.PHASE_FRAMES) {
-                val tick = PushupCounter.next(state, angle, at)
+                val tick = PushupCounter.next(state, depth, at)
                 state = tick.state
                 if (tick.outcome != RepOutcome.NONE) outcomes += tick.outcome
             }
@@ -85,9 +91,17 @@ class PushupCounterTest {
 
     @Test
     fun `полный цикл вниз-вверх даёт один повтор`() {
-        val (state, outcomes) = run(170f to 0L, 90f to 1_000L, 170f to 2_000L)
+        val (state, outcomes) = run(top to 0L, bottom to 1_000L, top to 2_000L)
         assertEquals(1, state.reps)
         assertEquals(listOf(RepOutcome.COUNTED), outcomes)
+    }
+
+    @Test
+    fun `плечо ровно на уровне локтя уже считается низом`() {
+        // Владелец сформулировал критерий так: лопатка опустилась ниже локтя —
+        // засчитываем. Ровно ноль — это граница, и она входит в «низ».
+        val (state, _) = run(top to 0L, 0f to 1_000L, top to 2_000L)
+        assertEquals(1, state.reps)
     }
 
     @Test
@@ -95,17 +109,17 @@ class PushupCounterTest {
         // Ровно это насчитывало три повтора в первые секунды: одиночные мусорные
         // кадры перекидывали фазу туда-обратно (владелец, 2026-08-18).
         var state = PushupState.START
-        repeat(PushupCounter.PHASE_FRAMES) { state = PushupCounter.next(state, 170f, 0L).state }
+        repeat(PushupCounter.PHASE_FRAMES) { state = PushupCounter.next(state, top, 0L).state }
         // Один-единственный кадр «внизу» — этого мало.
-        state = PushupCounter.next(state, 60f, 100L).state
+        state = PushupCounter.next(state, bottom, 100L).state
         assertEquals(PushupPhase.UP, state.phase)
-        state = PushupCounter.next(state, 170f, 200L).state
+        state = PushupCounter.next(state, top, 200L).state
         assertEquals(0, state.reps)
     }
 
     @Test
     fun `только опускание повтора не даёт`() {
-        val (state, _) = run(170f to 0L, 90f to 1_000L)
+        val (state, _) = run(top to 0L, bottom to 1_000L)
         assertEquals(0, state.reps)
         assertEquals(PushupPhase.DOWN, state.phase)
     }
@@ -115,34 +129,35 @@ class PushupCounterTest {
         // Тот самый случай, ради которого нужен гистерезис: без нижнего порога
         // каждое колебание точки насчитало бы повтор.
         var state = PushupState.START
-        state = PushupCounter.next(state, 170f, 0L).state
-        repeat(20) { i -> state = PushupCounter.next(state, 149f + (i % 2) * 4f, 100L * i).state }
+        state = PushupCounter.next(state, top, 0L).state
+        repeat(20) { i -> state = PushupCounter.next(state, -0.16f + (i % 2) * 0.02f, 100L * i).state }
         assertEquals(0, state.reps)
     }
 
     @Test
     fun `слишком быстрый повтор отбрасывается и объясняется`() {
-        val (first, _) = run(170f to 0L, 90f to 100L, 170f to 200L)
+        val (first, _) = run(top to 0L, bottom to 100L, top to 200L)
         assertEquals(1, first.reps)
 
         // Второй «повтор» через 100 мс — физически невозможен, значит рывок модели.
-        val (state, outcomes) = run(90f to 250L, 170f to 300L, from = first)
+        val (state, outcomes) = run(bottom to 250L, top to 300L, from = first)
         assertEquals(1, state.reps)
         assertEquals(listOf(RepOutcome.TOO_SOON), outcomes)
     }
 
     @Test
     fun `недожатое отжимание не считается и называется своим именем`() {
-        // Опустился до 130° — ниже верхнего порога, но выше нижнего.
-        val (state, outcomes) = run(170f to 0L, 130f to 1_000L, 170f to 2_000L)
+        // Опустился до −0.05: почти дошёл до локтя, но плечо под него не ушло.
+        val (state, outcomes) = run(top to 0L, -0.05f to 1_000L, top to 2_000L)
         assertEquals(0, state.reps)
         assertEquals(listOf(RepOutcome.NOT_LOW_ENOUGH), outcomes)
     }
 
     @Test
     fun `лёгкое дрожание наверху попыткой не считается`() {
-        // 160° — это не «недожал», а рука дрогнула. Придираться не за что.
-        val (_, outcomes) = run(170f to 0L, 160f to 1_000L, 170f to 2_000L)
+        // −0.6 — это не «недожал», а движение в верхней половине. Раньше именно
+        // такие кадры и рождали бесконечное «ниже» (владелец, 2026-08-25).
+        val (_, outcomes) = run(top to 0L, -0.6f to 1_000L, top to 2_000L)
         assertEquals(emptyList<RepOutcome>(), outcomes)
     }
 
@@ -150,19 +165,19 @@ class PushupCounterTest {
     fun `десять честных отжиманий считаются как десять`() {
         var state = PushupState.START
         var now = 0L
-        state = run(170f to now, from = state).first
+        state = run(top to now, from = state).first
         repeat(10) {
             now += 900L
-            state = run(85f to now, from = state).first
+            state = run(0.1f to now, from = state).first
             now += 900L
-            state = run(172f to now, from = state).first
+            state = run(-0.95f to now, from = state).first
         }
         assertEquals(10, state.reps)
     }
 
     @Test
     fun `нераспознанный кадр не сбивает счёт`() {
-        val (state, _) = run(170f to 0L, 90f to 1_000L, null to 1_500L, 170f to 2_000L)
+        val (state, _) = run(top to 0L, bottom to 1_000L, null to 1_500L, top to 2_000L)
         assertEquals(1, state.reps)
     }
 
@@ -212,6 +227,57 @@ class PushupCounterTest {
             wrist = straightArm.wrist.copy(confidence = 0.1f),
         )
         assertNull(PushupCounter.frameAngle(frameOf(blind, blind)))
+    }
+
+    @Test
+    fun `рука выпрямлена вертикально — плечо на длину кости выше локтя`() {
+        // Верхняя точка отжимания: плечо ровно над локтем.
+        val vertical = ArmPose(
+            shoulder = point(0.50f, 0.20f),
+            elbow = point(0.50f, 0.50f),
+            wrist = point(0.50f, 0.80f),
+        )
+        val drop = PushupCounter.armDrop(vertical)
+        assertNotNull(drop)
+        assertEquals(-1f, drop!!, 0.01f)
+    }
+
+    @Test
+    fun `плечо провалилось под локоть — глубина положительная`() {
+        val low = ArmPose(
+            shoulder = point(0.50f, 0.60f),
+            elbow = point(0.50f, 0.50f),
+            wrist = point(0.80f, 0.50f),
+        )
+        val drop = PushupCounter.armDrop(low)
+        assertNotNull(drop)
+        assertTrue(drop!! > 0f)
+    }
+
+    @Test
+    fun `вырожденная плечевая кость глубины не даёт`() {
+        // Делить не на что: точки схлопнулись, частное улетело бы в бессмыслицу.
+        val collapsed = ArmPose(
+            shoulder = point(0.500f, 0.500f),
+            elbow = point(0.505f, 0.501f),
+            wrist = point(0.80f, 0.50f),
+        )
+        assertNull(PushupCounter.armDrop(collapsed))
+    }
+
+    @Test
+    fun `глубина не зависит от расстояния до телефона`() {
+        // Тот же человек вдвое дальше: числа в кадре вдвое меньше, признак тот же.
+        val near = ArmPose(point(0.50f, 0.20f), point(0.50f, 0.50f), point(0.80f, 0.50f))
+        val far = ArmPose(point(0.50f, 0.35f), point(0.50f, 0.50f), point(0.65f, 0.50f))
+        assertEquals(PushupCounter.armDrop(near)!!, PushupCounter.armDrop(far)!!, 0.01f)
+    }
+
+    @Test
+    fun `негодный ракурс глубину не отдаёт вовсе`() {
+        // Входной контроль остался прежним: не сошлись руки — кадру не верим целиком,
+        // сколько бы аккуратно ни считалось смещение плеча.
+        assertNull(PushupCounter.frameDepth(frameOf(straightArm, bentArm)))
     }
 
     @Test

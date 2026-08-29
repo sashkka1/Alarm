@@ -226,12 +226,12 @@ data class PushupState(
     /** Когда в последний раз засчитали повтор — чтобы отсеять дребезг. */
     val lastRepAtMillis: Long,
     /**
-     * Самый острый угол с прошлого засчитанного повтора.
+     * Самая нижняя точка с прошлого засчитанного повтора.
      *
-     * Нужен ровно для одного: сказать «опускайся ниже». Без этого недожатое
+     * Нужна ровно для одного: сказать «опускайся ниже». Без этого недожатое
      * отжимание молча не считается, и человек не понимает, почему счётчик стоит.
      */
-    val deepestAngle: Float = NO_ANGLE,
+    val deepestDrop: Float = NO_DEPTH,
     /**
      * За какую фазу голосуют последние кадры и сколько их подряд.
      *
@@ -244,8 +244,8 @@ data class PushupState(
     val votes: Int = 0,
 ) {
     companion object {
-        /** Углов ещё не было. Не 0f: ноль — это полностью сложенная рука. */
-        const val NO_ANGLE = Float.MAX_VALUE
+        /** Кадров ещё не было. Не 0f: ноль — это плечо ровно на уровне локтя. */
+        const val NO_DEPTH = -Float.MAX_VALUE
 
         val START = PushupState(PushupPhase.UNKNOWN, reps = 0, lastRepAtMillis = 0L)
     }
@@ -270,17 +270,28 @@ enum class RepOutcome {
 data class PushupTick(val state: PushupState, val outcome: RepOutcome)
 
 /**
- * Счётчик отжиманий по углу в локте.
+ * Счётчик отжиманий: глубина меряется по тому, опустилось ли плечо ниже локтя.
  *
- * Почему именно угол, а не высота плеч: угол не зависит ни от расстояния до камеры,
- * ни от того, под каким углом лежит телефон, ни от роста. Высота плеч зависит от
- * всего этого сразу и требует калибровки на каждый заход.
+ * ⚠️ **Раньше глубину решал угол в локте, и это оказалось неверно** (владелец,
+ * 2026-08-25: «мне почти ничего не засчитывает и вечно говорит ниже»). Прогон по
+ * двум его видео с пятью отжиманиями показал, почему: при съёмке сбоку локоть в
+ * нижней точке уходит назад, плоская проекция угол завышает, и честное отжимание
+ * читалось как 116° — недостаточно для порога 110°. По углу засчитался **1 повтор
+ * из 5**; по «плечо ниже локтя» на том же видео — ровно **5 из 5**.
  *
- * Два порога, а не один ([DOWN_ANGLE] и [UP_ANGLE]) — это гистерезис. С одним порогом
+ * Признак — вертикальное смещение плеча относительно локтя, делённое на длину
+ * плечевой кости. Деление обязательно: без него число зависит от того, как далеко
+ * стоит телефон, а с ним одинаково работает и вплотную, и через комнату.
+ *
+ * Два порога, а не один ([DOWN_DEPTH] и [UP_DEPTH]) — это гистерезис. С одним порогом
  * дрожание точек вокруг него насчитало бы десяток повторов за секунду.
  *
  * Повтор засчитывается на переходе **вниз → вверх**: то есть за опускание с
  * последующим подъёмом, а не за любое движение.
+ *
+ * ⚠️ Угол в локте никуда не делся — он остался **входным контролем**: [frameAngle]
+ * проверяет, что рука видна целиком и обе руки не спорят. Просто глубину он больше
+ * не решает.
  */
 object PushupCounter {
 
@@ -293,11 +304,37 @@ object PushupCounter {
      */
     const val MIN_CONFIDENCE = 0.6f
 
-    /** Локоть согнут — человек внизу. */
-    const val DOWN_ANGLE = 110f
+    /**
+     * Человек внизу: плечо опустилось до уровня локтя.
+     *
+     * Ноль — это буквально «лопатка на одной высоте с локтем», как и просил
+     * владелец. Ниже нуля плечо выше локтя, выше нуля — плечо провалилось под него.
+     */
+    const val DOWN_DEPTH = 0f
 
-    /** Локоть выпрямлен — человек вверху. */
-    const val UP_ANGLE = 150f
+    /**
+     * Человек снова вверху: плечо заметно выше локтя.
+     *
+     * −0.15 длины плечевой кости, а не ноль — это и есть гистерезис. На видео
+     * владельца верхняя точка держится около −0.9, так что порог с запасом.
+     */
+    const val UP_DEPTH = -0.15f
+
+    /**
+     * Ближе этого к низу — считаем, что человек **пытался** и не дожал.
+     *
+     * Дальше — это не «недожал», а обычное движение в верхней половине, и говорить
+     * про него «опускайся ниже» значило бы придираться к каждому подъёму. Ровно на
+     * это владелец и жаловался: «вечно говорит ниже».
+     */
+    const val ATTEMPT_DEPTH = -0.10f
+
+    /**
+     * Короче этого плечевая кость в кадре считается вырожденной.
+     *
+     * Ею делят, и на почти нулевой длине частное улетает в бессмыслицу.
+     */
+    const val MIN_ARM_LENGTH = 0.02f
 
     /**
      * Насколько руки могут расходиться в показаниях.
@@ -353,27 +390,20 @@ object PushupCounter {
     const val PHASE_FRAMES = 2
 
     /**
-     * Насколько ниже верхнего порога нужно опуститься, чтобы это считалось попыткой.
-     *
-     * Мельче — это не «недожал», а дрожание руки на месте, и говорить про него
-     * «опускайся ниже» значило бы придираться к неподвижному человеку.
-     */
-    const val ATTEMPT_MARGIN = 15f
-
-    /**
      * Новый кадр.
      *
-     * @param angle угол в локте, либо null если кадр не распознался — тогда состояние
-     *              не меняется вовсе: пропущенный кадр не должен ни считать, ни сбрасывать.
+     * @param depth насколько плечо ниже локтя ([frameDepth]), либо null если кадр не
+     *              распознался — тогда состояние не меняется вовсе: пропущенный кадр
+     *              не должен ни считать, ни сбрасывать.
      */
-    fun next(state: PushupState, angle: Float?, nowMillis: Long): PushupTick {
-        if (angle == null) return PushupTick(state, RepOutcome.NONE)
+    fun next(state: PushupState, depth: Float?, nowMillis: Long): PushupTick {
+        if (depth == null) return PushupTick(state, RepOutcome.NONE)
 
-        val deepened = state.copy(deepestAngle = minOf(state.deepestAngle, angle))
+        val deepened = state.copy(deepestDrop = maxOf(state.deepestDrop, depth))
 
         val vote = when {
-            angle <= DOWN_ANGLE -> PushupPhase.DOWN
-            angle >= UP_ANGLE -> PushupPhase.UP
+            depth >= DOWN_DEPTH -> PushupPhase.DOWN
+            depth <= UP_DEPTH -> PushupPhase.UP
             // Между порогами движение идёт, и голосовать не за что.
             else -> return PushupTick(deepened.copy(votedPhase = PushupPhase.UNKNOWN, votes = 0), RepOutcome.NONE)
         }
@@ -398,7 +428,7 @@ object PushupCounter {
                 rising.copy(
                     reps = state.reps + 1,
                     lastRepAtMillis = nowMillis,
-                    deepestAngle = PushupState.NO_ANGLE,
+                    deepestDrop = PushupState.NO_DEPTH,
                 ),
                 RepOutcome.COUNTED,
             )
@@ -407,8 +437,8 @@ object PushupCounter {
             // не дошёл, и всё это время он формально «вверху». Поэтому проверяем её
             // по накопленной глубине, а не по смене фазы — иначе она не находится.
             // Глубину сбрасываем, чтобы сказать об этом один раз, а не каждый кадр.
-            state.deepestAngle < UP_ANGLE - ATTEMPT_MARGIN ->
-                PushupTick(rising.copy(deepestAngle = PushupState.NO_ANGLE), RepOutcome.NOT_LOW_ENOUGH)
+            state.deepestDrop > ATTEMPT_DEPTH ->
+                PushupTick(rising.copy(deepestDrop = PushupState.NO_DEPTH), RepOutcome.NOT_LOW_ENOUGH)
 
             else -> PushupTick(rising, RepOutcome.NONE)
         }
@@ -452,6 +482,47 @@ object PushupCounter {
             left != null && right != null ->
                 if (abs(left - right) > MAX_ARM_DISAGREEMENT) null else (left + right) / 2f
 
+            else -> left ?: right
+        }
+    }
+
+    /**
+     * Насколько плечо опустилось ниже локтя, в длинах плечевой кости.
+     *
+     * Больше нуля — плечо ниже локтя, человек внизу. Около −1 — рука выпрямлена
+     * вертикально, плечо ровно над локтем: это верхняя точка отжимания.
+     *
+     * @return null, если хотя бы одну из двух точек не видно или кость в кадре
+     *         выродилась в точку — делить тогда не на что.
+     */
+    fun armDrop(arm: ArmPose): Float? {
+        if (arm.shoulder.confidence < MIN_CONFIDENCE) return null
+        if (arm.elbow.confidence < MIN_CONFIDENCE) return null
+
+        val dx = arm.shoulder.x - arm.elbow.x
+        val dy = arm.shoulder.y - arm.elbow.y
+        val length = sqrt(dx * dx + dy * dy)
+        if (length < MIN_ARM_LENGTH) return null
+
+        // Ось Y растёт вниз, поэтому «плечо ниже локтя» — это положительное dy.
+        return dy / length
+    }
+
+    /**
+     * Признак глубины из целого кадра — то, по чему и считаются повторы.
+     *
+     * ⚠️ Входной контроль остался прежним и идёт первым: пока [frameAngle] не
+     * подтвердил, что рука видна целиком и обе руки не спорят, глубину мерить не по
+     * чему. Это та самая проверка, из-за которой негодный ракурс честно отказывает,
+     * а не выдаёт правдоподобные числа.
+     */
+    fun frameDepth(frame: PoseFrame): Float? {
+        if (frameAngle(frame) == null) return null
+
+        val left = frame.left.takeIf { poseUsable(it) }?.let(::armDrop)
+        val right = frame.right.takeIf { poseUsable(it) }?.let(::armDrop)
+        return when {
+            left != null && right != null -> (left + right) / 2f
             else -> left ?: right
         }
     }

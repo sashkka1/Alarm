@@ -96,6 +96,15 @@ data class SettingsUiState(
     val failSafeMinutes: Int,
     val resumeDelaySeconds: Int,
     val permissions: List<PermissionRow>,
+    /**
+     * Что показывать про передачу журнала на компьютер: когда получилось в прошлый раз
+     * либо что пошло не так. Пустая строка — журнал ещё ни разу не уезжал.
+     */
+    val syncCaption: String = "",
+    /** Идёт ли запись ночи прямо сейчас. */
+    val nightRecording: Boolean = false,
+    /** Что показать под кнопкой записи: до какого часа пишем либо сколько ночей лежит. */
+    val nightRecordingCaption: String = "",
 )
 
 data class SettingsActions(
@@ -116,6 +125,10 @@ data class SettingsActions(
     val onOpenPermission: (String) -> Unit,
     val onToggleManual: (String) -> Unit,
     val onTest: () -> Unit,
+    /** Отдать журнал компьютеру прямо сейчас, не дожидаясь обеденного окна. */
+    val onSendLog: () -> Unit = {},
+    /** Начать запись ночи или остановить идущую. */
+    val onNightRecordingToggle: () -> Unit = {},
 )
 
 /**
@@ -345,6 +358,35 @@ private fun Menu(
         // Недостача обводится акцентом: это единственное, что молча ломает будильник.
         alarming = !all,
         onClick = { openSheet(Sheet.PERMISSIONS) },
+    )
+
+    // Передача журнала. Отдельной страницы нет намеренно: настраивать нечего, а нажать
+    // может понадобиться — когда ноутбук уже открыт и ждать обеда не хочется.
+    Spacer(Modifier.height(11.dp))
+    MenuRow(
+        icon = R.drawable.ic_permissions,
+        caption = state.syncCaption.ifEmpty { stringResource(R.string.sync_never) },
+        title = stringResource(R.string.sync_now),
+        onClick = actions.onSendLog,
+    )
+
+    // Запись ночи. Кнопка, а не расписание: включать её каждую ночь автоматически владелец
+    // не захотел — микрофон должен включаться, только когда об этом попросили.
+    Spacer(Modifier.height(11.dp))
+    MenuRow(
+        icon = R.drawable.ic_sound,
+        caption = state.nightRecordingCaption.ifEmpty {
+            stringResource(R.string.night_record_hint)
+        },
+        title = if (state.nightRecording) {
+            stringResource(R.string.night_record_stop)
+        } else {
+            stringResource(R.string.night_record_start)
+        },
+        // Идущая запись обведена акцентом — как и недостача разрешений: и то и другое
+        // означает, что прямо сейчас происходит нечто, о чём надо помнить.
+        alarming = state.nightRecording,
+        onClick = actions.onNightRecordingToggle,
     )
 
     Spacer(Modifier.height(18.dp))
@@ -725,17 +767,25 @@ private fun SoundBody(state: SettingsUiState, actions: SettingsActions) {
         track = { PlainTrack(it) },
     )
 
-    // Ползунок перевёрнут: вправо — быстрее. В настройках хранятся секунды на процент,
-    // а там больше значит медленнее, поэтому значение зеркалим.
-    val bounds = SoundSettings.MIN_SECONDS_PER_PERCENT + SoundSettings.MAX_SECONDS_PER_PERCENT
-    Value(stringResource(R.string.sound_ramp_title), "1% / ${sound.secondsPerPercent} с")
+    // Зеркалить больше нечего: хранятся проценты в секунду, и вправо — как и было,
+    // быстрее. Ползунок стоит по ступеням в полпроцента: 2 / 2,5 / 3.
+    val tenths = sound.percentPerSecondTenths
+    val whole = tenths / 10
+    val fraction = tenths % 10
+    Value(
+        stringResource(R.string.sound_ramp_title),
+        if (fraction == 0) "$whole% / с" else "$whole,$fraction% / с",
+    )
     Slider(
-        value = (bounds - sound.secondsPerPercent).toFloat(),
+        value = tenths.toFloat(),
         onValueChange = {
-            actions.onSoundChange(sound.copy(secondsPerPercent = bounds - it.roundToInt()))
+            actions.onSoundChange(sound.copy(percentPerSecondTenths = it.roundToInt()))
         },
-        valueRange = SoundSettings.MIN_SECONDS_PER_PERCENT.toFloat()..
-            SoundSettings.MAX_SECONDS_PER_PERCENT.toFloat(),
+        valueRange = SoundSettings.MIN_PERCENT_PER_SECOND_TENTHS.toFloat()..
+            SoundSettings.MAX_PERCENT_PER_SECOND_TENTHS.toFloat(),
+        steps = (SoundSettings.MAX_PERCENT_PER_SECOND_TENTHS -
+            SoundSettings.MIN_PERCENT_PER_SECOND_TENTHS) /
+            SoundSettings.PERCENT_PER_SECOND_STEP_TENTHS - 1,
         colors = sliderColors(),
         track = { PlainTrack(it) },
     )
