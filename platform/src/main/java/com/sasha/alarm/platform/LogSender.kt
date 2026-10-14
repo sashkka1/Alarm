@@ -3,6 +3,7 @@ package com.sasha.alarm.platform
 import android.content.Context
 import android.util.Log
 import com.sasha.alarm.core.LogWire
+import com.sasha.alarm.core.SyncDelta
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -45,38 +46,114 @@ class LogSender(context: Context) {
     /**
      * Найти компьютер и отдать ему журнал.
      *
-     * @param host адрес, вписанный руками. `null` — искать широковещательным запросом.
+     * Адрес берётся из трёх мест по порядку, и порядок этот не случаен:
+     *
+     * 1. **[host], если передан** — путь для проверок и для будущего поля в настройках.
+     * 2. **Запомненный адрес этой сети** ([SyncStateStore.rememberedHost]) — попытка
+     *    стоит доли секунды и в девяти случаях из десяти на этом всё и кончается.
+     * 3. **Широковещательный поиск** — когда сеть незнакомая или роутер сменил адрес.
+     *
+     * ⚠️ **Запомненный адрес не отменяет поиск, а опережает его.** Не отозвался — идём
+     * искать как раньше; иначе смена адреса по DHCP превратилась бы в молчаливый отказ
+     * до тех пор, пока владелец не полез бы в настройки.
+     *
+     * @param host адрес, вписанный руками. `null` — вспомнить, а потом искать.
      */
     fun send(host: String? = null): Result {
-        val lines = readLog()
-        if (lines.isEmpty()) return Result.NothingToSend
+        val files = readLogFiles()
+        if (files.values.sumOf { it.size } == 0) return Result.NothingToSend
 
-        val target = host?.takeIf { it.isNotBlank() }?.let { it to LogWire.TCP_PORT }
-            ?: discover()
+        val state = SyncStateStore(app)
+        val networkKey = NetworkKey.current(app)
+
+        val explicit = host?.takeIf { it.isNotBlank() }
+        val remembered = if (explicit == null) state.rememberedHost(networkKey) else null
+
+        // ⚠️ У запомненного адреса таймаут короче: он либо ответит сразу, либо его там
+        // нет вовсе, а ждать на нём четыре секунды значит съесть треть захода впустую.
+        val attempts = buildList {
+            explicit?.let { add(it to CONNECT_TIMEOUT_MS) }
+            remembered?.let { add(it to REMEMBERED_CONNECT_TIMEOUT_MS) }
+        }
+
+        for ((address, timeout) in attempts) {
+            when (val result = handOver(files, address, timeout)) {
+                is Result.Sent -> return result
+                else -> Log.i(TAG, "по адресу $address не вышло: $result")
+            }
+        }
+
+        val found = discover()?.first
             ?: return Result.NotFound("компьютер не отозвался в сети")
+        val result = handOver(files, found, CONNECT_TIMEOUT_MS)
+        if (result is Result.Sent) state.rememberHost(networkKey, found)
+        return result
+    }
 
-        return try {
-            Socket().use { socket ->
-                socket.connect(InetSocketAddress(target.first, target.second), CONNECT_TIMEOUT_MS)
-                socket.soTimeout = READ_TIMEOUT_MS
-                socket.getOutputStream().apply {
-                    write((LogWire.HELLO + "\n").toByteArray(Charsets.UTF_8))
-                    for (line in lines) write((line + "\n").toByteArray(Charsets.UTF_8))
-                    write((LogWire.END_OF_BATCH + "\n").toByteArray(Charsets.UTF_8))
-                    flush()
-                }
-                val answer = BufferedReader(InputStreamReader(socket.getInputStream(), Charsets.UTF_8)).readLine()
-                val accepted = LogWire.parseAccepted(answer)
-                if (accepted == null) {
-                    Result.Failed("компьютер ответил непонятно")
-                } else {
-                    Log.i(TAG, "отдано $accepted строк на ${target.first}")
-                    Result.Sent(lines.size, accepted, target.first)
+    /**
+     * Один разговор с компьютером по конкретному адресу.
+     *
+     * ⚠️ **Пустая пачка — тоже разговор, и обрывать его нельзя** (2026-09-14). Компьютер
+     * отмечает «телефон приходил» на любой состоявшийся разговор, и по этой отметке он
+     * решает, не пропущена ли сегодняшняя передача. Замолчи мы в день, когда нового нет, —
+     * и хаб пожалуется на исправный телефон.
+     */
+    private fun handOver(
+        files: Map<String, List<String>>,
+        host: String,
+        connectTimeoutMs: Int,
+    ): Result = try {
+        Socket().use { socket ->
+            socket.connect(InetSocketAddress(host, LogWire.TCP_PORT), connectTimeoutMs)
+            val out = socket.getOutputStream()
+            val reader = BufferedReader(InputStreamReader(socket.getInputStream(), Charsets.UTF_8))
+
+            out.write((LogWire.HELLO + "\n").toByteArray(Charsets.UTF_8))
+            out.flush()
+
+            // ⚠️ Сколько у него есть, компьютер называет ДО пачки — иначе решать было бы
+            // не на чем. Срок тут короткий и свой: старый компьютер про запас молчит и
+            // просто закрывает соединение, ждать его полминуты незачем.
+            socket.soTimeout = HAVE_TIMEOUT_MS
+            val have = try {
+                LogWire.parseHave(reader.readLine())
+            } catch (e: Exception) {
+                null
+            }
+
+            val state = SyncStateStore(app)
+            val counts = files.mapValues { it.value.size }
+            val plan = SyncDelta.plan(
+                files = counts,
+                delivered = state.deliveredLines(),
+                haveNow = have,
+                haveWhenDelivered = state.deliveredHave(),
+            )
+
+            socket.soTimeout = READ_TIMEOUT_MS
+            var sent = 0
+            for ((name, lines) in files) {
+                val skip = plan.skip[name] ?: 0
+                for (i in skip until lines.size) {
+                    out.write((lines[i] + "\n").toByteArray(Charsets.UTF_8))
+                    sent++
                 }
             }
-        } catch (e: Exception) {
-            Result.Failed(e.message ?: "связь оборвалась")
+            out.write((LogWire.END_OF_BATCH + "\n").toByteArray(Charsets.UTF_8))
+            out.flush()
+
+            val accepted = LogWire.parseAccepted(reader.readLine())
+            if (accepted == null) {
+                Result.Failed("компьютер ответил непонятно")
+            } else {
+                // Отметка двигается только по ответу компьютера. Не ответил — не считается.
+                state.rememberDelivered(counts, have)
+                Log.i(TAG, "отдано $sent строк (${plan.mode}) на $host, у него было $have")
+                Result.Sent(sent, accepted, host)
+            }
         }
+    } catch (e: Exception) {
+        Result.Failed(e.message ?: "связь оборвалась")
     }
 
     /**
@@ -132,21 +209,39 @@ class LogSender(context: Context) {
     }
 
     /** Весь журнал, строка за строкой. Файлы читаются по порядку месяцев. */
-    private fun readLog(): List<String> = try {
+    /**
+     * Журнал по файлам, в порядке имён.
+     *
+     * ⚠️ **Разбиение по файлам здесь не оформление, а основа отметки о доставленном:**
+     * она считает строки в каждом файле отдельно (`SyncDelta`). Склей всё в один список —
+     * и догруженная задним числом история перестанет находиться.
+     */
+    private fun readLogFiles(): Map<String, List<String>> = try {
         logDir.listFiles { f: File -> f.isFile && f.name.endsWith(".jsonl") }
             ?.sortedBy { it.name }
-            ?.flatMap { it.readLines() }
-            ?.filter { it.isNotBlank() }
-            ?: emptyList()
+            ?.associate { file -> file.name to file.readLines().filter { it.isNotBlank() } }
+            ?: emptyMap()
     } catch (e: Exception) {
         Log.w(TAG, "журнал не прочитался", e)
-        emptyList()
+        emptyMap()
     }
 
     private companion object {
         const val TAG = "LogSender"
         const val CONNECT_TIMEOUT_MS = 4_000
+
+        /** Запомненный адрес либо отвечает сразу, либо его там нет. */
+        const val REMEMBERED_CONNECT_TIMEOUT_MS = 1_200
         const val READ_TIMEOUT_MS = 30_000
+
+        /**
+         * Сколько ждать ответа про запас компьютера.
+         *
+         * ⚠️ Свой срок, короткий: компьютер старой версии про запас не говорит вовсе, и
+         * ждать его тридцать секунд значило бы съесть весь заход на пустом месте. Не
+         * дождались — считаем, что он не сказал, и шлём журнал целиком.
+         */
+        const val HAVE_TIMEOUT_MS = 4_000
         const val DISCOVER_TIMEOUT_MS = 2_500
     }
 }

@@ -1,9 +1,11 @@
 package com.sasha.alarm
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.sasha.alarm.core.DeskClockAlarm
 import com.sasha.alarm.core.EventType
 import com.sasha.alarm.core.ForeignAlarmRule
 import com.sasha.alarm.core.LogValue
@@ -29,12 +31,29 @@ import com.sasha.alarm.platform.ForeignAudioWatcher
  *
  * Снятие уведомления после звонка — наш сигнал поднять экран (сработает и если владелец
  * выключит Sleep Cycle раньше нашего жеста). Решение принимает [ForeignAlarmRule] в ядре.
+ *
+ * **Второй источник — стандартный будильник, часы Xiaomi** (2026-09-30, [DeskClockAlarm]).
+ * Та же схема, но гасим не жестом, а кнопкой «Стоп» его же уведомления: зазвонил — нажали,
+ * часы сняли уведомление — поднимаем свой экран.
+ *
+ * ⚠️ Имя класса не менять: доступ к уведомлениям выдан владельцем именно этому компоненту,
+ * и переименование молча отбирает его — зацеп умрёт без единой ошибки.
  */
 class SleepCycleListener : NotificationListenerService() {
 
     private var audioWatcher: ForeignAudioWatcher? = null
 
+    /** Ключ уведомления, которым часы звонят сейчас; null — не звонят. */
+    private var deskClockRingKey: String? = null
+
+    /** Когда звонок часов последний раз кончился — чтобы узнать хвост его звука. */
+    private var deskClockRingEndedAt: Long? = null
+
     override fun onNotificationPosted(sbn: StatusBarNotification) {
+        if (sbn.packageName == DeskClockAlarm.PACKAGE) {
+            onDeskClockPosted(sbn)
+            return
+        }
         if (sbn.packageName != TARGET_PACKAGE) return
 
         val ringing = looksLikeRinging(sbn)
@@ -55,13 +74,9 @@ class SleepCycleListener : NotificationListenerService() {
                         EventType.FOREIGN_RING,
                         "source" to LogValue.of("notification"),
                     )
-                    // Будильник зазвонил — ночь на этом кончилась (решение владельца
-                    // 2026-08-26). Это и есть основной способ остановить запись: свой
-                    // экран поднимется позже, а спал владелец до вот этой секунды.
-                    NightRecordingService.stop(applicationContext, "ring")
                 }
             }
-            if (updated != null) requestForeignDismiss()
+            if (updated != null) requestForeignDismiss(state.challengePassedAtMillis, now)
             state.copy(foreignRingingSinceMillis = updated)
         }
     }
@@ -74,16 +89,101 @@ class SleepCycleListener : NotificationListenerService() {
      * смахивает его экран, Sleep Cycle завершает сессию и снимает уведомление — а это
      * снятие и поднимает наш экран прежним путём ([onNotificationRemoved]).
      */
-    private fun requestForeignDismiss() {
+    private fun requestForeignDismiss(challengePassedAt: Long?, nowMillis: Long) {
         // Наша тревога уже идёт — значит чужой уже погашен, смахивать нечего.
         if (AlarmRuntime.alarmActive) return
+        // Испытание пройдено недавно — второй будильник звонит сам (владелец, 2026-09-30).
+        if (!ForeignAlarmRule.silencesForeign(ourAlarmActive = false, challengePassedAt, nowMillis)) {
+            Log.i(TAG, "испытание пройдено недавно — Sleep Cycle звонит сам")
+            return
+        }
         if (!AlarmRuntime.foreignDismissRequested) {
             Log.i(TAG, "прошу смахнуть Sleep Cycle")
         }
         AlarmRuntime.foreignDismissRequested = true
     }
 
+    /**
+     * Часы Xiaomi прислали уведомление. Звонок будильника — жмём его «Стоп» сразу
+     * (решение владельца 2026-09-30); таймер и прочее пропускаем.
+     */
+    private fun onDeskClockPosted(sbn: StatusBarNotification) {
+        val notification = sbn.notification ?: return
+        val foreground = notification.flags and Notification.FLAG_FOREGROUND_SERVICE != 0
+        if (!DeskClockAlarm.isRinging(notification.channelId, foreground)) return
+
+        // Ключ запоминаем и при выключенном тумблере: по нему узнаём звук часов.
+        val firstPost = deskClockRingKey == null
+        deskClockRingKey = sbn.key
+        val state = AlarmStateStore(applicationContext).read()
+        if (!state.masterEnabled) return
+
+        if (firstPost) {
+            Log.i(TAG, "стандартный будильник зазвонил")
+            EventLog(applicationContext).write(
+                EventType.FOREIGN_RING,
+                "source" to LogValue.of(SOURCE_DESK_CLOCK),
+            )
+        }
+        val now = AndroidClock.nowMillis()
+        if (!ForeignAlarmRule.silencesForeign(AlarmRuntime.alarmActive, state.challengePassedAtMillis, now)) {
+            // Испытание пройдено недавно — второй будильник звонит сам (владелец, 2026-09-30).
+            if (firstPost) Log.i(TAG, "испытание пройдено недавно — часы звонят сами")
+            return
+        }
+        pressDeskClockStop(notification)
+    }
+
+    /**
+     * Нажимаем «Стоп» в уведомлении часов — то же, что владелец пальцем.
+     *
+     * Кнопки нет или она уже недействительна — ничего страшного: выключит владелец
+     * руками, и наш экран поднимется от снятия уведомления тем же путём.
+     */
+    private fun pressDeskClockStop(notification: Notification) {
+        val actions = notification.actions.orEmpty()
+        val index = DeskClockAlarm.stopActionIndex(actions.map { it.title?.toString() })
+        val intent = index?.let { actions[it].actionIntent }
+        if (intent == null) {
+            Log.w(TAG, "у звонка часов нет кнопки «Стоп» — ждём, пока выключат руками")
+            return
+        }
+        try {
+            intent.send()
+            Log.i(TAG, "нажал «Стоп» стандартного будильника")
+        } catch (e: PendingIntent.CanceledException) {
+            Log.w(TAG, "кнопка «Стоп» часов уже недействительна", e)
+        }
+    }
+
+    /** Звонок часов кончился — кто бы его ни выключил, поднимаем свой экран. */
+    private fun onDeskClockRemoved(sbn: StatusBarNotification) {
+        if (sbn.key != deskClockRingKey) return
+        val now = AndroidClock.nowMillis()
+        deskClockRingKey = null
+        deskClockRingEndedAt = now
+
+        val store = AlarmStateStore(applicationContext)
+        if (!store.read().masterEnabled) return
+        EventLog(applicationContext).write(
+            EventType.FOREIGN_DISMISSED,
+            "source" to LogValue.of(SOURCE_DESK_CLOCK),
+            "ringingMs" to LogValue.of((now - sbn.postTime).coerceAtLeast(0L)),
+        )
+        // Отметку «чужой звонил» мог поставить звук часов, пока мы его не узнали.
+        // Оставленная, она подняла бы второй экран, когда владелец остановит
+        // отслеживание Sleep Cycle в ближайший час.
+        store.update { it.copy(foreignRingingSinceMillis = null) }
+
+        Log.i(TAG, "стандартный будильник выключен")
+        AlarmController.onForeignAlarmDismissed(applicationContext, "зацеп за стандартный будильник")
+    }
+
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
+        if (sbn.packageName == DeskClockAlarm.PACKAGE) {
+            onDeskClockRemoved(sbn)
+            return
+        }
         if (sbn.packageName != TARGET_PACKAGE) return
 
         val store = AlarmStateStore(applicationContext)
@@ -108,17 +208,39 @@ class SleepCycleListener : NotificationListenerService() {
             "ringingMs" to LogValue.of(since?.let { (now - it).coerceAtLeast(0L) } ?: 0L),
         )
         store.update { it.copy(foreignRingingSinceMillis = null) }
-        AlarmController.onForeignAlarmDismissed(applicationContext)
+        AlarmController.onForeignAlarmDismissed(applicationContext, "зацеп за Sleep Cycle")
     }
 
     override fun onListenerConnected() {
         Log.i(TAG, "слушатель уведомлений подключён")
+        AlarmRuntime.hookConnected = true
+        // Зацеп ожил сам (или его поднял сторож) — закрыть отрезок «не работает» сразу,
+        // не дожидаясь следующей проверки: уведомление о поломке не должно висеть зря.
+        HookWatch.onConnected(applicationContext)
         audioWatcher = ForeignAudioWatcher(applicationContext, ::onAlarmAudio).also { it.start() }
+        // Слушатель мог переподключиться посреди звонка часов — о висящем уведомлении
+        // система второй раз не сообщит, поэтому смотрим на него сами.
+        try {
+            activeNotifications.orEmpty()
+                .filter { it.packageName == DeskClockAlarm.PACKAGE }
+                .forEach(::onDeskClockPosted)
+        } catch (e: SecurityException) {
+            Log.w(TAG, "не удалось прочитать висящие уведомления", e)
+        }
     }
 
     override fun onListenerDisconnected() {
+        Log.w(TAG, "слушатель уведомлений отключён")
+        AlarmRuntime.hookConnected = false
         audioWatcher?.stop()
         audioWatcher = null
+    }
+
+    override fun onDestroy() {
+        AlarmRuntime.hookConnected = false
+        audioWatcher?.stop()
+        audioWatcher = null
+        super.onDestroy()
     }
 
     /**
@@ -130,6 +252,8 @@ class SleepCycleListener : NotificationListenerService() {
      */
     private fun onAlarmAudio(playing: Boolean) {
         if (!playing) return
+        // Это звонят часы: их ведёт своё уведомление, а Sleep Cycle тут ни при чём.
+        if (DeskClockAlarm.isItsAudio(deskClockRingKey != null, deskClockRingEndedAt, AndroidClock.nowMillis())) return
 
         val store = AlarmStateStore(applicationContext)
         val now = AndroidClock.nowMillis()
@@ -147,12 +271,8 @@ class SleepCycleListener : NotificationListenerService() {
                         EventType.FOREIGN_RING,
                         "source" to LogValue.of("audio"),
                     )
-                    // Второй, независимый путь остановить запись: уведомление могло не
-                    // дойти (слушатель не привязался после установки — бывало 2026-08-19),
-                    // а звук будильника слышен всегда.
-                    NightRecordingService.stop(applicationContext, "ring")
                 }
-                if (updated != null) requestForeignDismiss()
+                if (updated != null) requestForeignDismiss(state.challengePassedAtMillis, now)
                 state.copy(foreignRingingSinceMillis = updated)
             }
         }
@@ -173,6 +293,9 @@ class SleepCycleListener : NotificationListenerService() {
     private companion object {
         const val TAG = "SleepCycleListener"
         const val TARGET_PACKAGE = "com.northcube.sleepcycle"
+
+        /** Источник в журнале для звонка стандартного будильника. */
+        const val SOURCE_DESK_CLOCK = "deskclock"
 
         /** Кусок текста, в который Sleep Cycle переписывает уведомление на время звонка. */
         const val RING_MARKER = "Выключить будильник"

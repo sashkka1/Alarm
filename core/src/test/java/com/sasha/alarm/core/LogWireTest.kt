@@ -23,10 +23,47 @@ class LogWireTest {
     }
 
     @Test
-    fun `приветствие чужой версии не принимается`() {
-        // Сервер старше клиента или наоборот — лучше отказать, чем разобрать наполовину.
-        assertFalse(LogWire.isHello("ALARMLOG 2"))
+    fun `приветствие незнакомой версии не принимается`() {
+        // Разобрать наполовину хуже, чем отказать.
+        assertFalse(LogWire.isHello("ALARMLOG ${LogWire.VERSION + 1}"))
+        assertFalse(LogWire.isHello("ALARMLOG 0"))
         assertFalse(LogWire.isHello("ALARMLOG x"))
+    }
+
+    @Test
+    fun `прежняя версия понимается — телефон и компьютер обновляются порознь`() {
+        assertTrue(LogWire.isHello("ALARMLOG 1"))
+        assertEquals(1, LogWire.helloVersion("ALARMLOG 1"))
+        assertEquals(LogWire.VERSION, LogWire.helloVersion(LogWire.HELLO))
+    }
+
+    @Test
+    fun `версия чужого приветствия не читается`() {
+        assertNull(LogWire.helloVersion("GET / HTTP/1.1"))
+        assertNull(LogWire.helloVersion("ALARMLOG"))
+        assertNull(LogWire.helloVersion(null))
+    }
+
+    @Test
+    fun `запас компьютера читается обратно`() {
+        assertEquals(0, LogWire.parseHave(LogWire.have(0)))
+        assertEquals(192_771, LogWire.parseHave(LogWire.have(192_771)))
+        assertEquals(7, LogWire.parseHave(" ${LogWire.have(7)} "))
+    }
+
+    @Test
+    fun `не тот ответ за запас не выдаётся`() {
+        // Старый компьютер про запас молчит; принять за него что попало значит недослать.
+        assertNull(LogWire.parseHave(null))
+        assertNull(LogWire.parseHave("OK 5"))
+        assertNull(LogWire.parseHave(LogWire.HAVE))
+        assertNull(LogWire.parseHave("${LogWire.HAVE} -1"))
+    }
+
+    @Test
+    fun `запас и конец пачки не путаются между собой`() {
+        assertFalse(LogWire.have(3) == LogWire.END_OF_BATCH)
+        assertNull(LogWire.parseHave(LogWire.END_OF_BATCH))
     }
 
     @Test

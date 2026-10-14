@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,10 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -53,34 +51,6 @@ import com.sasha.alarm.core.NfcScan
 import kotlinx.coroutines.delay
 
 /**
- * Палитра экрана меток — из макета «Экраны (Испытание и Победа)», 2026-08-18.
- *
- * ⚠️ Он единственный тёмный среди экранов тревоги: у остальных фон сигнально-красный.
- * Так задумано — здесь человек уже встал и ходит по квартире, будить его больше
- * не нужно, нужно чтобы крупная цифра читалась в темноте коридора.
- */
-private val Bed = Color(0xFF0D0B0A)
-private val Signal = Color(0xFFFF0026)
-private val TextMain = Color(0xFFECE5E0)
-
-/** Шаги маршрута: пройденный, тот, до которого ещё не дошли, и текущий. */
-private val StepPassed = Color(0xFF1C1613)
-private val StepFuture = Color(0xFF17110F)
-private val StepPassedInk = Color(0xFFECE5E0).copy(alpha = 0.4f)
-private val StepFutureInk = Color(0xFFECE5E0).copy(alpha = 0.28f)
-
-/** Блок вердикта: верный ответ оранжевый, ошибка — сигнально-красная. */
-private val BannerGood = Color(0xFFFF6A4D)
-
-/**
- * Круг-поводырь — тот же зелёный, что у кружка громкости на остальных экранах.
- * Зелёное в приложении означает «тише», и спутать его ни с чем нельзя.
- * Обводка светлее заливки: на почти чёрном фоне тёмно-зелёное кольцо не видно.
- */
-private val Guide = Color(0xFF2E7D32)
-private val GuideEdge = Color(0xFF57C46A)
-
-/**
  * Экран тревоги для испытания «обойти метки».
  *
  * Всё, что на нём есть: шапка, лента маршрута под ней и крупная цифра метки,
@@ -88,11 +58,11 @@ private val GuideEdge = Color(0xFF57C46A)
  *
  * Лента показывает весь маршрут сразу, включая повторы: `2 → 1 → 3 → 2` это четыре
  * шага, и вторая метка честно стоит в ленте дважды. Пройденные шаги видно ясно,
- * непройденные приглушены до бледного, а текущий залит сигнальным красным —
+ * непройденные приглушены до бледного, а текущий залит акцентом темы —
  * взгляд спросонья должен находить его, не читая всю ленту.
  *
- * Шапка — общий [ChallengeHeader], тот же, что у остальных испытаний, но в цветах
- * этого экрана: чёрные часы на тёмном фоне не видно вовсе.
+ * Шапка — общий [ChallengeHeader], тот же, что у остальных испытаний; цвета берёт
+ * из темы сама. Все цвета экрана — роли темы.
  */
 @Composable
 fun NfcAlarmScreen(
@@ -114,24 +84,19 @@ fun NfcAlarmScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Bed)
+            .background(theme.bg)
             .windowInsetsPadding(WindowInsets.safeDrawing)
-            .padding(horizontal = 20.dp, vertical = 14.dp),
+            .padding(horizontal = 22.dp, vertical = 14.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ChallengeHeader(
             timeText = timeText,
             progressText = "$done / ${route.size}",
             preview = preview,
-            // Часы и счёт красным (владелец, 2026-08-19): на тёмном фоне это
-            // единственные два числа, и спокойный светлый цвет их прятал.
-            ink = Signal,
-            exitInk = Color(0xFFFF3B2A),
-            exitBorder = Signal,
             onExit = onExit,
         )
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(14.dp))
         RouteStrip(route, done)
 
         Box(
@@ -144,41 +109,20 @@ fun NfcAlarmScreen(
             if (next == null) {
                 Text(
                     text = stringResource(R.string.alarm_all_solved),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextMain,
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = theme.text,
                     textAlign = TextAlign.Center,
                 )
             } else {
                 Text(
                     text = next.toString(),
+                    // Главное число экрана — размер прежний, крупный.
                     fontSize = 150.sp,
                     lineHeight = 150.sp,
-                    fontWeight = FontWeight.Black,
-                    // Чёрная, а не белая (владелец, 2026-08-19): цифра вырезана из
-                    // красного пятна, и на свечении она читается резче светлой.
-                    color = Color.Black,
-                    // Красное свечение из макета. Тень средствами текста в Compose
-                    // размывается слабо, поэтому рисуем её сами — заливкой позади.
-                    modifier = Modifier.drawBehind {
-                        val center = Offset(size.width / 2f, size.height / 2f)
-                        val radius = size.maxDimension * 1.4f
-                        drawCircle(
-                            brush = Brush.radialGradient(
-                                // Три остановки, а не две: с одним переходом пятно
-                                // получается кольцом — ярким по краю и пустым внутри.
-                                colorStops = arrayOf(
-                                    0f to Signal.copy(alpha = 0.55f),
-                                    0.45f to Signal.copy(alpha = 0.30f),
-                                    1f to Color.Transparent,
-                                ),
-                                center = center,
-                                radius = radius,
-                            ),
-                            radius = radius,
-                            center = center,
-                        )
-                    },
+                    fontWeight = FontWeight.SemiBold,
+                    // Акцентом темы, без свечения: цифра — главное на экране.
+                    color = theme.accent,
                 )
             }
 
@@ -220,6 +164,8 @@ private fun BoxScope.GuideLayer(onHold: (Boolean) -> Unit) {
         var center by remember { mutableStateOf(Offset(width / 2f, height / 2f)) }
         var held by remember { mutableStateOf(false) }
         val hold by rememberUpdatedState(onHold)
+        // Цвет «тише» — роль ok темы, тот же, что у кружка громкости на остальных экранах.
+        val guide = theme.ok
 
         LaunchedEffect(width, height, radiusPx) {
             while (true) {
@@ -261,12 +207,12 @@ private fun BoxScope.GuideLayer(onHold: (Boolean) -> Unit) {
             // Держат — заливка плотная; нет — сквозь неё видно цифру метки, а она
             // на этом экране главная.
             drawCircle(
-                color = Guide.copy(alpha = if (held) 0.92f else 0.26f),
+                color = guide.copy(alpha = if (held) 0.92f else 0.26f),
                 radius = radiusPx,
                 center = center,
             )
             drawCircle(
-                color = GuideEdge,
+                color = guide,
                 radius = radiusPx,
                 center = center,
                 style = Stroke(width = if (held) 5.dp.toPx() else 3.dp.toPx()),
@@ -285,7 +231,7 @@ private fun BoxScope.GuideLayer(onHold: (Boolean) -> Unit) {
  *
  * ⚠️ Одно слово во весь блок (владелец, 2026-08-19), номера метки в ответе больше
  * нет: спросонья он не нужен, нужно «туда или не туда». Цвет несёт то же самое и
- * читается ещё раньше текста — верно оранжевым, ошибка сигнально-красным.
+ * читается ещё раньше текста — верно цветом ok темы, ошибка — danger.
  */
 @Composable
 private fun ScanBanner(scan: NfcScan?, scanTick: Int) {
@@ -317,19 +263,16 @@ private fun ScanBanner(scan: NfcScan?, scanTick: Int) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    color = if (good) BannerGood else Signal,
-                    shape = RoundedCornerShape(18.dp),
-                ),
+                .background(theme.surf, RoundedCornerShape(16.dp)),
             contentAlignment = Alignment.Center,
         ) {
+            // Вердикт — цветом статуса на карточке: верно `ok`, ошибка `danger`. Заливка статусом
+            // не годится — текст по ней в части тем не читается.
             Text(
-                // ⚠️ По сигнальному красному пишем чёрным: он светлый, и белое по нему
-                // не читается — то же правило, что у клавиатуры экрана тревоги.
                 text = text,
-                fontSize = 34.sp,
-                fontWeight = FontWeight.Black,
-                color = Color.Black,
+                fontSize = 29.sp,
+                fontWeight = FontWeight.Medium,
+                color = if (good) theme.ok else theme.danger,
                 textAlign = TextAlign.Center,
             )
         }
@@ -376,7 +319,7 @@ private fun RouteStrip(route: List<Int>, done: Int) {
 
 @Composable
 private fun RouteStep(number: Int, passed: Boolean, current: Boolean) {
-    // Текущий шаг крупнее всех и залит сигнальным красным; пройденные читаются
+    // Текущий шаг крупнее всех и залит акцентом; пройденные читаются
     // спокойно; те, до которых ещё не дошли, приглушены почти до фона.
     val size by animateDpAsState(
         targetValue = if (current) 58.dp else 40.dp,
@@ -387,24 +330,20 @@ private fun RouteStep(number: Int, passed: Boolean, current: Boolean) {
         modifier = Modifier
             .size(size)
             .background(
-                color = when {
-                    current -> Signal
-                    passed -> StepPassed
-                    else -> StepFuture
-                },
-                shape = RoundedCornerShape(if (current) 16.dp else 12.dp),
+                color = if (current) theme.accent else theme.field,
+                shape = CircleShape,
             ),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = number.toString(),
-            fontSize = if (current) 26.sp else 17.sp,
-            fontWeight = FontWeight.Black,
-            // По красному — чёрным, как везде в приложении.
+            fontSize = if (current) 24.sp else 17.sp,
+            fontWeight = FontWeight.SemiBold,
+            // По акценту — onAccent; пройденные — muted, будущие — faint.
             color = when {
-                current -> Color.Black
-                passed -> StepPassedInk
-                else -> StepFutureInk
+                current -> theme.onAccent
+                passed -> theme.muted
+                else -> theme.faint
             },
         )
     }

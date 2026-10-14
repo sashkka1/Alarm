@@ -45,6 +45,7 @@ import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
@@ -73,35 +74,15 @@ import com.sasha.alarm.core.PushupCounter
 import com.sasha.alarm.core.PushupOverlay
 
 /**
- * Палитра экрана тревоги — из макета Claude Design (принята 2026-08-16).
+ * Экран тревоги: пример и клавиатура (или шарики, или камера) — в теме приложения.
  *
- * Сигнальный красный во весь экран и чёрный текст поверх. Раньше он был белым;
- * задача осталась той же — не выглядеть, а разбудить, — но красный на полной
- * яркости решает её лучше белого листа.
- */
-private val Signal = Color(0xFFFF0026)
-private val Ink = Color(0xFF000000)
-private val Muted = Color(0x99000000)
-private val Bad = Color(0xFF5A0010)
-
-/** Подложка клавиатуры: почти чёрная, чтобы красные клавиши на ней читались. */
-private val KeypadBed = Color(0xFF120B0C)
-
-/** Подложка области камеры: она же видна, пока камера открывается. */
-private val CameraBed = Color(0xFF120B0C)
-private val KeyDelete = Color(0xFF241417)
-private val KeyAccent = Color(0xFFC24A32)
-
-private val Circle = Color(0xFF2E7D32)
-
-/**
- * Экран тревоги: белый фон, чёрный текст, пример и клавиатура.
+ * Палитра — та же тема, что у настроек (владелец, 2026-10-14: «экраны настроек и экраны, когда я
+ * просыпаюсь от будильника, будут одинаковые»); прежний сигнально-красный экран и полоса опасности сняты.
+ * Яркость экрана по-прежнему полная — её ставит `AlarmActivity`.
  *
  * Кнопки «Выключить» нет намеренно (решение владельца 2026-08-14) — выход отсюда
  * один: решить все примеры. Плюс страховки, которые от экрана не зависят: дедлайн
  * бэкапа и команда с компьютера.
- *
- * Белый и яркий он не по недосмотру: задача экрана не беречь глаза, а разбудить.
  */
 @Composable
 fun AlarmScreen(
@@ -138,7 +119,7 @@ fun AlarmScreen(
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Signal),
+            .background(theme.bg),
     ) {
         val width = maxWidth
         val height = maxHeight
@@ -194,14 +175,14 @@ fun AlarmScreen(
                     // лезла под шапку и подсказку, и текст оказывался на кадре
                     // (владелец, 2026-08-16). Обрезать её по-прежнему нельзя —
                     // кадрирование и есть причина, по которой счёт отказывает.
-                    // Своя тёмная подложка у области камеры не для красоты: камера
-                    // открывается не мгновенно, и до первого кадра сквозь неё
-                    // просвечивал красный фон — это и было мелькание при входе
-                    // (владелец, 2026-08-16). Тёмный прямоугольник просто ждёт.
+                    // Своя подложка у области камеры не для красоты: камера открывается
+                    // не мгновенно, и до первого кадра сквозь неё просвечивал фон экрана —
+                    // это и было мелькание при входе (владелец, 2026-08-16). Подложка
+                    // цвета карточки просто ждёт.
                     Challenge.PUSHUPS -> Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(CameraBed),
+                            .background(theme.surf),
                     ) {
                         cameraContent()
                         pushupSkeleton?.let { PoseOverlay(it) }
@@ -214,10 +195,7 @@ fun AlarmScreen(
 
             if (pushups) PushupHint(pushupHint)
 
-            if (keypadNeeded) {
-                DangerStripe()
-                Keypad(onKey)
-            }
+            if (keypadNeeded) Keypad(onKey)
         }
 
         // Кружки внимания лежат поверх всего экрана, а не внутри колонки.
@@ -252,8 +230,9 @@ enum class AlarmKey { D0, D1, D2, D3, D4, D5, D6, D7, D8, D9, DELETE, ENTER }
  *
  * ⚠️ Ни зелёного, ни красного здесь нет намеренно. Зелёный закреплён за кружком,
  * который сбивает громкость, — спутать их нельзя. Красный и всё, что рядом с ним,
- * убрано после проверки на телефоне (владелец, 2026-08-16): экран тревоги сам
- * красный, и красноватые шарики на нём мельтешили, вместо того чтобы ловиться.
+ * убрано после проверки на телефоне (владелец, 2026-08-16): на тогдашнем красном
+ * экране красноватые шарики мельтешили, вместо того чтобы ловиться. Шарики — игровые
+ * метки, а не оформление: свои цвета, не из темы, чтобы ловились на любой теме.
  */
 private val CirclePalette = listOf(
     Color(0xFF93DBFF) to Color(0xFF0077FF),
@@ -338,16 +317,6 @@ internal fun ChallengeHeader(
     timeText: String,
     progressText: String,
     preview: Boolean,
-    /**
-     * Цвета шапки.
-     *
-     * Параметрами, а не константами: у метки экран тёмный (макет 2026-08-18), и
-     * чёрные часы на нём не видно вовсе. Значения по умолчанию — красный экран,
-     * там ничего не меняется.
-     */
-    ink: Color = Ink,
-    exitInk: Color = Bad,
-    exitBorder: Color = Ink,
     onExit: () -> Unit,
 ) {
     Row(
@@ -358,42 +327,38 @@ internal fun ChallengeHeader(
         // раскладка владельца (2026-08-16). Крайние на своих местах всегда,
         // поэтому середина отдана кнопке и в бою просто пустует.
         Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-            HeaderChip(timeText, ink)
+            HeaderChip(timeText)
         }
         if (preview) {
+            // Вторичная кнопка «Мягкого»: `field` / `text`.
             Text(
-                text = stringResource(R.string.alarm_exit).uppercase(),
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Bold,
-                color = exitInk,
+                text = stringResource(R.string.alarm_exit),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = theme.text,
                 modifier = Modifier
-                    .border(1.5.dp, exitBorder)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(theme.field)
                     .clickable(onClick = onExit)
-                    .padding(horizontal = 10.dp, vertical = 5.dp),
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
             )
         }
         Box(Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
-            HeaderChip(progressText, ink)
+            HeaderChip(progressText)
         }
     }
 }
 
-/**
- * Число в шапке.
- *
- * Поверх камеры — белым на тёмной подложке. Чёрный текст на кадре сереет и
- * пропадает, а шапка нужна именно там, где идёт счёт повторов.
- */
+/** Число в шапке: часы слева, счёт справа. */
 @Composable
-private fun HeaderChip(text: String, ink: Color) {
+private fun HeaderChip(text: String) {
     // Часы и счёт — одним начертанием и одного размера (владелец, 2026-08-16):
     // разный кегль по краям шапки читался как два разных шрифта.
     Text(
         text = text,
         fontSize = 24.sp,
-        fontWeight = FontWeight.Black,
-        letterSpacing = (-1).sp,
-        color = ink,
+        fontWeight = FontWeight.SemiBold,
+        color = theme.text,
     )
 }
 
@@ -672,17 +637,16 @@ private val SkeletonGood = Color(0xFF00E07A)
  */
 @Composable
 private fun PushupHint(hint: String) {
-    // Подсказка живёт под кадром, на красном, и цветом ничем не отличается от
-    // остального экрана тревоги: чёрным по сигнальному.
+    // Подсказка живёт под кадром и цветом ничем не отличается от остального экрана тревоги.
     Text(
         text = hint,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 18.dp, vertical = 14.dp),
         fontSize = 20.sp,
-        lineHeight = 24.sp,
-        fontWeight = FontWeight.Black,
-        color = Ink,
+        lineHeight = 26.sp,
+        fontWeight = FontWeight.Medium,
+        color = theme.text,
         textAlign = TextAlign.Center,
     )
 }
@@ -691,21 +655,20 @@ private fun PushupHint(hint: String) {
 @Composable
 private fun MathBody(task: MathTask?, answer: String, wrongTick: Int) {
     if (task == null) {
-        Text(stringResource(R.string.alarm_all_solved), fontSize = 26.sp, color = Ink)
+        Text(stringResource(R.string.alarm_all_solved), fontSize = 24.sp, color = theme.text)
         return
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(26.dp),
     ) {
-        // Крупно, как в макете: пример должен читаться спросонья, не приглядываясь.
+        // Крупно: пример должен читаться спросонья, не приглядываясь.
         Text(
             text = "${task.left} ${task.operation.sign()} ${task.right}",
             fontSize = 72.sp,
-            lineHeight = 72.sp,
-            fontWeight = FontWeight.Black,
-            letterSpacing = (-3).sp,
-            color = Ink,
+            lineHeight = 76.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = theme.text,
         )
         AnswerBox(answer, wrongTick)
     }
@@ -746,17 +709,18 @@ private fun ReactionMeterBar(progress: Double) {
 
     // Пояснения под шкалой нет: по убывающей полоске и так видно, куда она едет,
     // а лишний текст на экране тревоги не читают (владелец, 2026-08-16).
+    // Капсула «Мягкого»: дорожка `field`, заполнение `accent`.
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(14.dp)
-            .background(Color(0x33000000), RoundedCornerShape(7.dp)),
+            .background(theme.field, CircleShape),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(width)
                 .height(14.dp)
-                .background(Ink, RoundedCornerShape(7.dp)),
+                .background(theme.accent, CircleShape),
         )
     }
 }
@@ -765,8 +729,8 @@ private fun ReactionMeterBar(progress: Double) {
  * Поле ответа.
  *
  * Ни фона, ни черты (владелец, 2026-08-16): на месте ответа просто пусто, пока
- * не начал набирать, а потом там просто цифры. Ошибка показывается тем, что цифры
- * мигают красным, — рамке для этого взяться неоткуда.
+ * не начал набирать, а потом там просто цифры. Ошибка показывается миганием цветом
+ * статуса `danger` — рамке для этого взяться неоткуда.
  */
 @Composable
 private fun AnswerBox(answer: String, wrongTick: Int) {
@@ -778,6 +742,8 @@ private fun AnswerBox(answer: String, wrongTick: Int) {
         label = "pulse",
     )
     val bad = wrongTick > 0 && answer.isEmpty()
+    val danger = theme.danger
+    val ink = theme.text
 
     Box(
         modifier = Modifier.height(66.dp),
@@ -786,43 +752,9 @@ private fun AnswerBox(answer: String, wrongTick: Int) {
         Text(
             text = answer,
             fontSize = 46.sp,
-            fontWeight = FontWeight.Black,
-            letterSpacing = (-2).sp,
-            color = if (bad) Bad.copy(alpha = 0.4f + pulse * 0.6f) else Ink,
+            fontWeight = FontWeight.SemiBold,
+            color = if (bad) danger.copy(alpha = 0.4f + pulse * 0.6f) else ink,
         )
-    }
-}
-
-/**
- * Полоса опасности между заданием и клавиатурой.
- *
- * Из макета: чёрно-красные диагонали. Она же служит границей — ниже начинается
- * тёмная подложка клавиатуры, и глаз не путает поле ввода с цифрами.
- */
-@Composable
-private fun DangerStripe() {
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(12.dp),
-    ) {
-        val step = 11.dp.toPx()
-        drawRect(Signal)
-        // Диагонали под 45°: начинаем левее холста, чтобы полоса не обрывалась у края.
-        var x = -size.height
-        while (x < size.width + size.height) {
-            drawPath(
-                path = androidx.compose.ui.graphics.Path().apply {
-                    moveTo(x, size.height)
-                    lineTo(x + size.height, 0f)
-                    lineTo(x + size.height + step, 0f)
-                    lineTo(x + step, size.height)
-                    close()
-                },
-                color = Ink,
-            )
-            x += step * 2
-        }
     }
 }
 
@@ -834,11 +766,13 @@ private fun Keypad(onKey: (AlarmKey) -> Unit) {
         listOf(AlarmKey.D7, AlarmKey.D8, AlarmKey.D9),
         listOf(AlarmKey.DELETE, AlarmKey.D0, AlarmKey.ENTER),
     )
+    // Клавиатура на подложке `surf` со скруглённым верхом — она и есть граница между
+    // заданием и цифрами (прежняя полоса опасности снята вместе с красным экраном, 2026-10-14).
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
-            .background(KeypadBed)
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .background(theme.surf, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .padding(horizontal = 18.dp, vertical = 16.dp),
     ) {
         rows.forEach { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -855,23 +789,24 @@ private fun Key(key: AlarmKey, modifier: Modifier, onClick: () -> Unit) {
         AlarmKey.ENTER -> "✓"
         else -> key.ordinal.toString()
     }
-    // Два вида клавиш: цифры красные с чёрным, служебные — чёрные с красным.
+    // Два вида клавиш: цифры — `field` / `text`, служебные — `accent` / `onAccent`.
     // «Стереть» и «ввод» одного вида (владелец, 2026-08-16): разными цветами
     // они читались как разные по важности, хотя обе просто служебные.
     val service = key == AlarmKey.DELETE || key == AlarmKey.ENTER
-    val background = if (service) Ink else Signal
-    val ink = if (service) Signal else Ink
+    val background = if (service) theme.accent else theme.field
+    val ink = if (service) theme.onAccent else theme.text
     Box(
         modifier = modifier
             .height(54.dp)
-            .background(background, RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(10.dp))
+            .background(background)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = label,
-            fontSize = 26.sp,
-            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.SemiBold,
             color = ink,
         )
     }
@@ -911,6 +846,8 @@ private fun FloatingCircle(
         label = "breath",
     )
 
+    // Зелёный закреплён за этим кружком — цвет статуса `ok` темы.
+    val green = theme.ok
     Box(
         modifier = Modifier
             .offset(x = x + driftX.dp, y = y + driftY.dp)
@@ -918,7 +855,7 @@ private fun FloatingCircle(
             // нему на бегу было слишком тонкой работой для шести утра.
             .size(50.dp)
             .scale(breath)
-            .background(Circle, CircleShape)
+            .background(green, CircleShape)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,

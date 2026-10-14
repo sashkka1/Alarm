@@ -41,15 +41,6 @@ enum class PermissionId {
     CAMERA,
 
     /**
-     * Микрофон для записи ночи.
-     *
-     * ⚠️ Тоже разрешение времени выполнения, и отказ здесь выглядит особенно
-     * подло: `AudioRecord` создаётся, `startRecording` не бросает исключения, а в файл
-     * идёт **ровная тишина**. Узнать об этом наутро по пустой записи — значит потерять ночь.
-     */
-    MICROPHONE,
-
-    /**
      * NFC для испытания «метки».
      *
      * Само разрешение выдаётся при установке, спрашивать нечего — но выключенный в
@@ -68,6 +59,16 @@ enum class PermissionId {
      * становится только статистика.
      */
     USAGE_STATS,
+
+    /**
+     * Чтение шагов — для журнала, а не для тревоги.
+     *
+     * Шаги считает не Alarm, а системная служба Xiaomi; мы только читаем её провайдер
+     * при передаче журнала. Разрешение выдаётся при установке, но провайдера может не
+     * оказаться — поэтому пункт честно показывает, доступны ли шаги на самом деле.
+     * Показывается только на Xiaomi: на других телефонах этого источника нет вовсе.
+     */
+    STEPS,
 
     XIAOMI_AUTOSTART,
     XIAOMI_BACKGROUND_POPUP,
@@ -111,9 +112,6 @@ object Permissions {
             readable(PermissionId.EXACT_ALARM, exactAlarmsAllowed(context)),
             readable(PermissionId.BATTERY, batteryUnrestricted(context)),
             readable(PermissionId.USAGE_STATS, usageStatsAllowed(context)),
-            // Микрофон в списке всегда: кнопка записи ночи стоит на главном экране и
-            // доступна каждый вечер, а не зависит от выбранного испытания.
-            readable(PermissionId.MICROPHONE, microphoneAllowed(context)),
         )
         if (needsCamera) {
             list += readable(PermissionId.CAMERA, cameraAllowed(context))
@@ -122,6 +120,7 @@ object Permissions {
             list += readable(PermissionId.NFC, nfcEnabled(context))
         }
         if (isXiaomi()) {
+            list += readable(PermissionId.STEPS, PhoneSteps.available(context))
             list += manualStatus(PermissionId.XIAOMI_AUTOSTART, manual)
             list += manualStatus(PermissionId.XIAOMI_BACKGROUND_POPUP, manual)
         }
@@ -136,9 +135,9 @@ object Permissions {
         context.checkSelfPermission(Manifest.permission.CAMERA) ==
             PackageManager.PERMISSION_GRANTED
 
-    fun microphoneAllowed(context: Context): Boolean =
-        context.checkSelfPermission(Manifest.permission.RECORD_AUDIO) ==
-            PackageManager.PERMISSION_GRANTED
+    /** «Физическая активность» — без неё провайдер шагов Xiaomi не пускает. */
+    fun activityAllowed(context: Context): Boolean =
+        context.checkSelfPermission(PhoneSteps.ACTIVITY) == PackageManager.PERMISSION_GRANTED
 
     /** Открывает системный экран, где выдаётся конкретное разрешение. */
     fun open(context: Context, id: PermissionId) {
@@ -203,9 +202,6 @@ object Permissions {
         // владелец уже отказал — тогда единственный путь через системный экран.
         PermissionId.CAMERA -> emptyList()
 
-        // Как и камера: спрашивается диалогом времени выполнения.
-        PermissionId.MICROPHONE -> emptyList()
-
         PermissionId.NFC -> listOf(Intent(Settings.ACTION_NFC_SETTINGS))
 
         PermissionId.USAGE_STATS -> listOf(
@@ -214,6 +210,9 @@ object Permissions {
             Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, packageUri(context)),
             Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
         )
+
+        // Своего экрана у разрешения нет: выдаётся при установке. Остаётся экран приложения.
+        PermissionId.STEPS -> emptyList()
 
         PermissionId.XIAOMI_AUTOSTART -> listOf(
             Intent().setComponent(
@@ -238,10 +237,10 @@ object Permissions {
         context.getSystemService(NotificationManager::class.java).areNotificationsEnabled()
 
     /**
-     * Доступ к чужим уведомлениям. Без него зацеп за Sleep Cycle невозможен:
+     * Доступ к чужим уведомлениям. Без него зацеп за чужой будильник невозможен:
      * слушатель просто не получит ни одного события.
      */
-    private fun notificationListenerEnabled(context: Context): Boolean = try {
+    fun notificationListenerEnabled(context: Context): Boolean = try {
         val enabled = Settings.Secure.getString(
             context.contentResolver,
             "enabled_notification_listeners",

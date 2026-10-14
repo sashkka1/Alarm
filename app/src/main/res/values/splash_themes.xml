@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Генерирует art/make_themes.py, руками не править. -->
+<resources>
+    <style name="Theme.Alarm.Splash.red_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF210201</item>
+        <item name="android:windowSplashScreenBackground">#FF210201</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF2C0806</item>
+        <item name="android:windowSplashScreenBackground">#FF2C0806</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFF6DEC5</item>
+        <item name="android:windowSplashScreenBackground">#FFF6DEC5</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1E0201</item>
+        <item name="android:windowSplashScreenBackground">#FF1E0201</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF190201</item>
+        <item name="android:windowSplashScreenBackground">#FF190201</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1B0201</item>
+        <item name="android:windowSplashScreenBackground">#FF1B0201</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF910D10</item>
+        <item name="android:windowSplashScreenBackground">#FF910D10</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.red_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF140201</item>
+        <item name="android:windowSplashScreenBackground">#FF140201</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_red_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF190601</item>
+        <item name="android:windowSplashScreenBackground">#FF190601</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF230902</item>
+        <item name="android:windowSplashScreenBackground">#FF230902</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFF3DABF</item>
+        <item name="android:windowSplashScreenBackground">#FFF3DABF</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF170601</item>
+        <item name="android:windowSplashScreenBackground">#FF170601</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF150401</item>
+        <item name="android:windowSplashScreenBackground">#FF150401</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF160101</item>
+        <item name="android:windowSplashScreenBackground">#FF160101</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF882500</item>
+        <item name="android:windowSplashScreenBackground">#FF882500</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.terracotta_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1A0803</item>
+        <item name="android:windowSplashScreenBackground">#FF1A0803</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_terracotta_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF180B01</item>
+        <item name="android:windowSplashScreenBackground">#FF180B01</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1C0E04</item>
+        <item name="android:windowSplashScreenBackground">#FF1C0E04</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFF5E1C0</item>
+        <item name="android:windowSplashScreenBackground">#FFF5E1C0</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF170B01</item>
+        <item name="android:windowSplashScreenBackground">#FF170B01</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF170B01</item>
+        <item name="android:windowSplashScreenBackground">#FF170B01</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF150801</item>
+        <item name="android:windowSplashScreenBackground">#FF150801</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF7A3500</item>
+        <item name="android:windowSplashScreenBackground">#FF7A3500</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.amber_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1F0F04</item>
+        <item name="android:windowSplashScreenBackground">#FF1F0F04</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_amber_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF101004</item>
+        <item name="android:windowSplashScreenBackground">#FF101004</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF121106</item>
+        <item name="android:windowSplashScreenBackground">#FF121106</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFEDE5CA</item>
+        <item name="android:windowSplashScreenBackground">#FFEDE5CA</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF111104</item>
+        <item name="android:windowSplashScreenBackground">#FF111104</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0F0F04</item>
+        <item name="android:windowSplashScreenBackground">#FF0F0F04</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF101004</item>
+        <item name="android:windowSplashScreenBackground">#FF101004</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF4E4D08</item>
+        <item name="android:windowSplashScreenBackground">#FF4E4D08</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.olive_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF151306</item>
+        <item name="android:windowSplashScreenBackground">#FF151306</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_olive_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF04120B</item>
+        <item name="android:windowSplashScreenBackground">#FF04120B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF04130B</item>
+        <item name="android:windowSplashScreenBackground">#FF04130B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFEBE1C2</item>
+        <item name="android:windowSplashScreenBackground">#FFEBE1C2</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF04130B</item>
+        <item name="android:windowSplashScreenBackground">#FF04130B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF03110A</item>
+        <item name="android:windowSplashScreenBackground">#FF03110A</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF03110A</item>
+        <item name="android:windowSplashScreenBackground">#FF03110A</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF335133</item>
+        <item name="android:windowSplashScreenBackground">#FF335133</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.green_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF06140C</item>
+        <item name="android:windowSplashScreenBackground">#FF06140C</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_green_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF021516</item>
+        <item name="android:windowSplashScreenBackground">#FF021516</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF021A1B</item>
+        <item name="android:windowSplashScreenBackground">#FF021A1B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFD7EEE8</item>
+        <item name="android:windowSplashScreenBackground">#FFD7EEE8</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF021415</item>
+        <item name="android:windowSplashScreenBackground">#FF021415</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF021516</item>
+        <item name="android:windowSplashScreenBackground">#FF021516</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF021010</item>
+        <item name="android:windowSplashScreenBackground">#FF021010</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF005452</item>
+        <item name="android:windowSplashScreenBackground">#FF005452</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.teal_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF041A1B</item>
+        <item name="android:windowSplashScreenBackground">#FF041A1B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_teal_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF010E21</item>
+        <item name="android:windowSplashScreenBackground">#FF010E21</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF02132C</item>
+        <item name="android:windowSplashScreenBackground">#FF02132C</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFC6E1F6</item>
+        <item name="android:windowSplashScreenBackground">#FFC6E1F6</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF010F24</item>
+        <item name="android:windowSplashScreenBackground">#FF010F24</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF010C1D</item>
+        <item name="android:windowSplashScreenBackground">#FF010C1D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF02142D</item>
+        <item name="android:windowSplashScreenBackground">#FF02142D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1652A5</item>
+        <item name="android:windowSplashScreenBackground">#FF1652A5</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.blue_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF010C1D</item>
+        <item name="android:windowSplashScreenBackground">#FF010C1D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_blue_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF050A1E</item>
+        <item name="android:windowSplashScreenBackground">#FF050A1E</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF050C22</item>
+        <item name="android:windowSplashScreenBackground">#FF050C22</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFDCE2F9</item>
+        <item name="android:windowSplashScreenBackground">#FFDCE2F9</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF040A1D</item>
+        <item name="android:windowSplashScreenBackground">#FF040A1D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF04071B</item>
+        <item name="android:windowSplashScreenBackground">#FF04071B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF05081D</item>
+        <item name="android:windowSplashScreenBackground">#FF05081D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF32419B</item>
+        <item name="android:windowSplashScreenBackground">#FF32419B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.indigo_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF080C25</item>
+        <item name="android:windowSplashScreenBackground">#FF080C25</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_indigo_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0F031A</item>
+        <item name="android:windowSplashScreenBackground">#FF0F031A</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1E0D2A</item>
+        <item name="android:windowSplashScreenBackground">#FF1E0D2A</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFEADAF4</item>
+        <item name="android:windowSplashScreenBackground">#FFEADAF4</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF10031D</item>
+        <item name="android:windowSplashScreenBackground">#FF10031D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF100318</item>
+        <item name="android:windowSplashScreenBackground">#FF100318</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF12041C</item>
+        <item name="android:windowSplashScreenBackground">#FF12041C</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF5C2990</item>
+        <item name="android:windowSplashScreenBackground">#FF5C2990</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.violet_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF170521</item>
+        <item name="android:windowSplashScreenBackground">#FF170521</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_violet_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1A030B</item>
+        <item name="android:windowSplashScreenBackground">#FF1A030B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1C030B</item>
+        <item name="android:windowSplashScreenBackground">#FF1C030B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFF6DAE1</item>
+        <item name="android:windowSplashScreenBackground">#FFF6DAE1</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1A030B</item>
+        <item name="android:windowSplashScreenBackground">#FF1A030B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF180109</item>
+        <item name="android:windowSplashScreenBackground">#FF180109</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF150108</item>
+        <item name="android:windowSplashScreenBackground">#FF150108</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF822547</item>
+        <item name="android:windowSplashScreenBackground">#FF822547</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.rose_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF1B0309</item>
+        <item name="android:windowSplashScreenBackground">#FF1B0309</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_rose_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF120A04</item>
+        <item name="android:windowSplashScreenBackground">#FF120A04</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF130A04</item>
+        <item name="android:windowSplashScreenBackground">#FF130A04</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFECD9C4</item>
+        <item name="android:windowSplashScreenBackground">#FFECD9C4</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF110803</item>
+        <item name="android:windowSplashScreenBackground">#FF110803</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF100702</item>
+        <item name="android:windowSplashScreenBackground">#FF100702</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF100702</item>
+        <item name="android:windowSplashScreenBackground">#FF100702</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF6C3D1E</item>
+        <item name="android:windowSplashScreenBackground">#FF6C3D1E</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.coffee_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF130B04</item>
+        <item name="android:windowSplashScreenBackground">#FF130B04</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_coffee_8</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_1" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0D0D0D</item>
+        <item name="android:windowSplashScreenBackground">#FF0D0D0D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_1</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_2" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0E0F0F</item>
+        <item name="android:windowSplashScreenBackground">#FF0E0F0F</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_2</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_3" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FFE6E2DD</item>
+        <item name="android:windowSplashScreenBackground">#FFE6E2DD</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_3</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_4" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0D0E0E</item>
+        <item name="android:windowSplashScreenBackground">#FF0D0E0E</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_4</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_5" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0C0D0D</item>
+        <item name="android:windowSplashScreenBackground">#FF0C0D0D</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_5</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_6" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF0B0D0B</item>
+        <item name="android:windowSplashScreenBackground">#FF0B0D0B</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_6</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_7" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF111212</item>
+        <item name="android:windowSplashScreenBackground">#FF111212</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_7</item>
+    </style>
+    <style name="Theme.Alarm.Splash.graphite_8" parent="Theme.Alarm">
+        <item name="android:windowBackground">#FF111211</item>
+        <item name="android:windowSplashScreenBackground">#FF111211</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_graphite_8</item>
+    </style>
+</resources>

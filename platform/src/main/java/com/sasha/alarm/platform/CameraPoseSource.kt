@@ -27,6 +27,7 @@ import com.sasha.alarm.core.PosePoint
 import com.sasha.alarm.core.PoseSource
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.RejectedExecutionException
 
 /**
  * Камера + MediaPipe Pose Landmarker — адаптер порта [PoseSource].
@@ -53,6 +54,11 @@ class CameraPoseSource(
     private val model: PoseModel = PoseModel.FULL,
 ) : PoseSource {
 
+    /**
+     * Модель. Пока камера работает, её трогает только поток анализа — и закрывает тоже он
+     * (см. [stop]): иначе `close()` с главного потока рвёт её посреди `detectAsync`.
+     */
+    @Volatile
     private var landmarker: PoseLandmarker? = null
     private var provider: ProcessCameraProvider? = null
     private var executor: ExecutorService? = null
@@ -135,14 +141,36 @@ class CameraPoseSource(
             Log.w(TAG, "камера не отвязалась", e)
         }
         provider = null
+
+        // 🔴 Модель закрывается в потоке анализа, в очереди за последним кадром, а не здесь.
+        // Отвязка камеры не останавливает кадр, который уже разбирается, и `close()` с
+        // главного потока рвал модель посреди `detectAsync` — нативное падение процесса
+        // (`SIGSEGV` в потоке анализа) через 0,3 с после снятия тревоги, 2026-09-10 и -11.
+        // Поток один, значит после закрытия ни один кадр модель уже не застанет. Главный
+        // поток при этом ничего не ждёт.
+        val worker = executor
+        executor = null
+        if (worker == null) {
+            closeLandmarker()
+            return
+        }
         try {
-            landmarker?.close()
+            worker.execute(::closeLandmarker)
+        } catch (e: RejectedExecutionException) {
+            Log.w(TAG, "поток анализа уже закрыт — закрываю модель здесь", e)
+            closeLandmarker()
+        }
+        worker.shutdown()
+    }
+
+    private fun closeLandmarker() {
+        val model = landmarker ?: return
+        landmarker = null
+        try {
+            model.close()
         } catch (e: Exception) {
             Log.w(TAG, "модель не закрылась", e)
         }
-        landmarker = null
-        executor?.shutdown()
-        executor = null
     }
 
     private fun createLandmarker(): PoseLandmarker? {

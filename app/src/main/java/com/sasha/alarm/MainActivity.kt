@@ -2,6 +2,7 @@ package com.sasha.alarm
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -9,6 +10,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -19,14 +21,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.sasha.alarm.core.AlarmState
 import com.sasha.alarm.core.Challenge
+import com.sasha.alarm.core.HookHealth
 import com.sasha.alarm.core.MelodySource
+import com.sasha.alarm.core.SyncHealth
 import com.sasha.alarm.platform.AudioOutputs
 import com.sasha.alarm.platform.LogSender
 import com.sasha.alarm.platform.MelodyStore
+import com.sasha.alarm.platform.SyncStateStore
 import com.sasha.alarm.platform.PermissionId
 import com.sasha.alarm.platform.PermissionStatus
 import com.sasha.alarm.platform.Permissions
+import com.sasha.alarm.platform.PhoneSteps
 import com.sasha.alarm.ui.AlarmTheme
+import com.sasha.alarm.ui.AppTheme
 import com.sasha.alarm.ui.PermissionRow
 import com.sasha.alarm.ui.SettingsActions
 import com.sasha.alarm.ui.SettingsScreen
@@ -41,7 +48,8 @@ import com.sasha.alarm.ui.R as UiR
  *
  * Главного экрана нет намеренно (решение владельца 2026-08-14): он существовал ради
  * собственного будильника, а будильника больше нет. Всё, что делает приложение, —
- * ждёт выключения Sleep Cycle и поднимает свой экран, а настраивать нужно только это.
+ * ждёт выключения чужого будильника (Sleep Cycle или стандартного) и поднимает свой экран,
+ * а настраивать нужно только это.
  */
 class MainActivity : ComponentActivity() {
 
@@ -53,17 +61,45 @@ class MainActivity : ComponentActivity() {
         // Чистая установка не проходит через BOOT_COMPLETED, поэтому ежедневную передачу
         // журнала ставим и отсюда. Повторный вызов просто переставляет тот же таймер.
         SyncReceiver.schedule(this)
-        setContent { AlarmTheme { AppRoot(resumeTick) } }
+        // Проверку зацепа — тем же способом: после установки её иначе никто не поставит.
+        HookWatch.schedule(this)
+        setContent {
+            var current by remember { mutableStateOf(ThemePrefs.current(this)) }
+            SideEffect {
+                paintWindow(current)
+                rememberSplash(current)
+            }
+            AlarmTheme(current) {
+                AppRoot(resumeTick) { picked ->
+                    current = picked
+                    ThemePrefs.save(this, picked)
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         resumeTick++
     }
+
+    override fun onStop() {
+        super.onStop()
+        // Значок меняем, когда экран ушёл, и не во время тревоги: смена может перезапустить процесс.
+        if (!AlarmRuntime.alarmActive) LauncherIcon.sync(this, ThemePrefs.id(this))
+    }
+
+    /**
+     * Загрузочный экран рисует система до запуска приложения, по стилю активности, — сам он темы не знает.
+     * С Android 13 система запоминает стиль загрузочного экрана на следующие запуски: отдаём ей стиль темы.
+     */
+    private fun rememberSplash(t: AppTheme) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) splashScreen.setSplashScreenTheme(ThemeSplash.style(t.id))
+    }
 }
 
 @Composable
-private fun AppRoot(resumeTick: Int) {
+private fun AppRoot(resumeTick: Int, onTheme: (AppTheme) -> Unit) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -88,13 +124,12 @@ private fun AppRoot(resumeTick: Int) {
         }
     }
 
-    // Запись ночи. Состояние — в памяти службы, а не на диске: запись существует ровно
-    // столько, сколько жив её процесс, и врать об этом пережившим перезапуск флагом нельзя.
-    var nightRecording by remember { mutableStateOf(false) }
-    var nightRecordingCaption by remember { mutableStateOf("") }
-    val nightRunning = stringResource(UiR.string.night_record_running)
-    val nightHint = stringResource(UiR.string.night_record_hint)
-    val nightNoMic = stringResource(UiR.string.night_record_no_mic)
+    // Плашка «журнал не уехал». Судит ядро (`SyncHealth`), здесь только текст.
+    var syncWarning by remember { mutableStateOf("") }
+
+    // Плашка «зацеп не работает» (владелец, 2026-09-30). Открытие приложения — ещё и
+    // проверка с переподключением: владелец открывает его, когда что-то не так.
+    var hook by remember { mutableStateOf<HookHealth.Status?>(null) }
 
     LaunchedEffect(resumeTick, reloadTick) {
         state = withContext(Dispatchers.IO) { AlarmController.state(context) }
@@ -108,14 +143,19 @@ private fun AppRoot(resumeTick: Int) {
         }
         headphones = withContext(Dispatchers.IO) { AudioOutputs.headphonesConnected(context) }
 
-        nightRecording = NightRecordingService.active
-        val stored = withContext(Dispatchers.IO) { NightRecordingService.recordings(context).size }
-        nightRecordingCaption = when {
-            nightRecording -> nightRunning
-            !Permissions.microphoneAllowed(context) -> nightNoMic
-            stored > 0 -> context.getString(UiR.string.night_record_stored, stored)
-            else -> nightHint
+        // ⚠️ Пересчитывается на каждый возврат на экран, а не один раз при запуске:
+        // владелец открывает приложение именно затем, чтобы проверить, дошло ли.
+        val sync = withContext(Dispatchers.IO) { SyncStateStore(context).read() }
+        val now = System.currentTimeMillis()
+        syncWarning = when (SyncHealth.verdict(sync, now)) {
+            SyncHealth.Verdict.FINE -> ""
+            SyncHealth.Verdict.FAILED -> context.getString(UiR.string.sync_warn_failed)
+            SyncHealth.Verdict.STALE ->
+                context.getString(UiR.string.sync_warn_stale, SyncHealth.hoursSinceOk(sync, now) ?: 0L)
         }
+
+        // Последним: переподключение ждёт до восьми секунд, остальное экрану нужно раньше.
+        hook = withContext(Dispatchers.IO) { HookWatch.run(context) }
     }
 
     val mutate: ((AlarmState) -> AlarmState) -> Unit = { block ->
@@ -141,15 +181,10 @@ private fun AppRoot(resumeTick: Int) {
         ActivityResultContracts.RequestPermission(),
     ) { reloadTick++ }
 
-    // Микрофон — то же самое, но с одним отличием: разрешив, запись начинаем сразу.
-    // Иначе владелец жмёт «Записать ночь», отвечает на диалог и остаётся ни с чем,
-    // не понимая, что нажать надо было второй раз.
-    val microphoneRequest = rememberLauncherForActivityResult(
+    // Шаги Xiaomi — провайдер требует «Физическую активность», а она только диалогом.
+    val stepsRequest = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission(),
-    ) { allowed ->
-        reloadTick++
-        if (allowed) NightRecordingService.start(context)
-    }
+    ) { reloadTick++ }
 
     SettingsScreen(
         state = SettingsUiState(
@@ -166,8 +201,8 @@ private fun AppRoot(resumeTick: Int) {
             resumeDelaySeconds = state.resumeDelaySeconds,
             permissions = permissionRows(permissions, state.manualPermissions),
             syncCaption = syncCaption,
-            nightRecording = nightRecording,
-            nightRecordingCaption = nightRecordingCaption,
+            syncWarning = syncWarning,
+            hook = hook,
         ),
         actions = SettingsActions(
             onMasterChange = { enabled -> mutate { it.copy(masterEnabled = enabled) } },
@@ -205,6 +240,8 @@ private fun AppRoot(resumeTick: Int) {
                 val id = PermissionId.valueOf(key)
                 if (id == PermissionId.CAMERA) {
                     cameraRequest.launch(android.Manifest.permission.CAMERA)
+                } else if (id == PermissionId.STEPS && !Permissions.activityAllowed(context)) {
+                    stepsRequest.launch(PhoneSteps.ACTIVITY)
                 } else {
                     Permissions.open(context, id)
                 }
@@ -216,27 +253,22 @@ private fun AppRoot(resumeTick: Int) {
                 }
             },
             onTest = { AlarmController.scheduleTest(context, TEST_DELAY_MS) },
-            onNightRecordingToggle = {
-                when {
-                    NightRecordingService.active ->
-                        NightRecordingService.stop(context, "manual")
-
-                    Permissions.microphoneAllowed(context) ->
-                        NightRecordingService.start(context)
-
-                    // Разрешения нет — спрашиваем; запись начнётся из ответа на диалог.
-                    else -> microphoneRequest.launch(android.Manifest.permission.RECORD_AUDIO)
-                }
-                reloadTick++
-            },
+            onPickTheme = onTheme,
             onSendLog = {
                 if (!sending) {
                     sending = true
                     syncCaption = sendingText
                     scope.launch {
-                        val result = withContext(Dispatchers.IO) { LogSender(context).send() }
+                        // ⚠️ Тот же путь, что у ежедневной задачи: снять снимок пользования,
+                        // дождаться записи, отдать. Кнопка, которая только отправляет
+                        // лежащее, молча теряла бы всё сегодняшнее (владелец, 2026-08-29).
+                        val result = withContext(Dispatchers.IO) { SyncReceiver.collectAndSend(context) }
                         syncCaption = describe(result)
                         sending = false
+                        // Плашка обязана погаснуть сразу после удачной передачи, а не
+                        // ждать следующего захода на экран: иначе она врёт о только что
+                        // исправленном.
+                        reloadTick++
                     }
                 }
             },
@@ -267,9 +299,9 @@ private fun permissionRows(
             PermissionId.EXACT_ALARM -> UiR.string.perm_exact_alarm_title
             PermissionId.BATTERY -> UiR.string.perm_battery_title
             PermissionId.CAMERA -> UiR.string.perm_camera_title
-            PermissionId.MICROPHONE -> UiR.string.perm_microphone_title
             PermissionId.NFC -> UiR.string.perm_nfc_title
             PermissionId.USAGE_STATS -> UiR.string.perm_usage_stats_title
+            PermissionId.STEPS -> UiR.string.perm_steps_title
             PermissionId.XIAOMI_AUTOSTART -> UiR.string.perm_xiaomi_autostart_title
             PermissionId.XIAOMI_BACKGROUND_POPUP -> UiR.string.perm_xiaomi_popup_title
         }

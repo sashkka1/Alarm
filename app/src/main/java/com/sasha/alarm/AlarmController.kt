@@ -6,6 +6,7 @@ import android.util.Log
 import com.sasha.alarm.core.AlarmState
 import com.sasha.alarm.core.EventType
 import com.sasha.alarm.core.FailSafe
+import com.sasha.alarm.core.ForeignAlarmRule
 import com.sasha.alarm.core.LogValue
 import com.sasha.alarm.platform.AlarmScheduling
 import com.sasha.alarm.platform.AlarmStateStore
@@ -13,7 +14,6 @@ import com.sasha.alarm.platform.AudioSnapshot
 import com.sasha.alarm.platform.AndroidClock
 import com.sasha.alarm.platform.DeviceOwner
 import com.sasha.alarm.platform.EventLog
-import com.sasha.alarm.platform.LightSensor
 
 /**
  * Композиционный корень приложения: связывает правила из `:core` с адаптерами `:platform`.
@@ -46,12 +46,6 @@ object AlarmController {
         // дважды (его поднимают и мы, и полноэкранное уведомление), и в журнал попадали
         // два подъёма на одно утро — видно на телефоне 2026-08-25. Здесь тревога
         // рождается ровно один раз.
-        // Ночь кончилась: дальше пойдёт мелодия, испытание и хождение по квартире —
-        // писать это в файл ночного сна незачем (решение владельца 2026-08-26).
-        // ⚠️ Обычно запись останавливает раньше сам звонок Sleep Cycle; сюда доходит,
-        // только если тревогу подняли иначе — проверкой или без зацепа.
-        NightRecordingService.stop(app, "ring")
-
         val log = EventLog(app)
         log.write(
             EventType.ALARM_SHOWN,
@@ -62,7 +56,6 @@ object AlarmController {
         // Снимок звука — **до** того, как мы сами поднимем громкость: важно, каким
         // состояние было. Без этих чисел утро «будильник не сработал» не разобрать.
         log.write(EventType.AUDIO_STATE, AudioSnapshot.take(app))
-        sampleLight(app, "alarm")
 
         AlarmScheduling.scheduleGuard(
             context = app,
@@ -81,13 +74,24 @@ object AlarmController {
         }
     }
 
-    /** Владелец выключил чужой будильник (Sleep Cycle) — поднимаем свой экран. */
-    fun onForeignAlarmDismissed(context: Context) {
-        if (!state(context).masterEnabled) {
+    /**
+     * Чужой будильник выключен — поднимаем свой экран.
+     *
+     * @param reason чей: Sleep Cycle или стандартный будильник, для лога.
+     */
+    fun onForeignAlarmDismissed(context: Context, reason: String) {
+        val state = state(context)
+        if (!state.masterEnabled) {
             Log.i(TAG, "приложение выключено общим тумблером — тревогу не поднимаю")
             return
         }
-        startRun(context, "зацеп за Sleep Cycle", source = "foreign", preview = false)
+        // Один наш экран на утро (владелец, 2026-09-30): идёт наша тревога или испытание
+        // пройдено меньше часа назад — второй чужой будильник экран не поднимает.
+        if (!ForeignAlarmRule.raisesScreen(AlarmRuntime.alarmActive, state.challengePassedAtMillis, AndroidClock.nowMillis())) {
+            Log.i(TAG, "$reason: наш экран уже идёт или испытание пройдено недавно — второй не поднимаю")
+            return
+        }
+        startRun(context, reason, source = "foreign", preview = false)
     }
 
     /** Показ экрана из настроек: то же самое, но с кнопкой «Выйти». */
@@ -154,36 +158,28 @@ object AlarmController {
             data["ms"] = LogValue.of((AndroidClock.nowMillis() - run.startedAtMillis).coerceAtLeast(0L))
             if (run.preview) data["preview"] = LogValue.of(true)
             EventLog(app).write(EventType.ALARM_DISMISSED, data)
-            if (!run.preview) sampleLight(app, "rise")
         }
-        store(app).update { it.copy(run = null) }
+        // Пройденное испытание настоящей тревоги — доказательство, что владелец проснулся:
+        // по нему второй чужой будильник этого утра экран не поднимает. Дедлайн и показ из
+        // настроек ничего не доказывают и отметку не ставят.
+        val passed = run != null && !run.preview && reason == REASON_CHALLENGE
+        val now = AndroidClock.nowMillis()
+        store(app).update {
+            it.copy(run = null, challengePassedAtMillis = if (passed) now else it.challengePassedAtMillis)
+        }
         AlarmScheduling.cancelGuard(app, GuardReceiver::class.java)
         DeviceOwner.releaseHardLock(app)
         app.stopService(Intent(app, AlarmService::class.java))
         app.sendBroadcast(Intent(AlarmActivity.ACTION_DISMISS).setPackage(app.packageName))
     }
 
-    /**
-     * Разовый замер освещённости в журнал.
-     *
-     * Делается дважды за утро — когда экран поднялся и когда тревога снята, — и отвечает
-     * на вопрос, в какой темноте человек просыпается. Для протокола это прямое измерение:
-     * подъём при 5 люксах и подъём при 300 — разные вещи, а помнить их наутро нельзя.
-     *
-     * ⚠️ Телефон может лежать экраном вниз или под подушкой — тогда придёт темнота,
-     * которой в комнате нет. Одиночный замер и не претендует на точность: он показывает
-     * порядок величины, а не число.
-     */
-    private fun sampleLight(app: Context, moment: String) {
-        LightSensor(app).sample { lux ->
-            if (lux == null) return@sample
-            EventLog(app).write(
-                EventType.LIGHT_SAMPLE,
-                "lux" to LogValue.of(lux.toDouble()),
-                "moment" to LogValue.of(moment),
-            )
-        }
-    }
+    // 🔴 **Разовых замеров света на подъёме и снятии здесь больше нет** (владелец,
+    // 2026-08-31). Они делались при **любом** испытании — и 31 августа он это поймал:
+    // утро прошло на реакции, метки не прикладывались, а точка света на ленте всё равно
+    // появилась ровно в момент подъёма экрана. Правило теперь одно и без исключений:
+    // непрерывный ряд) и в момент касания самой метки (внутри `nfc.tag`). Там телефон
+    // заведомо в руке и датчик показывает комнату; в остальное время он показывает
+    // подушку или карман, и такому числу веры нет.
 
     /** Причины снятия — общий словарь с журналом. */
     const val REASON_CHALLENGE = "challenge"

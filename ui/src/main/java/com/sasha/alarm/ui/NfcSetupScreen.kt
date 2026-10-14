@@ -20,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -96,7 +97,7 @@ fun NfcSetupScreen(state: NfcSetupUiState, actions: NfcSetupActions) {
             Note(stringResource(R.string.nfc_disabled))
             Spacer(Modifier.height(8.dp))
             TextButton(onClick = actions.onOpenNfcSettings) {
-                Text(stringResource(R.string.nfc_open_settings), color = AlarmColors.Accent, fontSize = 14.sp)
+                Text(stringResource(R.string.nfc_open_settings), color = theme.accent, fontSize = 14.sp, fontWeight = FontWeight.Medium)
             }
         }
 
@@ -139,21 +140,21 @@ fun NfcSetupScreen(state: NfcSetupUiState, actions: NfcSetupActions) {
             Text(
                 text = stringResource(R.string.nfc_route_empty),
                 fontSize = 13.sp,
-                color = AlarmColors.TextDim,
+                color = theme.muted,
             )
         } else {
             Grid(state.route) { number ->
                 Box(
                     modifier = Modifier
                         .size(44.dp)
-                        .background(AlarmColors.SurfaceRaised, RoundedCornerShape(12.dp)),
+                        .background(theme.field, RoundedCornerShape(10.dp)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = number.toString(),
                         fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = AlarmColors.TextPrimary,
+                        fontWeight = FontWeight.SemiBold,
+                        color = theme.text,
                     )
                 }
             }
@@ -166,13 +167,13 @@ fun NfcSetupScreen(state: NfcSetupUiState, actions: NfcSetupActions) {
 private fun RouteAction(glyph: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(36.dp)
-            .background(AlarmColors.SurfaceRaised, RoundedCornerShape(9.dp))
-            .border(1.dp, AlarmColors.Outline, RoundedCornerShape(9.dp))
+            .size(34.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(theme.field)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text(glyph, fontSize = 16.sp, color = AlarmColors.Accent)
+        Text(glyph, fontSize = 16.sp, color = theme.text)
     }
 }
 
@@ -237,28 +238,28 @@ private fun TagChip(number: Int, onAdd: () -> Unit, onForget: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(AlarmColors.Surface, RoundedCornerShape(16.dp))
-                .border(1.dp, AlarmColors.Outline, RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(16.dp))
+                .background(theme.field)
                 .clickable(onClick = onAdd),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = number.toString(),
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Black,
-                color = AlarmColors.TextPrimary,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = theme.text,
             )
         }
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .size(20.dp)
-                .background(AlarmColors.Background, CircleShape)
-                .border(1.dp, AlarmColors.Outline, CircleShape)
+                .clip(CircleShape)
+                .background(theme.sel)
                 .clickable(onClick = onForget),
             contentAlignment = Alignment.Center,
         ) {
-            Text("×", fontSize = 13.sp, lineHeight = 13.sp, color = AlarmColors.TextSecondary)
+            Text("×", fontSize = 13.sp, lineHeight = 13.sp, color = theme.muted)
         }
     }
 }
@@ -268,11 +269,12 @@ private fun AddChip(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(56.dp)
-            .background(AlarmColors.Accent, RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(16.dp))
+            .background(theme.accent)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text("＋", fontSize = 24.sp, lineHeight = 24.sp, color = Color.White)
+        Text("＋", fontSize = 24.sp, lineHeight = 24.sp, color = theme.onAccent)
     }
 }
 
@@ -281,19 +283,18 @@ private fun WaitingPanel(onCancel: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AlarmColors.SurfaceRaised, RoundedCornerShape(16.dp))
-            .border(1.dp, AlarmColors.Accent, RoundedCornerShape(16.dp))
+            .background(theme.field, RoundedCornerShape(16.dp))
             .padding(18.dp),
     ) {
         Text(
             text = stringResource(R.string.nfc_waiting),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = AlarmColors.TextPrimary,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Medium,
+            color = theme.text,
         )
         Spacer(Modifier.height(8.dp))
         TextButton(onClick = onCancel) {
-            Text(stringResource(R.string.nfc_waiting_cancel), color = AlarmColors.Accent, fontSize = 14.sp)
+            Text(stringResource(R.string.nfc_waiting_cancel), color = theme.accent, fontSize = 14.sp, fontWeight = FontWeight.Medium)
         }
     }
 }
@@ -312,16 +313,17 @@ private fun TouchBanner(touched: NfcTouch) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = if (known) AlarmColors.Good.copy(alpha = 0.12f) else AlarmColors.SurfaceRaised,
-                shape = RoundedCornerShape(14.dp),
+                color = theme.field,
+                shape = RoundedCornerShape(16.dp),
             )
             .padding(horizontal = 16.dp, vertical = 14.dp),
     ) {
         Text(
             text = text,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            color = if (known) AlarmColors.Good else AlarmColors.TextSecondary,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.Medium,
+            // Узнанная метка — цветом статуса `ok`, незнакомая — `muted`.
+            color = if (known) theme.ok else theme.muted,
         )
     }
 }
@@ -329,10 +331,10 @@ private fun TouchBanner(touched: NfcTouch) {
 @Composable
 private fun SectionTitle(text: String) {
     Text(
-        text = text.uppercase(),
-        fontSize = 11.sp,
-        letterSpacing = 1.sp,
-        color = AlarmColors.TextSecondary,
+        text = text,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Medium,
+        color = theme.muted,
     )
 }
 
@@ -341,9 +343,9 @@ private fun Note(text: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AlarmColors.AccentSoft.copy(alpha = 0.35f), RoundedCornerShape(14.dp))
-            .padding(14.dp),
+            .background(theme.field, RoundedCornerShape(16.dp))
+            .padding(horizontal = 18.dp, vertical = 14.dp),
     ) {
-        Text(text, fontSize = 13.sp, color = AlarmColors.TextPrimary)
+        Text(text, fontSize = 14.sp, lineHeight = 20.sp, color = theme.warn)
     }
 }

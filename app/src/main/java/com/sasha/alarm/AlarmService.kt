@@ -86,6 +86,17 @@ class AlarmService : Service() {
         if (!sound.enabled) return
         speaker.say(text = text, nowMillis = nowMillis)
     }
+
+    /**
+     * Номер повтора словом, а не цифрами.
+     *
+     * 🔴 Цифры голосу не отдаются: движок Google читает «13» так, что слышно второе
+     * «двенадцать» (владелец, 2026-09-13: «режет ухо, я это слышу каждый день»). Трасса
+     * утренних подходов подтвердила, что счётчик прав и в голос уходило именно «13», —
+     * ошибается чтение цифр. Готовое слово движку перечитывать не из чего.
+     */
+    private fun repWord(reps: Int): String =
+        resources.getStringArray(UiR.array.pushup_rep_words).getOrNull(reps) ?: reps.toString()
     private val statusBarBlocker by lazy { StatusBarBlocker(this) }
 
     private val eventLog by lazy { EventLog(this) }
@@ -509,10 +520,12 @@ class AlarmService : Service() {
 
             // Кадры приносит экран — только у него есть жизненный цикл, к которому
             // привязывается камера. Здесь остаётся сказать, с чего начать.
-            Challenge.PUSHUPS -> say(
-                text = getString(UiR.string.pushup_problem_start),
-                nowMillis = AndroidClock.nowMillis(),
-            )
+            Challenge.PUSHUPS -> {
+                say(
+                    text = getString(UiR.string.pushup_problem_start),
+                    nowMillis = AndroidClock.nowMillis(),
+                )
+            }
 
             else -> if (AlarmRuntime.session.tasks.isEmpty() || AlarmRuntime.session.isComplete) {
                 AlarmRuntime.session = MathSession(
@@ -617,7 +630,7 @@ class AlarmService : Service() {
                 // Голый счёт, без единого лишнего слова (решение владельца 2026-08-16):
                 // это отсчёт под нагрузкой, а не диктор. Он важнее любой придирки и
                 // обрывает её на полуслове — сказанное вслед за «шесть» уже неважно.
-                say(text = after.reps.toString(), nowMillis = now)
+                say(text = repWord(after.reps), nowMillis = now)
                 spokenProblem = null
                 pendingProblem = null
                 effortMovedAtMillis = now

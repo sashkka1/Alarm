@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Запасной ровный фон, если вернуть <background android:drawable="@color/ic_launcher_background"/> -->
-    <color name="ic_launcher_background">#FF0026</color>
-
-    <!-- Фон окна до первого кадра Compose. Тот же, что рисует потом сам экран:
-         белая простыня здесь читалась как «приложение сломалось». -->
-    <color name="app_background">#14110F</color>
-
-    <!-- Тот же сигнальный красный, что и на экране тревоги (ui/AlarmColors.Signal). -->
-    <color name="alarm_signal">#FF0026</color>
+    <!-- Фон окна до первого кадра — фон темы по умолчанию (red-2): белая простыня здесь
+         читалась как «приложение сломалось». Выбранную тему окну ставит код (paintWindow),
+         загрузочный экран — стиль темы из splash_themes.xml. -->
+    <color name="app_background">#2C0806</color>
 </resources>

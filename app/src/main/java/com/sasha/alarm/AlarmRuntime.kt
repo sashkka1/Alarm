@@ -121,6 +121,17 @@ object AlarmRuntime {
     @Volatile
     var foreignDismissRequested: Boolean = false
 
+    /**
+     * Слушатель уведомлений подключён — зацеп жив. Ставит и снимает [SleepCycleListener],
+     * читает сторож зацепа [HookWatch].
+     *
+     * ⚠️ Правда только в памяти и только этого процесса — так и нужно: процесс убит,
+     * значит и слушатель в нём не живёт, и новый процесс честно начинает с `false`.
+     * В [reset] не сбрасывается: это не часть тревоги.
+     */
+    @Volatile
+    var hookConnected: Boolean = false
+
     /** Тап по кружку. Подставляет сервис, зовёт экран. */
     var onCircleTap: () -> Unit = {}
 

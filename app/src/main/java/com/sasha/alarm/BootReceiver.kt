@@ -62,8 +62,9 @@ class BootReceiver : BroadcastReceiver() {
         DeviceOwner.applyPermanentPolicies(app)
 
         // Таймеры не переживают перезагрузку и обновление приложения — ежедневную
-        // передачу журнала надо ставить заново вместе со всем остальным.
+        // передачу журнала и проверку зацепа надо ставить заново вместе со всем остальным.
         SyncReceiver.schedule(app)
+        HookWatch.schedule(app)
 
         val state = AlarmStateStore(app).read()
         if (state.run == null) {

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_title">ALARM</string>
-    <string name="menu_test">ТЕСТ ЭКРАНА</string>
-    <string name="menu_permissions_all">все выданы</string>
-    <string name="menu_permissions_missing">выдано %1$d из %2$d</string>
+    <string name="app_title">Alarm</string>
+    <string name="menu_test">Тест экрана</string>
 
     <!-- Передача журнала на компьютер -->
     <string name="sync_now">Передать статистику</string>
     <string name="sync_never">ещё не передавалась</string>
-
-    <!-- Запись ночи -->
-    <string name="night_record_start">Записать ночь</string>
-    <string name="night_record_stop">Остановить запись</string>
-    <string name="night_record_hint">микрофон включится до звонка будильника</string>
-    <string name="night_record_running">идёт запись · встанет в 9:00 или по звонку</string>
-    <string name="night_record_stored">записей на телефоне: %1$d</string>
-    <string name="night_record_no_mic">нужен доступ к микрофону</string>
     <string name="sync_sending">ищу компьютер…</string>
     <string name="sync_done">отдано %1$d, принято %2$d · %3$s</string>
     <string name="sync_not_found">компьютер не отозвался — открой на нём приложение</string>
     <string name="sync_empty">журнал пуст</string>
     <string name="sync_failed">не вышло: %1$s</string>
+    <!-- Плашка об отказе передачи. Владелец 31.08.2026: «просто плашка, что сегодня
+         передача не удалась, и всё» — после двух суток молчания, замеченного случайно. -->
+    <string name="sync_warn_failed">Сегодняшняя передача не прошла</string>
+    <string name="sync_warn_stale">Журнал не уезжал %1$d ч</string>
+    <string name="sync_warn_hint">Нажми «Передать статистику» — или проверь, открыт ли Sashboard на компьютере</string>
+    <!-- Зацеп: плашка только на поломку, постоянной строки «работает» нет (владелец, 2026-08-16). -->
+    <string name="hook_warn_unbound">Зацеп не работает — будильник не поднимет экран</string>
+    <string name="hook_warn_unbound_hint">Приложение переподключает его само каждые 15 минут. Не помогает — в «Доступе к уведомлениям» выключи и снова включи Alarm</string>
+    <string name="hook_warn_no_access">Зацеп не работает — нет доступа к уведомлениям</string>
+    <string name="hook_warn_no_access_hint">Выдай Alarm «Доступ к уведомлениям» — разрешения — под шестерёнкой справа вверху</string>
 
     <!-- Приём экспорта Sleep Cycle -->
     <string name="import_no_file">Файл не приложен</string>
@@ -36,11 +36,11 @@
     <string name="import_known">Всё уже есть: %1$d ночей</string>
 
     <!-- Меню настроек: страницы, а не всплывающие окна -->
-    <string name="menu_challenge">ИСПЫТАНИЕ</string>
-    <string name="menu_sound">ЗВУК</string>
-    <string name="menu_lock">БЛОКИРОВКА</string>
-    <string name="menu_permissions">РАЗРЕШЕНИЯ</string>
-    <string name="menu_configure">НАСТРОИТЬ ›</string>
+    <string name="menu_challenge">Испытание</string>
+    <string name="menu_sound">Звук</string>
+    <string name="menu_lock">Блокировка</string>
+    <string name="menu_permissions">Разрешения</string>
+    <string name="menu_configure">Настроить</string>
     <string name="menu_back">‹</string>
 
     <string name="settings_resume_title">Возврат после перезагрузки</string>
@@ -65,9 +65,9 @@
     <string name="perm_exact_alarm_title">Точные будильники</string>
     <string name="perm_battery_title">Без ограничений батареи</string>
     <string name="perm_camera_title">Камера</string>
-    <string name="perm_microphone_title">Микрофон</string>
     <string name="perm_nfc_title">NFC</string>
     <string name="perm_usage_stats_title">Статистика использования</string>
+    <string name="perm_steps_title">Шаги (Xiaomi)</string>
     <string name="perm_xiaomi_autostart_title">Автозапуск (Xiaomi)</string>
     <string name="perm_xiaomi_popup_title">Всплывающие окна в фоне (Xiaomi)</string>
 
@@ -79,15 +79,62 @@
 
     <!-- Испытания -->
     <string name="challenge_pushups">Отжимания</string>
-    <string name="pushup_overlay_figure">ФИГУРА</string>
-    <string name="pushup_overlay_dots">СКЕЛЕТ</string>
-    <string name="pushup_model_lite">ЛЁГКАЯ</string>
-    <string name="pushup_model_full">СРЕДНЯЯ</string>
-    <string name="pushup_model_heavy">ТЯЖЁЛАЯ</string>
+    <string name="pushup_overlay_figure">Фигура</string>
+    <string name="pushup_overlay_dots">Скелет</string>
+    <string name="pushup_model_lite">Лёгкая</string>
+    <string name="pushup_model_full">Средняя</string>
+    <string name="pushup_model_heavy">Тяжёлая</string>
     <string name="pushup_model_hint">Тяжёлая точнее ставит точки, но выдаёт меньше кадров — и может пропустить нижнюю точку отжимания. Сравните на себе.</string>
 
     <!-- Вердикт по каждому подъёму: сказать один раз и по делу -->
     <string name="pushup_verdict_too_soon">Слишком быстро</string>
+
+    <!-- Счёт вслух — словами по номеру повтора, а не цифрами: движок Google читал «13»
+         так, что слышалось второе «двенадцать» (владелец, 2026-09-13). Номер — индекс,
+         поэтому первым идёт ноль. Длина покрывает PushupSettings.MAX_COUNT = 40. -->
+    <string-array name="pushup_rep_words">
+        <item>ноль</item>
+        <item>один</item>
+        <item>два</item>
+        <item>три</item>
+        <item>четыре</item>
+        <item>пять</item>
+        <item>шесть</item>
+        <item>семь</item>
+        <item>восемь</item>
+        <item>девять</item>
+        <item>десять</item>
+        <item>одиннадцать</item>
+        <item>двенадцать</item>
+        <item>тринадцать</item>
+        <item>четырнадцать</item>
+        <item>пятнадцать</item>
+        <item>шестнадцать</item>
+        <item>семнадцать</item>
+        <item>восемнадцать</item>
+        <item>девятнадцать</item>
+        <item>двадцать</item>
+        <item>двадцать один</item>
+        <item>двадцать два</item>
+        <item>двадцать три</item>
+        <item>двадцать четыре</item>
+        <item>двадцать пять</item>
+        <item>двадцать шесть</item>
+        <item>двадцать семь</item>
+        <item>двадцать восемь</item>
+        <item>двадцать девять</item>
+        <item>тридцать</item>
+        <item>тридцать один</item>
+        <item>тридцать два</item>
+        <item>тридцать три</item>
+        <item>тридцать четыре</item>
+        <item>тридцать пять</item>
+        <item>тридцать шесть</item>
+        <item>тридцать семь</item>
+        <item>тридцать восемь</item>
+        <item>тридцать девять</item>
+        <item>сорок</item>
+    </string-array>
     <!-- Ровно как в макете: одна строка вместо абзаца. Подробное объяснение
          человеку нужно не в настройках, а на самом экране испытания — и там оно есть. -->
 

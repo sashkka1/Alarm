@@ -17,7 +17,6 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.sasha.alarm.ui.AlarmColors
 import com.sasha.alarm.ui.AlarmTheme
 
 /**
@@ -92,14 +91,14 @@ class OverlayWindow(
         // Compose тянет цвета и размеры из темы; у контекста службы её может не быть.
         val themed = ContextThemeWrapper(context, R.style.Theme_Alarm)
         return ComposeView(themed).apply {
-            // Тот же красный, что и на самом экране тревоги: подложка видна ровно в те
-            // мгновения, пока Compose не нарисовал первый кадр, и белой ей быть нельзя —
-            // белый лист читается как поломка, а не как будильник (владелец, 2026-08-25).
-            setBackgroundColor(AlarmColors.Signal.toArgb())
+            // Фон темы, как у самого экрана тревоги: подложка видна ровно в те мгновения,
+            // пока Compose не нарисовал первый кадр, и чужим цветом ей быть нельзя —
+            // посторонний лист читается как поломка, а не как будильник (владелец, 2026-08-25).
+            setBackgroundColor(screenTheme.bg.toArgb())
             setViewTreeLifecycleOwner(treeOwner)
             setViewTreeSavedStateRegistryOwner(treeOwner)
             setContent {
-                AlarmTheme {
+                AlarmTheme(screenTheme) {
                     AlarmContent(
                         // Камеру держит активити: два владельца одной камеры —
                         // это отказ у обоих.
@@ -112,7 +111,10 @@ class OverlayWindow(
     }
 
     private fun buildBlankView(): View =
-        FrameLayout(context).apply { setBackgroundColor(AlarmColors.Signal.toArgb()) }
+        FrameLayout(context).apply { setBackgroundColor(screenTheme.bg.toArgb()) }
+
+    /** Тема заслонки — та же, что у экрана тревоги и настроек. */
+    private val screenTheme get() = ThemePrefs.current(context)
 
     private fun releaseOwner() {
         owner?.stop()

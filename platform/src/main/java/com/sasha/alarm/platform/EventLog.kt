@@ -56,6 +56,56 @@ class EventLog(context: Context) {
         writer.execute { append(line, event.at, event.tzOffsetMinutes) }
     }
 
+    /**
+     * Записать пачку событий. Возвращает управление немедленно.
+     *
+     * ⚠️ **Нужна ради объёма, а не ради удобства.** Шаги за всю историю — сотня тысяч
+     * минутных корзин (2026-09-13), и [write] на каждую ставил бы в очередь отдельную
+     * задачу, которая открывает файл и берёт блокировку заново. Здесь задача одна: строки
+     * раскладываются по файлам месяцев, и каждый файл открывается один раз.
+     *
+     * Правила те же, что у [write]: не бросает, пишет не в главном потоке, дозапись под
+     * блокировкой файла. Событие, которое не закодировалось, пропускается, а не роняет пачку.
+     */
+    fun writeAll(events: List<LogEvent>) {
+        if (events.isEmpty()) return
+        val lines = events.mapNotNull { event ->
+            try {
+                event to LogCodec.encode(event) + "\n"
+            } catch (e: Exception) {
+                Log.w(TAG, "событие не удалось закодировать: ${event.type}", e)
+                null
+            }
+        }
+        writer.execute {
+            val byFile = try {
+                lines.groupBy({ (event, _) -> fileName(event.at, event.tzOffsetMinutes) }, { it.second })
+            } catch (e: Exception) {
+                Log.w(TAG, "пачка журнала потеряна: ${lines.size} строк", e)
+                return@execute
+            }
+            for ((name, fileLines) in byFile) appendAll(name, fileLines)
+        }
+    }
+
+    private fun appendAll(name: String, lines: List<String>) {
+        try {
+            if (!dir.exists() && !dir.mkdirs()) return
+            FileOutputStream(File(dir, name), true).use { out ->
+                // Блокировка на всю пачку файла: тот же каталог пишет процесс :guard.
+                out.channel.lock().use {
+                    val buffered = out.buffered(BATCH_BUFFER_BYTES)
+                    for (line in lines) buffered.write(line.toByteArray(Charsets.UTF_8))
+                    // До снятия блокировки: иначе хвост буфера лёг бы в файл уже без неё.
+                    buffered.flush()
+                }
+            }
+        } catch (e: Exception) {
+            // Как и у одной строки: потеря допустима, остановка тревоги нет.
+            Log.w(TAG, "пачка журнала потеряна: $name, ${lines.size} строк", e)
+        }
+    }
+
     private fun append(line: String, at: Long, offsetMinutes: Int) {
         try {
             if (!dir.exists() && !dir.mkdirs()) return
@@ -140,6 +190,9 @@ class EventLog(context: Context) {
          * по килобайту, а не файлы.
          */
         private const val FLUSH_TIMEOUT_MS = 2_000L
+
+        /** Буфер пачечной записи: строки по сотне байт не должны уходить в диск поштучно. */
+        private const val BATCH_BUFFER_BYTES = 64 * 1024
 
         /**
          * Один поток на всё приложение: событий единицы в час, а очередь гарантирует,

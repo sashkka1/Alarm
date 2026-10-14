@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -26,9 +27,9 @@ import com.sasha.alarm.core.VictoryStats
 import com.sasha.alarm.platform.AndroidClock
 import com.sasha.alarm.platform.DeviceOwner
 import com.sasha.alarm.platform.EventLog
-import com.sasha.alarm.platform.LightSensor
 import com.sasha.alarm.platform.NfcReader
 import com.sasha.alarm.ui.AlarmTheme
+import com.sasha.alarm.ui.Themes
 import com.sasha.alarm.ui.VictoryScreen
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -72,19 +73,27 @@ class AlarmActivity : ComponentActivity() {
     /** Повторная просьба снять замок, если прошлую отменили. */
     private val retryUnlock = Runnable { requestUnlockForNfc() }
 
+    /** Когда просили в прошлый раз (uptime), чтобы не долбить систему чаще раза в секунду. */
+    private var unlockRequestedAt = 0L
+
     /** Итог пройденного испытания. Не null — на экране победа, а не тревога. */
     private var victory by mutableStateOf<VictoryStats?>(null)
 
     /** Чем остановить наблюдение за освещённостью. Не null — датчик сейчас включён. */
-    private var stopLight: (() -> Unit)? = null
+
+    /** Тема экрана тревоги — выбранная в настройках. */
+    private var screenTheme by mutableStateOf(Themes.byId(Themes.DEFAULT_ID))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        screenTheme = ThemePrefs.current(this)
 
         setShowWhenLocked(true)
         setTurnScreenOn(true)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.attributes = window.attributes.apply { screenBrightness = 1f }
+        // Тема та же, что у настроек (владелец, 2026-10-14). Окно — до первого кадра, иначе мелькнёт чужой фон.
+        paintWindow(screenTheme)
 
         // Кнопка «Назад» тревогу не выключает: выйти можно только кнопкой на экране
         // или по бэкапу. Свернуть экран в версии 1 всё ещё можно — блокировка в v4.
@@ -106,7 +115,7 @@ class AlarmActivity : ComponentActivity() {
         NfcRuntime.begin(AlarmController.state(this))
 
         setContent {
-            AlarmTheme {
+            AlarmTheme(screenTheme) {
                 victory?.let { stats ->
                     VictoryScreen(stats = stats, onExit = { finish() })
                     return@AlarmTheme
@@ -141,6 +150,9 @@ class AlarmActivity : ComponentActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         victory = AlarmRuntime.victory
+        // Экземпляр живёт между тревогами: тему могли сменить в настройках.
+        screenTheme = ThemePrefs.current(this)
+        paintWindow(screenTheme)
         NfcRuntime.begin(AlarmController.state(this))
     }
 
@@ -163,42 +175,34 @@ class AlarmActivity : ComponentActivity() {
         if (NfcRuntime.run != null) {
             nfcReader.start { id -> onNfcTag(id) }
             requestUnlockForNfc()
-            watchLight()
         }
     }
 
     /**
-     * Освещённость всё время, пока идёт испытание метками.
+     * Фокус вернулся окну — значит окно ввода пароля с экрана ушло.
      *
-     * ⚠️ **Единственное место, где свет пишется рядом, а не по касанию** (владелец,
-     * 2026-08-27). Испытание метками — это проход по квартире с телефоном в руке, то есть
-     * ровно тот случай, когда датчик показывает комнату, а не карман. Разовый замер по
-     * касанию отвечает «где он был в эту секунду»; ряд отвечает «через что он прошёл».
-     *
-     * ⚠️ Тип события тот же, что у разового замера, — различает их `moment`. Так протокол
-     * журнала не меняется, а значит не расходятся его копии на телефоне и на компьютере
-     * (P0 «протокол лежит копией»).
+     * ⚠️ Разобрано на телефоне 2026-09-07: просьба снять замок, поданная раньше,
+     * чем HyperOS закончил анимацию «замок перекрыт приложением» (~0,9 с после
+     * старта экрана), уничтожается по её окончании — `handleSetOccluded(true)`
+     * сбрасывает окно ввода и шлёт `onDismissCancelled`. Экран из тёплого процесса
+     * успевает попросить за 0,2 с, то есть проигрывает эту гонку всегда; из
+     * холодного — через секунду, и тогда просьба выживает. Отсюда «то через десять
+     * секунд, то никак». Пока окно ввода на экране, фокус у системы; вернулся фокус —
+     * окна нет, и если замок всё ещё заперт, просим заново. Пароль это не ломает:
+     * пока его вводят, фокуса у нас нет и мы молчим.
      */
-    private fun watchLight() {
-        if (stopLight != null) return
-        val log = EventLog(applicationContext)
-        stopLight = LightSensor(applicationContext).watch { lux ->
-            log.write(
-                EventType.LIGHT_SAMPLE,
-                "lux" to LogValue.of(lux.toDouble()),
-                "moment" to LogValue.of(MOMENT_CHALLENGE),
-            )
-        }
-    }
-
-    /** Отпустить датчик света. Зовётся отовсюду, откуда экран уходит: датчик не должен пережить испытание. */
-    private fun releaseLight() {
-        stopLight?.invoke()
-        stopLight = null
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) requestUnlockForNfc()
     }
 
     /**
      * Снять замок — без этого метки не прочитать вовсе.
+     *
+     * Просьба уходит не только из `onResume`: её повторяет возврат фокуса
+     * ([onWindowFocusChanged]) и проверка раз в [UNLOCK_RETRY_MS], пока идёт испытание
+     * и замок заперт. Проверка просит только когда фокус у нас — иначе она сбивала бы
+     * ввод пароля. Чаще раза в [UNLOCK_MIN_INTERVAL_MS] система не дёргается.
      *
      * ⚠️ Проверено на телефоне 2026-08-19: пока экран заперт, система держит
      * `mScreenState=ON_LOCKED` и **не включает reader mode** (`mEnableReader=false`),
@@ -220,6 +224,18 @@ class AlarmActivity : ComponentActivity() {
         if (NfcRuntime.run == null) return
         val manager = keyguard ?: return
         if (!manager.isKeyguardLocked) return
+
+        val now = SystemClock.uptimeMillis()
+        val sinceLast = now - unlockRequestedAt
+        if (sinceLast < UNLOCK_MIN_INTERVAL_MS) {
+            handler.postDelayed(retryUnlock, UNLOCK_MIN_INTERVAL_MS - sinceLast)
+            return
+        }
+        // Проверка на случай, когда окно ввода ушло, а ни фокус, ни отказ до нас не
+        // дошли. Просит она только при фокусе у нас — см. onWindowFocusChanged.
+        handler.postDelayed(retryUnlock, UNLOCK_RETRY_MS)
+        if (!hasWindowFocus()) return
+        unlockRequestedAt = now
 
         Log.i(TAG, "испытание метками — прошу снять замок")
         manager.requestDismissKeyguard(this, object : KeyguardManager.KeyguardDismissCallback() {
@@ -257,7 +273,6 @@ class AlarmActivity : ComponentActivity() {
         if (foregroundInstance == instanceId) isShowing = false
         handler.removeCallbacks(retryUnlock)
         nfcReader.stop()
-        releaseLight()
         super.onPause()
     }
 
@@ -286,21 +301,16 @@ class AlarmActivity : ComponentActivity() {
      * Пишется **каждое** касание, а не только зачтённое: «приложил не ту метку» и
      * «приложил ту же дважды» — ровно то, из-за чего испытание метками затягивается,
      * и по журналу это должно быть видно.
-     *
-     * Освещённость меряется заодно: телефон в руке и смотрит наружу.
      */
     private fun logTag(id: String) {
         val number = AlarmController.store(this).read().nfc.tags
             .firstOrNull { it.id.equals(id, ignoreCase = true) }
             ?.number
-        LightSensor(applicationContext).sample { lux ->
-            val data = LinkedHashMap<String, LogValue>()
-            data["index"] = LogValue.of((number ?: -1).toLong())
-            data["duringAlarm"] = LogValue.of(true)
-            data["expected"] = LogValue.of((NfcRuntime.run?.expected ?: -1).toLong())
-            if (lux != null) data["lux"] = LogValue.of(lux.toDouble())
-            EventLog(applicationContext).write(EventType.NFC_TAG, data)
-        }
+        val data = LinkedHashMap<String, LogValue>()
+        data["index"] = LogValue.of((number ?: -1).toLong())
+        data["duringAlarm"] = LogValue.of(true)
+        data["expected"] = LogValue.of((NfcRuntime.run?.expected ?: -1).toLong())
+        EventLog(applicationContext).write(EventType.NFC_TAG, data)
     }
 
     override fun onStop() {
@@ -312,7 +322,6 @@ class AlarmActivity : ComponentActivity() {
         // возвращает никто, и на экране остаётся что угодно, кроме испытания.
         if (foregroundInstance == instanceId) isShowing = false
         handler.removeCallbacksAndMessages(null)
-        releaseLight()
         releaseLock()
         runCatching { unregisterReceiver(dismissReceiver) }
         super.onDestroy()
@@ -387,8 +396,15 @@ class AlarmActivity : ComponentActivity() {
         const val ACTION_DISMISS = "com.sasha.alarm.DISMISS"
         private const val TAG = "AlarmActivity"
 
-        /** Через сколько просить снять замок заново, если прошлую просьбу отклонили. */
-        private const val UNLOCK_RETRY_MS = 10_000L
+        /**
+         * Через сколько проверять заново, не ушло ли окно ввода без нашего ведома.
+         * Было 10 с; владелец попросил чаще (2026-09-07). Основной повтор всё равно
+         * мгновенный — по возврату фокуса, это лишь страховка.
+         */
+        private const val UNLOCK_RETRY_MS = 3_000L
+
+        /** Не чаще: возврат фокуса и проверка могут сойтись в одну секунду. */
+        private const val UNLOCK_MIN_INTERVAL_MS = 1_000L
 
         /**
          * Пометка замера света, снятого во время испытания.
@@ -396,8 +412,7 @@ class AlarmActivity : ComponentActivity() {
          * ⚠️ Слово общее для телефона и компьютера: по нему компьютер отличает ряд
          * замеров от разового. Меняешь здесь — меняй и в `DayLight` на той стороне.
          */
-        private const val MOMENT_CHALLENGE = "challenge"
-
+    
         /** Читается сервисом из того же процесса, чтобы решить, нужен ли оверлей. */
         @Volatile
         var isShowing: Boolean = false

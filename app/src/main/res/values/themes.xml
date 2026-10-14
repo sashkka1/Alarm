@@ -14,15 +14,11 @@
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 
-    <!-- Экран тревоги: сигнальный красный ещё до первого кадра, и без анимации
-         появления — он должен возникать мгновенно, а не выезжать. Иконки системных
-         панелей тёмные: по этому красному чёрное читается, белое нет. -->
+    <!-- Экран тревоги: без анимации появления — он должен возникать мгновенно, а не выезжать.
+         Фон до первого кадра — тема по умолчанию; выбранную тему окну ставит код (paintWindow)
+         первой строкой, до содержимого. Сигнально-красного экрана больше нет: экран тревоги
+         живёт в теме настроек (владелец, 2026-10-14). -->
     <style name="Theme.Alarm.FullScreen" parent="Theme.Alarm">
-        <item name="android:windowBackground">@color/alarm_signal</item>
-        <item name="android:statusBarColor">@color/alarm_signal</item>
-        <item name="android:navigationBarColor">@color/alarm_signal</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 

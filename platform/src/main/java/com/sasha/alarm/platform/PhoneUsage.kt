@@ -3,9 +3,11 @@ package com.sasha.alarm.platform
 import android.app.usage.UsageEvents
 import android.content.Context
 import android.util.Log
+import com.sasha.alarm.core.AudioSpans
 import com.sasha.alarm.core.EventType
 import com.sasha.alarm.core.LogEvent
 import com.sasha.alarm.core.LogValue
+import com.sasha.alarm.core.UsageSpans
 import java.util.TimeZone
 
 /**
@@ -21,16 +23,14 @@ import java.util.TimeZone
  * что старше, исчезнет навсегда.
  *
  * ⚠️ Пишутся **отрезки**, а не отдельные запуски приложений: какими именно программами
- * человек пользовался, журналу знать незачем. Нужен только факт «экран был занят
+ * человек пользовался, журналу знать незачем. Нужен только факт «телефоном пользовались
  * с и по».
+ *
+ * ⚠️ **Пользование считается по замку** — правило в `UsageSpans`, за тестами. Здесь
+ * только перевод системных событий в его словарь: чтение системы — дело платформы,
+ * решение «что считать сеансом» — дело ядра.
  */
 object PhoneUsage {
-
-    /** Отрезки короче этого — случайные касания, а не пользование. */
-    private const val MIN_SPAN_MS = 30_000L
-
-    /** Разрыв меньше этого не разрывает отрезок: переключение между приложениями. */
-    private const val GLUE_MS = 60_000L
 
     /**
      * Снять историю за окно и дописать в журнал.
@@ -87,59 +87,114 @@ object PhoneUsage {
         return fresh.size
     }
 
-    /** Отрезки «экран был занят», склеенные из событий переднего плана. */
+    /**
+     * Снять отрезки музыки и дописать в журнал.
+     *
+     * Владелец, 2026-09-02: «по вечерам делаю растяжку, параллельно слушаю музыку, но
+     * иногда могу почитать во время растяжки — я бы не хотел включать это в пользование
+     * телефоном». Отрезки уезжают на компьютер, и разбор статистики вычитает их из
+     * пользования.
+     *
+     * ⚠️ **Слежения в фоне нет.** История `UsageStats` помнит запуск и остановку службы
+     * переднего плана задним числом — значит музыка снимается тем же окном, что и
+     * пользование, и не стоит ни батареи, ни живого процесса.
+     *
+     * ⚠️ **Отсев повторов — по началу отрезка, а не по паре.** Один и тот же сеанс на
+     * соседних снимках приходит с одинаковым началом; сравнивать пару целиком было бы
+     * достаточно только пока концы не плавают.
+     *
+     * @return сколько отрезков записано
+     */
+    fun music(context: Context, fromMillis: Long, toMillis: Long): Int {
+        if (!Permissions.usageStatsAllowed(context)) return 0
+        val spans = try {
+            readMusic(context, fromMillis, toMillis)
+        } catch (e: Exception) {
+            Log.w(TAG, "музыка не прочиталась", e)
+            return 0
+        }
+
+        val log = EventLog(context)
+        val known = log.events(EventType.PHONE_AUDIO).mapNotNull { it.long("fromMillis") }.toSet()
+        val fresh = spans.filter { it.from !in known }
+
+        val zone = TimeZone.getDefault()
+        for (span in fresh) {
+            log.write(
+                LogEvent(
+                    // Датируется концом, как и пользование: сеанс принадлежит тем суткам,
+                    // в которые он закончился.
+                    at = span.to,
+                    tzOffsetMinutes = zone.getOffset(span.to) / 60_000,
+                    type = EventType.PHONE_AUDIO,
+                    data = mapOf(
+                        "fromMillis" to LogValue.of(span.from),
+                        "toMillis" to LogValue.of(span.to),
+                        "app" to LogValue.of(MUSIC_APP),
+                    ),
+                )
+            )
+        }
+        return fresh.size
+    }
+
+    private fun readMusic(context: Context, fromMillis: Long, toMillis: Long): List<AudioSpans.Span> {
+        val manager = context.getSystemService(android.app.usage.UsageStatsManager::class.java)
+            ?: return emptyList()
+        val events = manager.queryEvents(fromMillis, toMillis)
+        val event = UsageEvents.Event()
+
+        val marks = mutableListOf<AudioSpans.Event>()
+        while (events.hasNextEvent()) {
+            events.getNextEvent(event)
+            if (event.packageName != MUSIC_APP) continue
+            val mark = when (event.eventType) {
+                UsageEvents.Event.FOREGROUND_SERVICE_START -> AudioSpans.Mark.STARTED
+                UsageEvents.Event.FOREGROUND_SERVICE_STOP -> AudioSpans.Mark.STOPPED
+                else -> continue
+            }
+            marks.add(AudioSpans.Event(event.timeStamp, mark))
+        }
+        return AudioSpans.of(marks)
+    }
+
+    /**
+     * Отрезки пользования: события замка и экрана из системы, сборка — в [UsageSpans].
+     *
+     * ⚠️ **Событий переднего плана (`ACTIVITY_*`) здесь больше нет.** Разбор живых данных
+     * 29.08.2026: сплошной сеанс они рвали на куски с дырами между приложениями, а
+     * секундные вспышки экрана от уведомлений считали пользованием. Владелец: нужен
+     * период, а не список приложений.
+     */
     private fun read(context: Context, fromMillis: Long, toMillis: Long): List<Pair<Long, Long>> {
         val manager = context.getSystemService(android.app.usage.UsageStatsManager::class.java)
             ?: return emptyList()
         val events = manager.queryEvents(fromMillis, toMillis)
         val event = UsageEvents.Event()
 
-        val spans = mutableListOf<Pair<Long, Long>>()
-        var openedAt: Long? = null
-
+        val marks = mutableListOf<UsageSpans.Event>()
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
-            when (event.eventType) {
-                UsageEvents.Event.ACTIVITY_RESUMED ->
-                    if (openedAt == null) openedAt = event.timeStamp
-
-                UsageEvents.Event.ACTIVITY_PAUSED,
-                UsageEvents.Event.ACTIVITY_STOPPED -> {
-                    val start = openedAt ?: continue
-                    spans.add(start to event.timeStamp)
-                    openedAt = null
-                }
+            val mark = when (event.eventType) {
+                UsageEvents.Event.KEYGUARD_HIDDEN -> UsageSpans.Mark.UNLOCKED
+                UsageEvents.Event.KEYGUARD_SHOWN -> UsageSpans.Mark.LOCKED
+                UsageEvents.Event.SCREEN_NON_INTERACTIVE -> UsageSpans.Mark.SCREEN_OFF
+                else -> continue
             }
+            marks.add(UsageSpans.Event(event.timeStamp, mark))
         }
-        // ⚠️ Незакрытый отрезок (телефоном пользуются прямо сейчас) **не пишется вовсе**.
-        // Записать его пришлось бы концом «сейчас», а завтрашний снимок увидел бы тот же
-        // сеанс уже целиком и другой парой — то есть отсев по совпадению его не поймал бы,
-        // и в статистику легли бы два наложенных отрезка вместо одного. Терять нечего:
-        // окно снимка шире суток, и следующий сеанс подберёт этот отрезок законченным.
 
-        return glue(spans).filter { (from, to) -> to - from >= MIN_SPAN_MS }
+        return UsageSpans.of(marks).map { it.from to it.to }
     }
 
     /**
-     * Склеить соседние отрезки.
+     * Чем владелец слушает музыку (он сам, 2026-09-02: «я слушаю через Яндекс Музыку»).
      *
-     * Без этого переключение между приложениями рвало бы одно занятие на десяток
-     * кусочков, и «пользовался 12 минут» превращалось бы в двенадцать записей по минуте.
+     * ⚠️ **Пакет один и назван явно, а не «любая чужая служба».** Служб переднего плана
+     * при погашенном экране полно — навигатор, загрузки, подкасты, — и считать музыкой всё
+     * подряд значило бы вычёркивать из пользования случайные вечера.
      */
-    private fun glue(spans: List<Pair<Long, Long>>): List<Pair<Long, Long>> {
-        if (spans.isEmpty()) return spans
-        val sorted = spans.sortedBy { it.first }
-        val out = mutableListOf(sorted.first())
-        for ((from, to) in sorted.drop(1)) {
-            val (lastFrom, lastTo) = out.last()
-            if (from - lastTo <= GLUE_MS) {
-                out[out.lastIndex] = lastFrom to maxOf(lastTo, to)
-            } else {
-                out.add(from to to)
-            }
-        }
-        return out
-    }
+    private const val MUSIC_APP = "ru.yandex.music"
 
     private const val TAG = "PhoneUsage"
 }

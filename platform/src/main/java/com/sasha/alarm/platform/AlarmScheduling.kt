@@ -22,6 +22,8 @@ object AlarmScheduling {
     private const val REQUEST_TEST = 1003
     private const val REQUEST_GUARD_ELAPSED = 1004
     private const val REQUEST_RESUME = 1005
+    private const val REQUEST_SYNC_RETRY = 1006
+    private const val REQUEST_HOOK_CHECK = 1007
 
     /** Пометка «это отладочный показ». */
     const val EXTRA_TEST = "com.sasha.alarm.TEST"
@@ -31,6 +33,12 @@ object AlarmScheduling {
 
     /** Отличает сторожа на монотонных часах — нужно, чтобы это был отдельный PendingIntent. */
     const val ACTION_GUARD_ELAPSED = "com.sasha.alarm.GUARD_ELAPSED"
+
+    /** Отличает возврат к неудавшейся передаче журнала от обычной обеденной. */
+    const val ACTION_SYNC_RETRY = "com.sasha.alarm.SYNC_RETRY"
+
+    /** Проверка зацепа — жив ли слушатель уведомлений (с 2026-09-30). */
+    const val ACTION_HOOK_CHECK = "com.sasha.alarm.HOOK_CHECK"
 
     /**
      * Сторож бэкапа: снимет тревогу, даже если основной процесс умрёт.
@@ -130,6 +138,68 @@ object AlarmScheduling {
             )
         Log.i(TAG, "тревога будет поднята заново в $triggerAtMillis")
     }
+
+    /**
+     * Вернуться к передаче журнала, когда заход не удался.
+     *
+     * ⚠️ **Отдельный PendingIntent от ежедневного таймера, и это обязательно.** Ежедневная
+     * передача ходит через [scheduleResume] с действием [EXTRA_RESUME]; поставь возврат тем
+     * же кодом — и он затрёт обед, то есть починка одной передачи сломала бы другую.
+     * Отличает их действие [ACTION_SYNC_RETRY], по нему же приёмник узнаёт, что это возврат
+     * в уже начатой цепочке, а не новый день.
+     */
+    fun scheduleSyncRetry(
+        context: Context,
+        triggerAtMillis: Long,
+        receiver: Class<out BroadcastReceiver>,
+    ) {
+        context.getSystemService(AlarmManager::class.java)
+            .setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                syncRetryIntent(context, receiver),
+            )
+        Log.i(TAG, "возврат к передаче журнала в $triggerAtMillis")
+    }
+
+    /** Снять назначенный возврат — журнал уехал, возвращаться больше незачем. */
+    fun cancelSyncRetry(context: Context, receiver: Class<out BroadcastReceiver>) {
+        context.getSystemService(AlarmManager::class.java)
+            .cancel(syncRetryIntent(context, receiver))
+    }
+
+    /**
+     * Следующая проверка зацепа.
+     *
+     * ⚠️ **Служебный таймер, а не будильник** — `setExactAndAllowWhileIdle`, как у передачи
+     * журнала (P0 №4): `setAlarmClock` показывал бы иконку будильника круглые сутки. Повторов
+     * у таймера нет: каждая проверка ставит следующую первой строкой.
+     */
+    fun scheduleHookCheck(
+        context: Context,
+        triggerAtMillis: Long,
+        receiver: Class<out BroadcastReceiver>,
+    ) {
+        context.getSystemService(AlarmManager::class.java)
+            .setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                PendingIntent.getBroadcast(
+                    context,
+                    REQUEST_HOOK_CHECK,
+                    Intent(context, receiver).setAction(ACTION_HOOK_CHECK),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+                ),
+            )
+    }
+
+    private fun syncRetryIntent(context: Context, receiver: Class<out BroadcastReceiver>) =
+        PendingIntent.getBroadcast(
+            context,
+            REQUEST_SYNC_RETRY,
+            Intent(context, receiver).setAction(ACTION_SYNC_RETRY),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
 
     private fun guardIntent(context: Context, receiver: Class<out BroadcastReceiver>) =
         PendingIntent.getBroadcast(

@@ -3,8 +3,15 @@
     <string name="app_name">Alarm</string>
 
     <!-- Запись ночи. Уведомление висит всю ночь, поэтому текст короткий и спокойный. -->
-    <string name="night_recording_channel">Запись ночи</string>
-    <string name="night_recording_title">Записываю ночь</string>
-    <string name="night_recording_text">Остановится, когда зазвонит будильник</string>
-    <string name="night_recording_stop">Остановить</string>
+
+    <!-- Зацеп не работает. Висит без звука, пока зацеп не заработает снова. -->
+    <string name="hook_channel_name">Зацеп будильника</string>
+    <string name="hook_notice_title">Зацеп не работает</string>
+    <string name="hook_notice_unbound">Будильник не поднимет экран: слушатель уведомлений отключился, и переподключить его не вышло. Открой Alarm.</string>
+    <string name="hook_notice_no_access">Будильник не поднимет экран: у Alarm нет доступа к уведомлениям. Открой Alarm.</string>
+
+    <!-- Передача журнала. Уведомление живёт меньше минуты раз в сутки. -->
+    <string name="sync_channel">Передача статистики</string>
+    <string name="sync_title">Передаю статистику</string>
+    <string name="sync_text">Отдаю журнал компьютеру</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -47,8 +48,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -61,6 +66,7 @@ import androidx.compose.ui.unit.sp
 import com.sasha.alarm.core.AlarmState
 import com.sasha.alarm.core.Challenge
 import com.sasha.alarm.core.FailSafe
+import com.sasha.alarm.core.HookHealth
 import com.sasha.alarm.core.MathOperation
 import com.sasha.alarm.core.MathSettings
 import com.sasha.alarm.core.PoseModel
@@ -101,10 +107,21 @@ data class SettingsUiState(
      * либо что пошло не так. Пустая строка — журнал ещё ни разу не уезжал.
      */
     val syncCaption: String = "",
-    /** Идёт ли запись ночи прямо сейчас. */
-    val nightRecording: Boolean = false,
-    /** Что показать под кнопкой записи: до какого часа пишем либо сколько ночей лежит. */
-    val nightRecordingCaption: String = "",
+    /**
+     * Плашка об отказе передачи: пустая строка — плашки нет.
+     *
+     * ⚠️ Заведена после того, как телефон двое суток молчал незамеченным (31.08.2026).
+     * Текст готовит `:app` — он же знает часы и умеет в ресурсы с подстановкой.
+     */
+    val syncWarning: String = "",
+    /**
+     * Что показала проверка зацепа: плашка только на поломку. null — не проверялось
+     * (приложение выключено тумблером).
+     *
+     * ⚠️ Постоянной строки «зацеп работает» нет намеренно: 2026-08-16 владелец убрал
+     * строку состояния перехвата — «читал её ровно один раз». Видно только, что сломано.
+     */
+    val hook: HookHealth.Status? = null,
 )
 
 data class SettingsActions(
@@ -127,8 +144,8 @@ data class SettingsActions(
     val onTest: () -> Unit,
     /** Отдать журнал компьютеру прямо сейчас, не дожидаясь обеденного окна. */
     val onSendLog: () -> Unit = {},
-    /** Начать запись ночи или остановить идущую. */
-    val onNightRecordingToggle: () -> Unit = {},
+    /** Тема выбрана в окне шестерёнки — применить и запомнить. */
+    val onPickTheme: (AppTheme) -> Unit = {},
 )
 
 /**
@@ -169,23 +186,30 @@ fun SettingsScreen(
 ) {
     var page by remember { mutableStateOf(Page.MENU) }
     var sheet by remember { mutableStateOf<Sheet?>(null) }
+    var gearOpen by remember { mutableStateOf(false) }
+    var gear by remember { mutableStateOf(Rect.Zero) }
 
     // Системная «назад» уводит на уровень выше, а не из приложения.
     // Открытое окно закрывается своими средствами, поэтому здесь только страницы.
-    BackHandler(enabled = sheet == null && page != Page.MENU) { page = Page.MENU }
+    BackHandler(enabled = gearOpen) { gearOpen = false }
+    BackHandler(enabled = !gearOpen && sheet == null && page != Page.MENU) { page = Page.MENU }
 
+    Box(Modifier.fillMaxSize().background(theme.bg)) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(AlarmColors.Background)
             .windowInsetsPadding(WindowInsets.safeDrawing)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp, vertical = 18.dp),
+            // Поля 24 dp: шестерёнка окна настроек ложится ровно на место настоящей (как в DrozdRun).
+            .padding(horizontal = 24.dp, vertical = 16.dp),
     ) {
         when (page) {
             Page.MENU -> Menu(
                 state = state,
                 actions = actions,
+                gearOpen = gearOpen,
+                onGear = { gearOpen = !gearOpen },
+                onGearPlaced = { gear = it },
                 openChallenges = { page = Page.CHALLENGE },
                 openSheet = { sheet = it },
             )
@@ -198,6 +222,20 @@ fun SettingsScreen(
                 ChallengeBody(state, actions) { sheet = it }
             }
         }
+    }
+
+    // Окно шестерёнки: «Разрешения» и тема — как в DrozdRun (владелец, 2026-10-14).
+    SettingsLayer(
+        open = gearOpen,
+        gear = gear,
+        missingPerms = state.permissions.count { !it.granted },
+        onClose = { gearOpen = false },
+        onPermissions = {
+            gearOpen = false
+            sheet = Sheet.PERMISSIONS
+        },
+        onPick = actions.onPickTheme,
+    )
     }
 
     sheet?.let { open ->
@@ -253,10 +291,10 @@ private fun SlideUp(
     ModalBottomSheet(
         onDismissRequest = onClose,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        containerColor = AlarmColors.Surface,
-        contentColor = AlarmColors.TextPrimary,
-        scrimColor = Color.Black.copy(alpha = 0.62f),
-        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        containerColor = theme.surf,
+        contentColor = theme.text,
+        scrimColor = Color.Black.copy(alpha = 0.5f),
+        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         dragHandle = null,
     ) {
         Column(
@@ -268,7 +306,7 @@ private fun SlideUp(
                 // пара оранжевых пикселей над окном ничего не означали.
                 .heightIn(max = LocalConfiguration.current.screenHeightDp.dp * 0.88f)
                 .verticalScroll(rememberScrollState())
-                .padding(start = 24.dp, end = 24.dp, top = 26.dp, bottom = 22.dp),
+                .padding(22.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -280,15 +318,15 @@ private fun SlideUp(
                 Icon(
                     painter = painterResource(icon),
                     contentDescription = null,
-                    tint = AlarmColors.Accent,
-                    modifier = Modifier.size(30.dp),
+                    tint = theme.text,
+                    modifier = Modifier.size(22.dp),
                 )
-                Spacer(Modifier.size(12.dp))
+                Spacer(Modifier.size(11.dp))
                 Text(
-                    text = stringResource(title).uppercase(),
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Black,
-                    color = AlarmColors.TextPrimary,
+                    text = stringResource(title),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = theme.text,
                 )
             }
             content()
@@ -298,10 +336,45 @@ private fun SlideUp(
 
 // ──────────────────────────────── главное меню ────────────────────────────────
 
+/**
+ * Плашка предупреждения: «журнал не уехал», «зацеп не работает».
+ *
+ * Карточка темы без обводки, заголовок — цветом статуса `danger` («Мягкий»: статус — только где есть
+ * смысл). Своего цвета заводить незачем: это предупреждение, а не новая сущность.
+ */
+@Composable
+private fun WarningBanner(text: String, hint: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(theme.surf)
+            .padding(horizontal = 18.dp, vertical = 14.dp),
+    ) {
+        Text(
+            text = text,
+            color = theme.danger,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            lineHeight = 20.sp,
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = hint,
+            color = theme.muted,
+            fontSize = 13.sp,
+            lineHeight = 19.sp,
+        )
+    }
+}
+
 @Composable
 private fun Menu(
     state: SettingsUiState,
     actions: SettingsActions,
+    gearOpen: Boolean,
+    onGear: () -> Unit,
+    onGearPlaced: (Rect) -> Unit,
     openChallenges: () -> Unit,
     openSheet: (Sheet) -> Unit,
 ) {
@@ -313,20 +386,49 @@ private fun Menu(
         Text(
             text = stringResource(R.string.app_title),
             modifier = Modifier.weight(1f),
-            fontSize = 46.sp,
-            lineHeight = 46.sp,
-            fontWeight = FontWeight.Black,
-            letterSpacing = (-2).sp,
-            color = AlarmColors.Accent,
+            fontSize = 29.sp,
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.Medium,
+            color = theme.text,
         )
         Switch(
             checked = state.masterEnabled,
             onCheckedChange = actions.onMasterChange,
             colors = switchColors(),
         )
+        // Шестерёнка — около тумблера в правом верхнем углу (владелец, 2026-10-14).
+        Spacer(Modifier.width(11.dp))
+        SettingsGear(
+            gearOpen,
+            Modifier.onGloballyPositioned { onGearPlaced(it.boundsInRoot()) },
+            onClick = onGear,
+        )
     }
 
-    Spacer(Modifier.height(20.dp))
+    // ⚠️ Плашка стоит **выше всех настроек**, сразу под заголовком: она про то, что
+    // journal не доехал, и увидеть её надо, не листая. Гаснет сама, когда передача
+    // прошла, — закрывать её крестиком нечем намеренно: закрытая плашка про молчащий
+    // журнал ничем не лучше отсутствующей.
+    // Зацеп — первым: без него будильник не поднимет экран вовсе, это важнее журнала.
+    when (state.hook) {
+        HookHealth.Status.UNBOUND -> {
+            Spacer(Modifier.height(16.dp))
+            WarningBanner(stringResource(R.string.hook_warn_unbound), stringResource(R.string.hook_warn_unbound_hint))
+        }
+
+        HookHealth.Status.NO_ACCESS -> {
+            Spacer(Modifier.height(16.dp))
+            WarningBanner(stringResource(R.string.hook_warn_no_access), stringResource(R.string.hook_warn_no_access_hint))
+        }
+
+        HookHealth.Status.WORKING, null -> Unit
+    }
+    if (state.syncWarning.isNotEmpty()) {
+        Spacer(Modifier.height(16.dp))
+        WarningBanner(state.syncWarning, stringResource(R.string.sync_warn_hint))
+    }
+
+    Spacer(Modifier.height(18.dp))
     MenuRow(
         icon = R.drawable.ic_challenge,
         caption = stringResource(R.string.menu_challenge),
@@ -334,8 +436,8 @@ private fun Menu(
         onClick = openChallenges,
     )
 
-    Spacer(Modifier.height(11.dp))
-    Row(horizontalArrangement = Arrangement.spacedBy(11.dp), modifier = Modifier.fillMaxWidth()) {
+    Spacer(Modifier.height(GAP_CARDS))
+    Row(horizontalArrangement = Arrangement.spacedBy(GAP_CARDS), modifier = Modifier.fillMaxWidth()) {
         MenuCard(R.drawable.ic_sound, stringResource(R.string.menu_sound), Modifier.weight(1f)) {
             openSheet(Sheet.SOUND)
         }
@@ -344,25 +446,12 @@ private fun Menu(
         }
     }
 
-    Spacer(Modifier.height(11.dp))
-    val granted = state.permissions.count { it.granted }
-    val all = granted == state.permissions.size
-    MenuRow(
-        icon = R.drawable.ic_permissions,
-        caption = if (all) {
-            stringResource(R.string.menu_permissions_all)
-        } else {
-            stringResource(R.string.menu_permissions_missing, granted, state.permissions.size)
-        },
-        title = stringResource(R.string.menu_permissions),
-        // Недостача обводится акцентом: это единственное, что молча ломает будильник.
-        alarming = !all,
-        onClick = { openSheet(Sheet.PERMISSIONS) },
-    )
+    // Строки «Разрешения» в меню нет (владелец, 2026-10-14): они в окне шестерёнки, там же
+    // и число невыданных.
 
     // Передача журнала. Отдельной страницы нет намеренно: настраивать нечего, а нажать
     // может понадобиться — когда ноутбук уже открыт и ждать обеда не хочется.
-    Spacer(Modifier.height(11.dp))
+    Spacer(Modifier.height(GAP_CARDS))
     MenuRow(
         icon = R.drawable.ic_permissions,
         caption = state.syncCaption.ifEmpty { stringResource(R.string.sync_never) },
@@ -370,48 +459,28 @@ private fun Menu(
         onClick = actions.onSendLog,
     )
 
-    // Запись ночи. Кнопка, а не расписание: включать её каждую ночь автоматически владелец
-    // не захотел — микрофон должен включаться, только когда об этом попросили.
-    Spacer(Modifier.height(11.dp))
-    MenuRow(
-        icon = R.drawable.ic_sound,
-        caption = state.nightRecordingCaption.ifEmpty {
-            stringResource(R.string.night_record_hint)
-        },
-        title = if (state.nightRecording) {
-            stringResource(R.string.night_record_stop)
-        } else {
-            stringResource(R.string.night_record_start)
-        },
-        // Идущая запись обведена акцентом — как и недостача разрешений: и то и другое
-        // означает, что прямо сейчас происходит нечто, о чём надо помнить.
-        alarming = state.nightRecording,
-        onClick = actions.onNightRecordingToggle,
-    )
-
     Spacer(Modifier.height(18.dp))
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AlarmColors.Accent, RoundedCornerShape(16.dp))
+            .background(theme.accent, RoundedCornerShape(16.dp))
             .quietClick(actions.onTest)
-            .padding(vertical = 20.dp),
+            .padding(vertical = 18.dp),
         contentAlignment = Alignment.Center,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 painter = painterResource(R.drawable.ic_test),
                 contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(26.dp),
+                tint = theme.onAccent,
+                modifier = Modifier.size(20.dp),
             )
-            Spacer(Modifier.size(12.dp))
+            Spacer(Modifier.size(8.dp))
             Text(
                 text = stringResource(R.string.menu_test),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 1.sp,
-                color = Color.Black,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Medium,
+                color = theme.onAccent,
             )
         }
     }
@@ -433,44 +502,47 @@ private fun Header(
     content: @Composable () -> Unit,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(R.string.menu_back),
-            fontSize = 30.sp,
-            lineHeight = 30.sp,
-            fontWeight = FontWeight.Black,
-            color = AlarmColors.TextPrimary,
+        // «‹» — круг 40 dp на `field`, как «назад» в окне настроек.
+        Box(
             modifier = Modifier
-                .clickable(onClick = onBack)
-                .padding(end = 14.dp),
-        )
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(theme.field)
+                .clickable(onClick = onBack),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(stringResource(R.string.menu_back), color = theme.text, fontSize = 24.sp)
+        }
+        Spacer(Modifier.width(14.dp))
         if (icon != null) {
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
-                // В шапке страницы значок акцентный, в меню — светлый: так в макете.
-                tint = AlarmColors.Accent,
-                modifier = Modifier
-                    .size(34.dp)
-                    .padding(end = 10.dp),
+                tint = theme.text,
+                modifier = Modifier.size(22.dp),
             )
+            Spacer(Modifier.width(8.dp))
         }
         Text(
-            text = title.uppercase(),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Black,
-            color = AlarmColors.TextPrimary,
+            text = title,
+            fontSize = 29.sp,
+            lineHeight = 34.sp,
+            fontWeight = FontWeight.Medium,
+            color = theme.text,
         )
     }
-    Spacer(Modifier.height(20.dp))
+    Spacer(Modifier.height(18.dp))
     content()
 }
 
-/** Карточка-подложка: тёмная плашка с рамкой, как всё в этом макете. */
+/**
+ * Карточка «Мягкого»: заливка `surf` на `bg`, без обводки и тени, радиус 16. Выбранное — заливка `sel`
+ * (так отмечено текущее испытание); тревожное отмечается не рамкой, а цветом статуса в самой строке.
+ */
 @Composable
 private fun Card(
     modifier: Modifier = Modifier,
-    alarming: Boolean = false,
-    /** Выбранное обводится акцентом — так в макете отмечено текущее испытание. */
+    /** Выбранное — заливкой `sel`. */
     selected: Boolean = false,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
@@ -479,17 +551,9 @@ private fun Card(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(if (alarming) AlarmColors.AccentSoft else AlarmColors.Surface, shape)
-            .border(
-                width = 1.5.dp,
-                color = when {
-                    alarming || selected -> AlarmColors.Accent
-                    else -> AlarmColors.Outline
-                },
-                shape = shape,
-            )
+            .background(if (selected) theme.sel else theme.surf, shape)
             .let { if (onClick == null) it else it.quietClick(onClick) }
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = 18.dp, vertical = 14.dp),
     ) {
         content()
     }
@@ -504,37 +568,34 @@ private fun MenuRow(
     alarming: Boolean = false,
     onClick: () -> Unit,
 ) {
-    Card(alarming = alarming, onClick = onClick) {
+    Card(onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            // Сплошной акцентный, а не двухцветный: владелец выбрал тот вид,
-            // что стоял в шапке страницы (2026-08-16).
+            // Значок — цветом текста рядом («Мягкий»: цветных значков интерфейса нет).
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
-                tint = AlarmColors.Accent,
-                modifier = Modifier.size(40.dp),
+                tint = theme.text,
+                modifier = Modifier.size(22.dp),
             )
             Spacer(Modifier.size(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(
-                    text = caption.uppercase(),
-                    fontSize = 11.sp,
-                    letterSpacing = 1.sp,
-                    color = AlarmColors.TextSecondary,
+                    text = title,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = theme.text,
                 )
+                // Тревожное — подпись цветом `danger`: недостача разрешений молча ломает будильник.
                 Text(
-                    text = title.uppercase(),
-                    fontSize = 19.sp,
-                    fontWeight = FontWeight.Black,
-                    letterSpacing = 0.5.sp,
-                    color = AlarmColors.TextPrimary,
+                    text = caption,
+                    fontSize = 13.sp,
+                    color = if (alarming) theme.danger else theme.muted,
                 )
             }
             Text(
                 text = "›",
                 fontSize = 22.sp,
-                fontWeight = FontWeight.Black,
-                color = if (alarming) AlarmColors.Accent else AlarmColors.Outline,
+                color = if (alarming) theme.danger else theme.faint,
             )
         }
     }
@@ -558,16 +619,15 @@ private fun MenuCard(
             Icon(
                 painter = painterResource(icon),
                 contentDescription = null,
-                tint = AlarmColors.Accent,
-                modifier = Modifier.size(40.dp),
+                tint = theme.text,
+                modifier = Modifier.size(22.dp),
             )
             Spacer(Modifier.height(14.dp))
             Text(
-                text = title.uppercase(),
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 1.sp,
-                color = AlarmColors.TextPrimary,
+                text = title,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Medium,
+                color = theme.text,
             )
         }
     }
@@ -593,7 +653,7 @@ private fun ChallengeBody(
         // честнее не дать его включить, чем включить и молча подменить примерами.
         // «Настроить» при этом работает — иначе маршрут негде было бы собрать.
         val locked = option == Challenge.NFC && state.nfcRouteSteps == 0
-        Spacer(Modifier.height(11.dp))
+        Spacer(Modifier.height(GAP_CARDS))
         Card(selected = selected && !locked) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
@@ -601,14 +661,14 @@ private fun ChallengeBody(
                         .size(22.dp)
                         .border(
                             width = 2.dp,
-                            color = if (selected) AlarmColors.Accent else AlarmColors.Outline,
+                            color = if (selected) theme.accent else theme.faint,
                             shape = CircleShape,
                         )
                         .clickable(enabled = !locked) { actions.onChallengeChange(option) },
                     contentAlignment = Alignment.Center,
                 ) {
                     if (selected) {
-                        Box(Modifier.size(10.dp).background(AlarmColors.Accent, CircleShape))
+                        Box(Modifier.size(10.dp).background(theme.accent, CircleShape))
                     }
                 }
                 Column(
@@ -617,31 +677,30 @@ private fun ChallengeBody(
                         .clickable(enabled = !locked) { actions.onChallengeChange(option) }
                         .padding(horizontal = 14.dp),
                 ) {
-                    // Капсом — как весь текст в макете.
                     Text(
-                        text = stringResource(option.titleRes()).uppercase(),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp,
-                        color = if (locked) AlarmColors.TextDim else AlarmColors.TextPrimary,
+                        text = stringResource(option.titleRes()),
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = if (locked) theme.faint else theme.text,
                     )
                     if (locked) {
                         Text(
                             text = stringResource(R.string.challenge_nfc_no_route),
-                            fontSize = 11.sp,
-                            color = AlarmColors.TextDim,
+                            fontSize = 13.sp,
+                            color = theme.muted,
                         )
                     }
                 }
                 Text(
                     text = stringResource(R.string.menu_configure),
                     modifier = Modifier
-                        .background(AlarmColors.SurfaceRaised, RoundedCornerShape(10.dp))
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(theme.field)
                         .clickable { openSheet(option.settingsSheet()) }
-                        .padding(horizontal = 12.dp, vertical = 9.dp),
-                    fontSize = 11.sp,
-                    letterSpacing = 1.sp,
-                    color = AlarmColors.Accent,
+                        .padding(horizontal = 14.dp, vertical = 8.dp),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = theme.text,
                 )
             }
         }
@@ -726,8 +785,8 @@ private fun PushupBody(state: SettingsUiState, actions: SettingsActions) {
                 glyph = stringResource(option.titleRes()),
                 on = state.pushups.model == option,
                 modifier = Modifier.weight(1f),
-                // Три чипа в ряд: на 22sp длинное слово не помещается.
-                fontSize = 15.sp,
+                // Три чипа в ряд: на 17sp длинное слово не помещается.
+                fontSize = 14.sp,
             ) { actions.onPushupModelChange(option) }
         }
     }
@@ -825,21 +884,22 @@ private fun PermissionsBody(state: SettingsUiState, actions: SettingsActions) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AlarmColors.SurfaceRaised, RoundedCornerShape(12.dp))
-            .border(1.5.dp, AlarmColors.Track, RoundedCornerShape(12.dp))
-            .clickable(onClick = actions.onOpenAppSettings)
-            .padding(vertical = 12.dp),
+            .height(44.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(theme.field)
+            .clickable(onClick = actions.onOpenAppSettings),
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = stringResource(R.string.settings_app_settings).uppercase(),
-            fontSize = 12.sp,
-            letterSpacing = 1.sp,
-            color = AlarmColors.Accent,
+            text = stringResource(R.string.settings_app_settings),
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            color = theme.text,
         )
     }
 
     Spacer(Modifier.height(8.dp))
+    val divider = theme.sel
     state.permissions.forEach { row ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -849,18 +909,18 @@ private fun PermissionsBody(state: SettingsUiState, actions: SettingsActions) {
                     // Тонкая линия снизу вместо карточки: строк девять, и рамка
                     // вокруг каждой превращает список в лестницу.
                     val y = size.height - 0.5f
-                    drawLine(AlarmColors.SurfaceRaised, Offset(0f, y), Offset(size.width, y), 1f)
+                    drawLine(divider, Offset(0f, y), Offset(size.width, y), 1f)
                 }
                 .padding(vertical = 12.dp),
         ) {
             // Точка — отметка владельца, и по ней же он её переставляет.
-            // Выдано — акцентным оранжевым, а не зелёным (владелец, 2026-08-16):
+            // Выдано — акцентом темы, а не зелёным (владелец, 2026-08-16):
             // зелёный в приложении больше нигде не встречается и выбивался.
             Box(
                 Modifier
                     .size(14.dp)
                     .background(
-                        if (row.granted) AlarmColors.Accent else AlarmColors.DotOff,
+                        if (row.granted) theme.accent else theme.sel,
                         CircleShape,
                     )
                     .quietClick { actions.onToggleManual(row.key) },
@@ -871,25 +931,25 @@ private fun PermissionsBody(state: SettingsUiState, actions: SettingsActions) {
                     .weight(1f)
                     .clickable { actions.onToggleManual(row.key) }
                     .padding(horizontal = 12.dp),
-                fontSize = 13.sp,
-                color = AlarmColors.TextPrimary,
+                fontSize = 14.sp,
+                color = theme.text,
             )
             // Переход в системные настройки есть у каждой строки без исключения:
             // раньше у части строк вместо него стоял переключатель, и попасть в
             // систему по ним было нельзя вовсе.
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .background(AlarmColors.SurfaceRaised, RoundedCornerShape(9.dp))
-                    .border(1.dp, AlarmColors.Outline, RoundedCornerShape(9.dp))
+                    .size(34.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(theme.field)
                     .clickable { actions.onOpenPermission(row.key) },
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_open_external),
                     contentDescription = null,
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(17.dp),
+                    tint = theme.text,
+                    modifier = Modifier.size(16.dp),
                 )
             }
         }
@@ -917,9 +977,9 @@ private fun Modifier.quietClick(onClick: () -> Unit): Modifier = clickable(
 private fun Hint(text: String) {
     Text(
         text = text,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        color = AlarmColors.TextDim,
+        fontSize = 13.sp,
+        lineHeight = 19.sp,
+        color = theme.muted,
         modifier = Modifier.padding(top = 8.dp),
     )
 }
@@ -928,11 +988,11 @@ private fun Hint(text: String) {
 @Composable
 private fun Caption(text: String) {
     Text(
-        text = text.uppercase(),
-        fontSize = 11.sp,
-        letterSpacing = 1.sp,
-        color = AlarmColors.TextSecondary,
-        modifier = Modifier.padding(bottom = 10.dp),
+        text = text,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Medium,
+        color = theme.muted,
+        modifier = Modifier.padding(bottom = 8.dp),
     )
 }
 
@@ -940,13 +1000,13 @@ private fun Caption(text: String) {
 private fun Value(title: String, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = title.uppercase(),
+            text = title,
             modifier = Modifier.weight(1f),
-            fontSize = 11.sp,
-            letterSpacing = 1.sp,
-            color = AlarmColors.TextSecondary,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
+            color = theme.muted,
         )
-        Text(value, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = AlarmColors.Value)
+        Text(value, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = theme.text)
     }
 }
 
@@ -961,12 +1021,12 @@ private fun BigValue(value: String) {
     Text(
         text = value,
         modifier = Modifier.fillMaxWidth(),
-        fontSize = 56.sp,
-        lineHeight = 56.sp,
-        fontWeight = FontWeight.Black,
-        letterSpacing = (-2).sp,
+        // Главное число окна — единственное место акцента в нём («Мягкий»).
+        fontSize = 35.sp,
+        lineHeight = 40.sp,
+        fontWeight = FontWeight.SemiBold,
         textAlign = TextAlign.Center,
-        color = AlarmColors.Value,
+        color = theme.accent,
     )
     Spacer(Modifier.height(10.dp))
 }
@@ -979,7 +1039,7 @@ private fun Toggle(title: String, checked: Boolean, onChange: (Boolean) -> Unit)
             .fillMaxWidth()
             .padding(vertical = 4.dp),
     ) {
-        Text(title, modifier = Modifier.weight(1f), fontSize = 15.sp, color = AlarmColors.TextPrimary)
+        Text(title, modifier = Modifier.weight(1f), fontSize = 14.sp, color = theme.text)
         Switch(checked = checked, onCheckedChange = onChange, colors = switchColors())
     }
 }
@@ -996,13 +1056,15 @@ private fun Chip(
      * три — уже нет, и «ТЯЖЁЛАЯ» обрезалась. Шрифт мельче здесь честнее, чем
      * перенос на вторую строку или сокращение слова.
      */
-    fontSize: TextUnit = 22.sp,
+    fontSize: TextUnit = 17.sp,
     onClick: () -> Unit,
 ) {
+    // Капсула «Мягкого»: выбранная — `accent` / `onAccent`, прочие — `field` / `muted`.
     Box(
         modifier = modifier
-            .height(52.dp)
-            .background(if (on) AlarmColors.Accent else AlarmColors.SurfaceRaised, CircleShape)
+            .height(44.dp)
+            .clip(CircleShape)
+            .background(if (on) theme.accent else theme.field)
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
@@ -1010,10 +1072,10 @@ private fun Chip(
             text = glyph,
             fontSize = fontSize,
             lineHeight = fontSize,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Medium,
             maxLines = 1,
             softWrap = false,
-            color = if (on) Color.White else AlarmColors.TextSecondary,
+            color = if (on) theme.onAccent else theme.muted,
         )
     }
 }
@@ -1025,13 +1087,14 @@ private fun AccentButton(text: String, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(44.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(10.dp),
+        // Вторичная кнопка «Мягкого»: `field` / `text`. Основная на экране одна — «Тест экрана».
         colors = ButtonDefaults.buttonColors(
-            containerColor = AlarmColors.SurfaceRaised,
-            contentColor = AlarmColors.Accent,
+            containerColor = theme.field,
+            contentColor = theme.text,
         ),
     ) {
-        Text(text, fontSize = 14.sp)
+        Text(text, fontSize = 14.sp, fontWeight = FontWeight.Medium)
     }
 }
 
@@ -1040,10 +1103,10 @@ private fun Warning(text: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(AlarmColors.AccentSoft.copy(alpha = 0.35f), RoundedCornerShape(14.dp))
-            .padding(14.dp),
+            .background(theme.surf, RoundedCornerShape(16.dp))
+            .padding(horizontal = 18.dp, vertical = 14.dp),
     ) {
-        Text(text, fontSize = 13.sp, color = AlarmColors.TextPrimary, textAlign = TextAlign.Start)
+        Text(text, fontSize = 14.sp, lineHeight = 20.sp, color = theme.warn, textAlign = TextAlign.Start)
     }
 }
 
@@ -1072,9 +1135,9 @@ private fun MathOperation.sign(): String = when (this) {
 
 @Composable
 private fun sliderColors() = SliderDefaults.colors(
-    thumbColor = AlarmColors.Accent,
-    activeTrackColor = AlarmColors.Accent,
-    inactiveTrackColor = AlarmColors.Track,
+    thumbColor = theme.accent,
+    activeTrackColor = theme.accent,
+    inactiveTrackColor = theme.sel,
 )
 
 /**
@@ -1107,18 +1170,19 @@ private fun PlainRangeTrack(state: RangeSliderState) {
 }
 
 /**
- * Цвета переключателя — точно из макета.
- *
- * Включённый: оранжевая дорожка, **чёрный** кружок. Белый кружок на оранжевом
- * выглядел размыто (владелец, 2026-08-16), а чёрный держит контраст — по акценту
- * в этом приложении вообще пишут чёрным.
+ * Тумблер «Мягкого»: включённый — дорожка `accent`, ручка `onAccent` (по акценту пишут `onAccent`:
+ * белый кружок на светлом акценте размывался — владелец, 2026-08-16); выключенный — дорожка `sel`,
+ * ручка `muted`.
  */
 @Composable
 private fun switchColors() = SwitchDefaults.colors(
-    checkedThumbColor = Color.Black,
-    checkedTrackColor = AlarmColors.Accent,
-    checkedBorderColor = AlarmColors.Accent,
-    uncheckedThumbColor = AlarmColors.TextSecondary,
-    uncheckedTrackColor = AlarmColors.SurfaceRaised,
-    uncheckedBorderColor = AlarmColors.Track,
+    checkedThumbColor = theme.onAccent,
+    checkedTrackColor = theme.accent,
+    checkedBorderColor = theme.accent,
+    uncheckedThumbColor = theme.muted,
+    uncheckedTrackColor = theme.sel,
+    uncheckedBorderColor = theme.sel,
 )
+
+/** Зазор между карточками («Мягкий», мобайл — 12 dp). */
+private val GAP_CARDS = 12.dp

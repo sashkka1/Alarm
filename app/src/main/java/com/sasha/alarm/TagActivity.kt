@@ -12,7 +12,6 @@ import com.sasha.alarm.core.LogValue
 import com.sasha.alarm.core.NfcRules
 import com.sasha.alarm.platform.AlarmStateStore
 import com.sasha.alarm.platform.EventLog
-import com.sasha.alarm.platform.LightSensor
 
 /**
  * Касание метки вне тревоги.
@@ -63,26 +62,18 @@ class TagActivity : Activity() {
 
         // Освещённость меряем прямо сейчас: телефон в руке и смотрит наружу — другого
         // такого момента за утро не будет.
-        LightSensor(applicationContext).sample { lux ->
-            val data = LinkedHashMap<String, LogValue>()
-            data["index"] = LogValue.of(tag.number.toLong())
-            data["duringAlarm"] = LogValue.of(false)
-            if (lux != null) data["lux"] = LogValue.of(lux.toDouble())
+        val data = LinkedHashMap<String, LogValue>()
+        data["index"] = LogValue.of(tag.number.toLong())
+        data["duringAlarm"] = LogValue.of(false)
             EventLog(applicationContext).write(EventType.NFC_TAG, data)
 
-            if (street) {
-                Toast.makeText(applicationContext, hint(lux), Toast.LENGTH_SHORT).show()
-            }
-            finish()
+        if (street) {
+            Toast.makeText(applicationContext, "Отмечено", Toast.LENGTH_SHORT).show()
         }
+        finish()
     }
 
     /** Короткая подсказка: по ней сразу видно, зачлось ли касание и видит ли телефон свет. */
-    private fun hint(lux: Float?): String = when {
-        lux == null -> "Отмечено"
-        lux >= DAYLIGHT_LUX -> "Отмечено · дневной свет"
-        else -> "Отмечено · ${lux.toInt()} лк, это ещё не улица"
-    }
 
     private fun idOf(intent: Intent?): String? {
         val action = intent?.action ?: return null
@@ -101,6 +92,5 @@ class TagActivity : Activity() {
         const val TAG = "TagActivity"
 
         /** Ниже этого улицей не пахнет: комната с монитором даёт около 300 люкс. */
-        const val DAYLIGHT_LUX = 3_000f
     }
 }

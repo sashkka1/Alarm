@@ -1,0 +1,4177 @@
+{
+ "version": 1,
+ "roles": "см. reference/color-system.md",
+ "themes": [
+  {
+   "id": "hvoya",
+   "group": "Сейчас",
+   "name": "Хвоя",
+   "type": "dark",
+   "icon": null,
+   "core": {
+    "bg": "#0B0F0D",
+    "text": "#E3EAE6"
+   },
+   "surface": {
+    "surf": "#131916",
+    "field": "#0F1411",
+    "sel": "#1D2622",
+    "line": "#1F2824",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E3EAE6",
+    "muted": "#8C9A93",
+    "faint": "#57635D"
+   },
+   "accent": "#7CD4A1",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#7CD4A1",
+    "#4E8A68",
+    "#2F5241",
+    "#7A847F",
+    "#B5BFBA"
+   ],
+   "status": {
+    "ok": "#7CD4A1",
+    "warn": "#D8B45C",
+    "danger": "#E0625F",
+    "info": "#8FB3D9"
+   },
+   "contrast": {
+    "textOnBg": 15.8,
+    "mutedOnSurf": 6.1,
+    "accentOnSurf": 10
+   }
+  },
+  {
+   "id": "red-1",
+   "group": "Красный",
+   "name": "Коралл",
+   "type": "dark",
+   "icon": "assets/icons/red-1.png",
+   "core": {
+    "bg": "#210201",
+    "text": "#FFE9DD"
+   },
+   "surface": {
+    "surf": "#2D0805",
+    "field": "#270503",
+    "sel": "#3B140F",
+    "line": "#3A1A15",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE9DD",
+    "muted": "#B69A95",
+    "faint": "#7F6560"
+   },
+   "accent": "#F48763",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#F48763",
+    "#AE664E",
+    "#734333",
+    "#8D8482",
+    "#CAC2C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#F48763"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7,
+    "accentOnSurf": 7.4
+   }
+  },
+  {
+   "id": "red-2",
+   "group": "Красный",
+   "name": "Золото",
+   "type": "dark",
+   "icon": "assets/icons/red-2.png",
+   "core": {
+    "bg": "#2C0806",
+    "text": "#FBECD9"
+   },
+   "surface": {
+    "surf": "#38110E",
+    "field": "#310D0A",
+    "sel": "#471C19",
+    "line": "#45221F",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FBECD9",
+    "muted": "#B79995",
+    "faint": "#806461"
+   },
+   "accent": "#EB9B3E",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#EB9B3E",
+    "#A9753B",
+    "#714E28",
+    "#8D8482",
+    "#CAC2C1"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#EB9B3E"
+   },
+   "contrast": {
+    "textOnBg": 15.8,
+    "mutedOnSurf": 6.4,
+    "accentOnSurf": 7.4
+   }
+  },
+  {
+   "id": "red-3",
+   "group": "Красный",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/icons/red-3.png",
+   "core": {
+    "bg": "#F6DEC5",
+    "text": "#3A0E0B"
+   },
+   "surface": {
+    "surf": "#F5E9DC",
+    "field": "#F2D8BC",
+    "sel": "#EDCEAD",
+    "line": "#E3C4A4",
+    "fieldBd": "#E3C4A4"
+   },
+   "ink": {
+    "text": "#3A0E0B",
+    "muted": "#735551",
+    "faint": "#AA928E"
+   },
+   "accent": "#BE2423",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#BE2423",
+    "#F25745",
+    "#EBABA3",
+    "#5A544E",
+    "#8A8580"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#B54076",
+    "info": "#BE2423"
+   },
+   "contrast": {
+    "textOnBg": 13,
+    "mutedOnSurf": 5.6,
+    "accentOnSurf": 5.1
+   }
+  },
+  {
+   "id": "red-4",
+   "group": "Красный",
+   "name": "Пламя",
+   "type": "dark",
+   "icon": "assets/icons/red-4.png",
+   "core": {
+    "bg": "#1E0201",
+    "text": "#FCEBDA"
+   },
+   "surface": {
+    "surf": "#2A0805",
+    "field": "#230503",
+    "sel": "#38130E",
+    "line": "#371814",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FCEBDA",
+    "muted": "#B59A96",
+    "faint": "#7E6561"
+   },
+   "accent": "#BF510B",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#BF510B",
+    "#F1A855",
+    "#F7AE55",
+    "#8D8482",
+    "#CAC2C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#BF510B"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 3.9
+   }
+  },
+  {
+   "id": "red-5",
+   "group": "Красный",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/icons/red-5.png",
+   "core": {
+    "bg": "#190201",
+    "text": "#FFEADB"
+   },
+   "surface": {
+    "surf": "#240704",
+    "field": "#1E0402",
+    "sel": "#32110D",
+    "line": "#311613",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFEADB",
+    "muted": "#B39B97",
+    "faint": "#7C6662"
+   },
+   "accent": "#E3483F",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#E3483F",
+    "#DF9C54",
+    "#5A1915",
+    "#8D8482",
+    "#CAC2C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E3483F"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 4.8
+   }
+  },
+  {
+   "id": "red-6",
+   "group": "Красный",
+   "name": "Алый",
+   "type": "dark",
+   "icon": "assets/icons/red-6.png",
+   "core": {
+    "bg": "#1B0201",
+    "text": "#FFE7E4"
+   },
+   "surface": {
+    "surf": "#260705",
+    "field": "#200403",
+    "sel": "#34120E",
+    "line": "#341713",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE7E4",
+    "muted": "#B49B96",
+    "faint": "#7D6561"
+   },
+   "accent": "#E3483F",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#E3483F",
+    "#98342D",
+    "#5A1915",
+    "#8D8482",
+    "#CAC2C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E3483F"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 4.7
+   }
+  },
+  {
+   "id": "red-7",
+   "group": "Красный",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/icons/red-7.png",
+   "core": {
+    "bg": "#910D10",
+    "text": "#FFE7E3"
+   },
+   "surface": {
+    "surf": "#A21919",
+    "field": "#981817",
+    "sel": "#B62824",
+    "line": "#AD3E36",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE7E3",
+    "muted": "#E4C1BC",
+    "faint": "#B69591"
+   },
+   "accent": "#FFDCD6",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#FFDCD6",
+    "#F9AEA4",
+    "#DF8075",
+    "#DED5D4",
+    "#B9AEAD"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB6D4",
+    "info": "#FFDCD6"
+   },
+   "contrast": {
+    "textOnBg": 7.8,
+    "mutedOnSurf": 4.7,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "red-8",
+   "group": "Красный",
+   "name": "Жар",
+   "type": "dark",
+   "icon": "assets/icons/red-8.png",
+   "core": {
+    "bg": "#140201",
+    "text": "#FDEBDA"
+   },
+   "surface": {
+    "surf": "#1F0705",
+    "field": "#190403",
+    "sel": "#2C120E",
+    "line": "#2C1613",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FDEBDA",
+    "muted": "#B09C99",
+    "faint": "#7A6764"
+   },
+   "accent": "#D33E10",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#D33E10",
+    "#F5A142",
+    "#4D0F00",
+    "#8D8482",
+    "#CAC2C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#D33E10"
+   },
+   "contrast": {
+    "textOnBg": 17.4,
+    "mutedOnSurf": 7.4,
+    "accentOnSurf": 4.1
+   }
+  },
+  {
+   "id": "terracotta-1",
+   "group": "Терракота",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/terracotta.png#1",
+   "core": {
+    "bg": "#190601",
+    "text": "#FFEADB"
+   },
+   "surface": {
+    "surf": "#230D05",
+    "field": "#1E0903",
+    "sel": "#31190E",
+    "line": "#311D14",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFEADB",
+    "muted": "#AF9D96",
+    "faint": "#786861"
+   },
+   "accent": "#F28D61",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#F28D61",
+    "#FBC8A2",
+    "#734633",
+    "#8D8480",
+    "#CAC2BF"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#F28D61"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 7.7
+   }
+  },
+  {
+   "id": "terracotta-2",
+   "group": "Терракота",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/terracotta.png#2",
+   "core": {
+    "bg": "#230902",
+    "text": "#F8EDD8"
+   },
+   "surface": {
+    "surf": "#2E1106",
+    "field": "#280D04",
+    "sel": "#3D1D11",
+    "line": "#3C2218",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F8EDD8",
+    "muted": "#B29C93",
+    "faint": "#7B675F"
+   },
+   "accent": "#E09337",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E09337",
+    "#F4C872",
+    "#684722",
+    "#8D8481",
+    "#CAC2BF"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#E09337"
+   },
+   "contrast": {
+    "textOnBg": 16.3,
+    "mutedOnSurf": 6.7,
+    "accentOnSurf": 7.0
+   }
+  },
+  {
+   "id": "terracotta-3",
+   "group": "Терракота",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/terracotta.png#3",
+   "core": {
+    "bg": "#F3DABF",
+    "text": "#391002"
+   },
+   "surface": {
+    "surf": "#F1E5D7",
+    "field": "#EFD4B6",
+    "sel": "#EACAA7",
+    "line": "#E0C09D",
+    "fieldBd": "#E0C09D"
+   },
+   "ink": {
+    "text": "#391002",
+    "muted": "#72564D",
+    "faint": "#AA928B"
+   },
+   "accent": "#AD471C",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#AD471C",
+    "#CC876D",
+    "#DFB2A1",
+    "#5A544E",
+    "#8A8580"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#B54076",
+    "info": "#AD471C"
+   },
+   "contrast": {
+    "textOnBg": 12.5,
+    "mutedOnSurf": 5.4,
+    "accentOnSurf": 4.6
+   }
+  },
+  {
+   "id": "terracotta-4",
+   "group": "Терракота",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/terracotta.png#4",
+   "core": {
+    "bg": "#170601",
+    "text": "#FDEBDD"
+   },
+   "surface": {
+    "surf": "#210D05",
+    "field": "#1C0903",
+    "sel": "#2E180E",
+    "line": "#2E1C14",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FDEBDD",
+    "muted": "#AE9E96",
+    "faint": "#776861"
+   },
+   "accent": "#E27344",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#E27344",
+    "#F2C7A5",
+    "#62321E",
+    "#8D8480",
+    "#CAC2BF"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E27344"
+   },
+   "contrast": {
+    "textOnBg": 17.0,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 6.0
+   }
+  },
+  {
+   "id": "terracotta-5",
+   "group": "Терракота",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/terracotta.png#5",
+   "core": {
+    "bg": "#150401",
+    "text": "#FFEADC"
+   },
+   "surface": {
+    "surf": "#1F0B04",
+    "field": "#1A0702",
+    "sel": "#2C160D",
+    "line": "#2C1A13",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFEADC",
+    "muted": "#AE9D97",
+    "faint": "#776862"
+   },
+   "accent": "#BD4F17",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#BD4F17",
+    "#F3BC68",
+    "#E3833F",
+    "#8D8481",
+    "#CAC2BF"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#BD4F17"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 3.9
+   }
+  },
+  {
+   "id": "terracotta-6",
+   "group": "Терракота",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/terracotta.png#6",
+   "core": {
+    "bg": "#160101",
+    "text": "#FFE8E1"
+   },
+   "surface": {
+    "surf": "#210604",
+    "field": "#1B0302",
+    "sel": "#2F100D",
+    "line": "#2E1512",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE8E1",
+    "muted": "#B29C98",
+    "faint": "#7B6663"
+   },
+   "accent": "#D04316",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#D04316",
+    "#882D12",
+    "#4C1101",
+    "#8D8482",
+    "#CAC2C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#D04316"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.4,
+    "accentOnSurf": 4.1
+   }
+  },
+  {
+   "id": "terracotta-7",
+   "group": "Терракота",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/terracotta.png#7",
+   "core": {
+    "bg": "#882500",
+    "text": "#FFE8E0"
+   },
+   "surface": {
+    "surf": "#982E05",
+    "field": "#8E2B05",
+    "sel": "#AB3B14",
+    "line": "#A3492E",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE8E0",
+    "muted": "#E3C2B8",
+    "faint": "#B6968D"
+   },
+   "accent": "#FFDDD0",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#FFDDD0",
+    "#F5B29D",
+    "#DA856B",
+    "#DED5D3",
+    "#B8AFAC"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB6D4",
+    "info": "#FFDDD0"
+   },
+   "contrast": {
+    "textOnBg": 7.7,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "terracotta-8",
+   "group": "Терракота",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/terracotta.png#8",
+   "core": {
+    "bg": "#1A0803",
+    "text": "#F4EDE5"
+   },
+   "surface": {
+    "surf": "#241108",
+    "field": "#1F0D05",
+    "sel": "#321C12",
+    "line": "#322018",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F4EDE5",
+    "muted": "#AD9E97",
+    "faint": "#776862"
+   },
+   "accent": "#E89C7E",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E89C7E",
+    "#F6E6D0",
+    "#714F42",
+    "#8D8480",
+    "#CAC2BF"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E89C7E"
+   },
+   "contrast": {
+    "textOnBg": 16.8,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 8.2
+   }
+  },
+  {
+   "id": "amber-1",
+   "group": "Янтарь",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/amber.png#1",
+   "core": {
+    "bg": "#180B01",
+    "text": "#F8EDDA"
+   },
+   "surface": {
+    "surf": "#221406",
+    "field": "#1C0F03",
+    "sel": "#2F1F0F",
+    "line": "#2F2216",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F8EDDA",
+    "muted": "#AA9F95",
+    "faint": "#746A60"
+   },
+   "accent": "#EFB45D",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#EFB45D",
+    "#B18A52",
+    "#7A603C",
+    "#8B857F",
+    "#C9C3BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#EFB45D"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 9.7
+   }
+  },
+  {
+   "id": "amber-2",
+   "group": "Янтарь",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/amber.png#2",
+   "core": {
+    "bg": "#1C0E04",
+    "text": "#F0EEEC"
+   },
+   "surface": {
+    "surf": "#26170B",
+    "field": "#211308",
+    "sel": "#332316",
+    "line": "#33261B",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F0EEEC",
+    "muted": "#AB9F96",
+    "faint": "#746A61"
+   },
+   "accent": "#B6AFA5",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#B6AFA5",
+    "#DFDBD6",
+    "#5A5752",
+    "#8C857F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#B6AFA5"
+   },
+   "contrast": {
+    "textOnBg": 16.3,
+    "mutedOnSurf": 6.7,
+    "accentOnSurf": 8.0
+   }
+  },
+  {
+   "id": "amber-3",
+   "group": "Янтарь",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/amber.png#3",
+   "core": {
+    "bg": "#F5E1C0",
+    "text": "#351500"
+   },
+   "surface": {
+    "surf": "#F5EBDA",
+    "field": "#F1DBB7",
+    "sel": "#EBD1A6",
+    "line": "#E1C89D",
+    "fieldBd": "#E1C89D"
+   },
+   "ink": {
+    "text": "#351500",
+    "muted": "#6E5946",
+    "faint": "#A69586"
+   },
+   "accent": "#AF5C00",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#AF5C00",
+    "#C9915D",
+    "#DAB696",
+    "#59554E",
+    "#898680"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#B54076",
+    "info": "#AF5C00"
+   },
+   "contrast": {
+    "textOnBg": 13.0,
+    "mutedOnSurf": 5.6,
+    "accentOnSurf": 4.1
+   }
+  },
+  {
+   "id": "amber-4",
+   "group": "Янтарь",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/amber.png#4",
+   "core": {
+    "bg": "#170B01",
+    "text": "#F8EDDC"
+   },
+   "surface": {
+    "surf": "#201405",
+    "field": "#1B0F03",
+    "sel": "#2D1F0F",
+    "line": "#2E2216",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F8EDDC",
+    "muted": "#AAA095",
+    "faint": "#736A60"
+   },
+   "accent": "#E4B978",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E4B978",
+    "#AA8D63",
+    "#766347",
+    "#8B857F",
+    "#C9C3BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#E4B978"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 9.9
+   }
+  },
+  {
+   "id": "amber-5",
+   "group": "Янтарь",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/amber.png#5",
+   "core": {
+    "bg": "#170B01",
+    "text": "#FAECD9"
+   },
+   "surface": {
+    "surf": "#201405",
+    "field": "#1B0F03",
+    "sel": "#2D1F0F",
+    "line": "#2E2216",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FAECD9",
+    "muted": "#AAA095",
+    "faint": "#736A60"
+   },
+   "accent": "#D78820",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#D78820",
+    "#FABF5E",
+    "#603D16",
+    "#8B857F",
+    "#C9C3BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#D78820"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 6.4
+   }
+  },
+  {
+   "id": "amber-6",
+   "group": "Янтарь",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/amber.png#6",
+   "core": {
+    "bg": "#150801",
+    "text": "#FDEBDA"
+   },
+   "surface": {
+    "surf": "#1E1105",
+    "field": "#190C03",
+    "sel": "#2B1C0E",
+    "line": "#2C1F14",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FDEBDA",
+    "muted": "#AA9F96",
+    "faint": "#746A61"
+   },
+   "accent": "#E98B05",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E98B05",
+    "#A56722",
+    "#6B4316",
+    "#8C857F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E98B05"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 7.2
+   }
+  },
+  {
+   "id": "amber-7",
+   "group": "Янтарь",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/amber.png#7",
+   "core": {
+    "bg": "#7A3500",
+    "text": "#FFE9DD"
+   },
+   "surface": {
+    "surf": "#883F00",
+    "field": "#803B00",
+    "sel": "#9B4C00",
+    "line": "#955500",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE9DD",
+    "muted": "#DEC6B0",
+    "faint": "#B19A85"
+   },
+   "accent": "#FFE2C6",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#FFE2C6",
+    "#E9BA8E",
+    "#CC9054",
+    "#DCD6D1",
+    "#B7B0A9"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB6D4",
+    "info": "#FFE2C6"
+   },
+   "contrast": {
+    "textOnBg": 7.7,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "amber-8",
+   "group": "Янтарь",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/amber.png#8",
+   "core": {
+    "bg": "#1F0F04",
+    "text": "#F5EEDD"
+   },
+   "surface": {
+    "surf": "#29180B",
+    "field": "#241408",
+    "sel": "#372416",
+    "line": "#37271C",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F5EEDD",
+    "muted": "#AC9F95",
+    "faint": "#756961"
+   },
+   "accent": "#D8BC90",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#D8BC90",
+    "#FCEBBF",
+    "#706450",
+    "#8C847F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#D8BC90"
+   },
+   "contrast": {
+    "textOnBg": 16.1,
+    "mutedOnSurf": 6.6,
+    "accentOnSurf": 9.4
+   }
+  },
+  {
+   "id": "olive-1",
+   "group": "Олива",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/olive.png#1",
+   "core": {
+    "bg": "#101004",
+    "text": "#F1EFDE"
+   },
+   "surface": {
+    "surf": "#19190B",
+    "field": "#151507",
+    "sel": "#252515",
+    "line": "#27271B",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F1EFDE",
+    "muted": "#A2A298",
+    "faint": "#6C6D63"
+   },
+   "accent": "#B8B567",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#B8B567",
+    "#EBE6B9",
+    "#5B5A38",
+    "#86877F",
+    "#C4C5BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#B8B567"
+   },
+   "contrast": {
+    "textOnBg": 16.5,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 8.3
+   }
+  },
+  {
+   "id": "olive-2",
+   "group": "Олива",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/olive.png#2",
+   "core": {
+    "bg": "#121106",
+    "text": "#F7EED8"
+   },
+   "surface": {
+    "surf": "#1B1A0D",
+    "field": "#171609",
+    "sel": "#272618",
+    "line": "#29291D",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F7EED8",
+    "muted": "#A3A298",
+    "faint": "#6D6C63"
+   },
+   "accent": "#C3984A",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#C3984A",
+    "#ECCB80",
+    "#584625",
+    "#87877E",
+    "#C5C4BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#C3984A"
+   },
+   "contrast": {
+    "textOnBg": 16.4,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 6.6
+   }
+  },
+  {
+   "id": "olive-3",
+   "group": "Олива",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/olive.png#3",
+   "core": {
+    "bg": "#EDE5CA",
+    "text": "#222101"
+   },
+   "surface": {
+    "surf": "#F1EDE0",
+    "field": "#E8DFC1",
+    "sel": "#E1D6B3",
+    "line": "#D7CCAA",
+    "fieldBd": "#D7CCAA"
+   },
+   "ink": {
+    "text": "#222101",
+    "muted": "#5F6045",
+    "faint": "#9A9A85"
+   },
+   "accent": "#696825",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#696825",
+    "#96976D",
+    "#C0C0A6",
+    "#57554E",
+    "#88867F"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#696825"
+   },
+   "contrast": {
+    "textOnBg": 13.0,
+    "mutedOnSurf": 5.5,
+    "accentOnSurf": 5.0
+   }
+  },
+  {
+   "id": "olive-4",
+   "group": "Олива",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/olive.png#4",
+   "core": {
+    "bg": "#111104",
+    "text": "#F1F0DA"
+   },
+   "surface": {
+    "surf": "#1A1A0B",
+    "field": "#161607",
+    "sel": "#262616",
+    "line": "#28291B",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F1F0DA",
+    "muted": "#A2A297",
+    "faint": "#6C6D62"
+   },
+   "accent": "#C6C381",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#C6C381",
+    "#959368",
+    "#676649",
+    "#86877F",
+    "#C4C5BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#C6C381"
+   },
+   "contrast": {
+    "textOnBg": 16.5,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 9.6
+   }
+  },
+  {
+   "id": "olive-5",
+   "group": "Олива",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/olive.png#5",
+   "core": {
+    "bg": "#0F0F04",
+    "text": "#EFF1DA"
+   },
+   "surface": {
+    "surf": "#18180B",
+    "field": "#141407",
+    "sel": "#242415",
+    "line": "#26261A",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EFF1DA",
+    "muted": "#A2A298",
+    "faint": "#6C6D63"
+   },
+   "accent": "#81833A",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#81833A",
+    "#B3863C",
+    "#ADB15C",
+    "#86877F",
+    "#C4C5BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#81833A"
+   },
+   "contrast": {
+    "textOnBg": 16.8,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 4.5
+   }
+  },
+  {
+   "id": "olive-6",
+   "group": "Олива",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/olive.png#6",
+   "core": {
+    "bg": "#101004",
+    "text": "#EFF1DA"
+   },
+   "surface": {
+    "surf": "#19190B",
+    "field": "#151507",
+    "sel": "#252515",
+    "line": "#27271B",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EFF1DA",
+    "muted": "#A2A298",
+    "faint": "#6C6D63"
+   },
+   "accent": "#949A1A",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#949A1A",
+    "#676B1F",
+    "#3E410E",
+    "#86877F",
+    "#C4C5BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#949A1A"
+   },
+   "contrast": {
+    "textOnBg": 16.6,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 5.8
+   }
+  },
+  {
+   "id": "olive-7",
+   "group": "Олива",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/olive.png#7",
+   "core": {
+    "bg": "#4E4D08",
+    "text": "#F0EFE0"
+   },
+   "surface": {
+    "surf": "#595812",
+    "field": "#535211",
+    "sel": "#67661F",
+    "line": "#696933",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F0EFE0",
+    "muted": "#CCCDB0",
+    "faint": "#A0A184"
+   },
+   "accent": "#E9EAD1",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E9EAD1",
+    "#C6C7A2",
+    "#A1A271",
+    "#D8D8D1",
+    "#B1B2A9"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB8B0",
+    "info": "#E9EAD1"
+   },
+   "contrast": {
+    "textOnBg": 7.6,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "olive-8",
+   "group": "Олива",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/olive.png#8",
+   "core": {
+    "bg": "#151306",
+    "text": "#F1EFE0"
+   },
+   "surface": {
+    "surf": "#1F1D0D",
+    "field": "#1A1809",
+    "sel": "#2B2918",
+    "line": "#2D2B1D",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F1EFE0",
+    "muted": "#A3A297",
+    "faint": "#6D6C62"
+   },
+   "accent": "#827740",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#827740",
+    "#F9F3CE",
+    "#2A260F",
+    "#87867E",
+    "#C5C4BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#827740"
+   },
+   "contrast": {
+    "textOnBg": 16.1,
+    "mutedOnSurf": 6.6,
+    "accentOnSurf": 3.8
+   }
+  },
+  {
+   "id": "green-1",
+   "group": "Зелёный",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/green.png#1",
+   "core": {
+    "bg": "#04120B",
+    "text": "#EFEFE3"
+   },
+   "surface": {
+    "surf": "#0B1C13",
+    "field": "#08170F",
+    "sel": "#16281F",
+    "line": "#1B2A22",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EFEFE3",
+    "muted": "#99A59E",
+    "faint": "#646F69"
+   },
+   "accent": "#6E9C66",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#6E9C66",
+    "#E9E9CA",
+    "#2C3F28",
+    "#808884",
+    "#BFC6C2"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#6E9C66"
+   },
+   "contrast": {
+    "textOnBg": 16.5,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 5.6
+   }
+  },
+  {
+   "id": "green-2",
+   "group": "Зелёный",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/green.png#2",
+   "core": {
+    "bg": "#04130B",
+    "text": "#F9EDD8"
+   },
+   "surface": {
+    "surf": "#0C1D13",
+    "field": "#08180F",
+    "sel": "#17291E",
+    "line": "#1C2B22",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F9EDD8",
+    "muted": "#99A59D",
+    "faint": "#646F68"
+   },
+   "accent": "#E2AA58",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E2AA58",
+    "#A5804C",
+    "#705735",
+    "#808883",
+    "#BFC6C2"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#E2AA58"
+   },
+   "contrast": {
+    "textOnBg": 16.4,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 8.4
+   }
+  },
+  {
+   "id": "green-3",
+   "group": "Зелёный",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/green.png#3",
+   "core": {
+    "bg": "#EBE1C2",
+    "text": "#0A260F"
+   },
+   "surface": {
+    "surf": "#EEE9DA",
+    "field": "#E6DBB9",
+    "sel": "#DFD2AA",
+    "line": "#D5C8A1",
+    "fieldBd": "#D5C8A1"
+   },
+   "ink": {
+    "text": "#0A260F",
+    "muted": "#4F6451",
+    "faint": "#8C9E8E"
+   },
+   "accent": "#3B7345",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#3B7345",
+    "#7A9E7F",
+    "#AFC5B1",
+    "#58554E",
+    "#88867F"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#3B7345"
+   },
+   "contrast": {
+    "textOnBg": 12.4,
+    "mutedOnSurf": 5.3,
+    "accentOnSurf": 4.6
+   }
+  },
+  {
+   "id": "green-4",
+   "group": "Зелёный",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/green.png#4",
+   "core": {
+    "bg": "#04130B",
+    "text": "#EEF0E4"
+   },
+   "surface": {
+    "surf": "#0C1D13",
+    "field": "#08180F",
+    "sel": "#17291E",
+    "line": "#1C2B22",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EEF0E4",
+    "muted": "#99A59D",
+    "faint": "#646F68"
+   },
+   "accent": "#68A673",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#68A673",
+    "#E2E6C9",
+    "#2C4731",
+    "#808883",
+    "#BFC6C2"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#68A673"
+   },
+   "contrast": {
+    "textOnBg": 16.5,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "green-5",
+   "group": "Зелёный",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/green.png#5",
+   "core": {
+    "bg": "#03110A",
+    "text": "#F9EDDA"
+   },
+   "surface": {
+    "surf": "#091B12",
+    "field": "#06160E",
+    "sel": "#14271D",
+    "line": "#192820",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F9EDDA",
+    "muted": "#99A59E",
+    "faint": "#646F68"
+   },
+   "accent": "#4B8A56",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#4B8A56",
+    "#DAA351",
+    "#BCA072",
+    "#808884",
+    "#BFC6C2"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#4B8A56"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 4.3
+   }
+  },
+  {
+   "id": "green-6",
+   "group": "Зелёный",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/green.png#6",
+   "core": {
+    "bg": "#03110A",
+    "text": "#E2F4E4"
+   },
+   "surface": {
+    "surf": "#091B12",
+    "field": "#06160E",
+    "sel": "#14271D",
+    "line": "#192820",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E2F4E4",
+    "muted": "#99A59E",
+    "faint": "#646F68"
+   },
+   "accent": "#5A9665",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#5A9665",
+    "#3F6645",
+    "#203A25",
+    "#808884",
+    "#BFC6C2"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#5A9665"
+   },
+   "contrast": {
+    "textOnBg": 16.8,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 5.1
+   }
+  },
+  {
+   "id": "green-7",
+   "group": "Зелёный",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/green.png#7",
+   "core": {
+    "bg": "#335133",
+    "text": "#E3F3EC"
+   },
+   "surface": {
+    "surf": "#3C5D3C",
+    "field": "#385738",
+    "sel": "#486B48",
+    "line": "#506C50",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E3F3EC",
+    "muted": "#BCD1BC",
+    "faint": "#91A590"
+   },
+   "accent": "#DEEDDE",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#DEEDDE",
+    "#B6CBB6",
+    "#8CA78C",
+    "#D4D9D3",
+    "#ADB3AC"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB8B0",
+    "info": "#DEEDDE"
+   },
+   "contrast": {
+    "textOnBg": 7.7,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "green-8",
+   "group": "Зелёный",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/green.png#8",
+   "core": {
+    "bg": "#06140C",
+    "text": "#F1EFE3"
+   },
+   "surface": {
+    "surf": "#0E1E15",
+    "field": "#0A1910",
+    "sel": "#192A20",
+    "line": "#1E2C23",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F1EFE3",
+    "muted": "#99A59E",
+    "faint": "#646F68"
+   },
+   "accent": "#729166",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#729166",
+    "#F2EECF",
+    "#2A3725",
+    "#808883",
+    "#BFC6C2"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#729166"
+   },
+   "contrast": {
+    "textOnBg": 16.3,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 4.9
+   }
+  },
+  {
+   "id": "teal-1",
+   "group": "Бирюза",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/teal.png#1",
+   "core": {
+    "bg": "#021516",
+    "text": "#E2F3EF"
+   },
+   "surface": {
+    "surf": "#081F20",
+    "field": "#051A1B",
+    "sel": "#132B2C",
+    "line": "#1A2D2E",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E2F3EF",
+    "muted": "#96A5A5",
+    "faint": "#616F6F"
+   },
+   "accent": "#36B4AD",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#36B4AD",
+    "#BBE6DC",
+    "#1F514E",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#36B4AD"
+   },
+   "contrast": {
+    "textOnBg": 16.3,
+    "mutedOnSurf": 6.7,
+    "accentOnSurf": 6.8
+   }
+  },
+  {
+   "id": "teal-2",
+   "group": "Бирюза",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/teal.png#2",
+   "core": {
+    "bg": "#021A1B",
+    "text": "#F7EED8"
+   },
+   "surface": {
+    "surf": "#092425",
+    "field": "#061F20",
+    "sel": "#143132",
+    "line": "#1C3233",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F7EED8",
+    "muted": "#95A5A6",
+    "faint": "#606F70"
+   },
+   "accent": "#E6B969",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E6B969",
+    "#AB8D59",
+    "#776341",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#E6B969"
+   },
+   "contrast": {
+    "textOnBg": 15.6,
+    "mutedOnSurf": 6.4,
+    "accentOnSurf": 8.9
+   }
+  },
+  {
+   "id": "teal-3",
+   "group": "Бирюза",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/teal.png#3",
+   "core": {
+    "bg": "#D7EEE8",
+    "text": "#002629"
+   },
+   "surface": {
+    "surf": "#E8F3F0",
+    "field": "#CFE9E2",
+    "sel": "#C3E1D9",
+    "line": "#B9D7D0",
+    "fieldBd": "#B9D7D0"
+   },
+   "ink": {
+    "text": "#002629",
+    "muted": "#426566",
+    "faint": "#839EA0"
+   },
+   "accent": "#068B8F",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#068B8F",
+    "#6EABAD",
+    "#A2C6C7",
+    "#4F5855",
+    "#808886"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#068B8F"
+   },
+   "contrast": {
+    "textOnBg": 13.2,
+    "mutedOnSurf": 5.6,
+    "accentOnSurf": 3.6
+   }
+  },
+  {
+   "id": "teal-4",
+   "group": "Бирюза",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/teal.png#4",
+   "core": {
+    "bg": "#021415",
+    "text": "#E3F2F0"
+   },
+   "surface": {
+    "surf": "#081E1F",
+    "field": "#05191A",
+    "sel": "#132A2B",
+    "line": "#1A2C2D",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E3F2F0",
+    "muted": "#97A5A5",
+    "faint": "#626F6F"
+   },
+   "accent": "#2BA099",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#2BA099",
+    "#BEE6E0",
+    "#11413E",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#2BA099"
+   },
+   "contrast": {
+    "textOnBg": 16.4,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 5.4
+   }
+  },
+  {
+   "id": "teal-5",
+   "group": "Бирюза",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/teal.png#5",
+   "core": {
+    "bg": "#021516",
+    "text": "#D9F5F3"
+   },
+   "surface": {
+    "surf": "#081F20",
+    "field": "#051A1B",
+    "sel": "#132B2C",
+    "line": "#1A2D2E",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#D9F5F3",
+    "muted": "#96A5A5",
+    "faint": "#616F6F"
+   },
+   "accent": "#159B97",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#159B97",
+    "#DBB166",
+    "#36C4BD",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#159B97"
+   },
+   "contrast": {
+    "textOnBg": 16.3,
+    "mutedOnSurf": 6.7,
+    "accentOnSurf": 5.0
+   }
+  },
+  {
+   "id": "teal-6",
+   "group": "Бирюза",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/teal.png#6",
+   "core": {
+    "bg": "#021010",
+    "text": "#D9F5F3"
+   },
+   "surface": {
+    "surf": "#071A19",
+    "field": "#041515",
+    "sel": "#112625",
+    "line": "#172727",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#D9F5F3",
+    "muted": "#97A5A4",
+    "faint": "#626F6E"
+   },
+   "accent": "#21D3CD",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#21D3CD",
+    "#389C98",
+    "#2A6B68",
+    "#7E8988",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#21D3CD"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 9.6
+   }
+  },
+  {
+   "id": "teal-7",
+   "group": "Бирюза",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/teal.png#7",
+   "core": {
+    "bg": "#005452",
+    "text": "#E0F3F2"
+   },
+   "surface": {
+    "surf": "#00605E",
+    "field": "#005A58",
+    "sel": "#006F6D",
+    "line": "#1B706D",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E0F3F2",
+    "muted": "#AED3D1",
+    "faint": "#82A7A5"
+   },
+   "accent": "#CFF0ED",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#CFF0ED",
+    "#9ECFCC",
+    "#6AACA9",
+    "#D0DAD9",
+    "#A9B4B3"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB8B0",
+    "info": "#CFF0ED"
+   },
+   "contrast": {
+    "textOnBg": 7.6,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "teal-8",
+   "group": "Бирюза",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/teal.png#8",
+   "core": {
+    "bg": "#041A1B",
+    "text": "#E9F0EE"
+   },
+   "surface": {
+    "surf": "#0B2324",
+    "field": "#071E1F",
+    "sel": "#163031",
+    "line": "#1E3232",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E9F0EE",
+    "muted": "#96A5A5",
+    "faint": "#616F6F"
+   },
+   "accent": "#4F9393",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#4F9393",
+    "#E0F4EF",
+    "#1C3838",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#4F9393"
+   },
+   "contrast": {
+    "textOnBg": 15.5,
+    "mutedOnSurf": 6.4,
+    "accentOnSurf": 4.6
+   }
+  },
+  {
+   "id": "blue-1",
+   "group": "Синий",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/icons/blue-1.png",
+   "core": {
+    "bg": "#010E21",
+    "text": "#E9EFF5"
+   },
+   "surface": {
+    "surf": "#06182C",
+    "field": "#041326",
+    "sel": "#10243A",
+    "line": "#172638",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E9EFF5",
+    "muted": "#96A3B2",
+    "faint": "#616D7B"
+   },
+   "accent": "#4A8EE2",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#4A8EE2",
+    "#DDEEFC",
+    "#1C395D",
+    "#81878D",
+    "#C0C5CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#4A8EE2"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7,
+    "accentOnSurf": 5.3
+   }
+  },
+  {
+   "id": "blue-2",
+   "group": "Синий",
+   "name": "Золото",
+   "type": "dark",
+   "icon": "assets/icons/blue-2.png",
+   "core": {
+    "bg": "#02132C",
+    "text": "#F9EDD8"
+   },
+   "surface": {
+    "surf": "#071C38",
+    "field": "#041831",
+    "sel": "#122947",
+    "line": "#192B44",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F9EDD8",
+    "muted": "#94A3B7",
+    "faint": "#5F6D80"
+   },
+   "accent": "#D9AA64",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#D9AA64",
+    "#9E7F52",
+    "#6B5638",
+    "#82878D",
+    "#C0C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#D9AA64"
+   },
+   "contrast": {
+    "textOnBg": 16,
+    "mutedOnSurf": 6.6,
+    "accentOnSurf": 8
+   }
+  },
+  {
+   "id": "blue-3",
+   "group": "Синий",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/icons/blue-3.png",
+   "core": {
+    "bg": "#C6E1F6",
+    "text": "#071E40"
+   },
+   "surface": {
+    "surf": "#DAE7F2",
+    "field": "#BEDBF2",
+    "sel": "#B0D3EE",
+    "line": "#A7CAE4",
+    "fieldBd": "#A7CAE4"
+   },
+   "ink": {
+    "text": "#071E40",
+    "muted": "#505F74",
+    "faint": "#8D99AB"
+   },
+   "accent": "#1959A7",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#1959A7",
+    "#5781B4",
+    "#9DB6D8",
+    "#50565B",
+    "#81878C"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#1959A7"
+   },
+   "contrast": {
+    "textOnBg": 12.2,
+    "mutedOnSurf": 5.2,
+    "accentOnSurf": 5.5
+   }
+  },
+  {
+   "id": "blue-4",
+   "group": "Синий",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/icons/blue-4.png",
+   "core": {
+    "bg": "#010F24",
+    "text": "#E9EFF5"
+   },
+   "surface": {
+    "surf": "#06182F",
+    "field": "#041329",
+    "sel": "#10243E",
+    "line": "#17273C",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E9EFF5",
+    "muted": "#95A3B5",
+    "faint": "#616D7D"
+   },
+   "accent": "#4292E6",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#4292E6",
+    "#DDEDFA",
+    "#1A3C60",
+    "#81878D",
+    "#C0C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#4292E6"
+   },
+   "contrast": {
+    "textOnBg": 16.6,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 5.5
+   }
+  },
+  {
+   "id": "blue-5",
+   "group": "Синий",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/icons/blue-5.png",
+   "core": {
+    "bg": "#010C1D",
+    "text": "#E1F0FF"
+   },
+   "surface": {
+    "surf": "#061527",
+    "field": "#031122",
+    "sel": "#0F2135",
+    "line": "#152434",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E1F0FF",
+    "muted": "#97A3B1",
+    "faint": "#626D7A"
+   },
+   "accent": "#4C83E3",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#4C83E3",
+    "#C29C67",
+    "#1A325A",
+    "#81878D",
+    "#C0C5CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#4C83E3"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 4.9
+   }
+  },
+  {
+   "id": "blue-6",
+   "group": "Синий",
+   "name": "Серебро",
+   "type": "dark",
+   "icon": "assets/icons/blue-6.png",
+   "core": {
+    "bg": "#02142D",
+    "text": "#E9EFF6"
+   },
+   "surface": {
+    "surf": "#071D39",
+    "field": "#051932",
+    "sel": "#122A48",
+    "line": "#192C45",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E9EFF6",
+    "muted": "#94A3B7",
+    "faint": "#5F6D80"
+   },
+   "accent": "#88A6C8",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#88A6C8",
+    "#D3E2F3",
+    "#404D5C",
+    "#81878D",
+    "#C0C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#88A6C8"
+   },
+   "contrast": {
+    "textOnBg": 15.9,
+    "mutedOnSurf": 6.6,
+    "accentOnSurf": 6.7
+   }
+  },
+  {
+   "id": "blue-7",
+   "group": "Синий",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/icons/blue-7.png",
+   "core": {
+    "bg": "#1652A5",
+    "text": "#E2F0FF"
+   },
+   "surface": {
+    "surf": "#1E5DB6",
+    "field": "#1D58AC",
+    "sel": "#2A6CCB",
+    "line": "#3D71BE",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E2F0FF",
+    "muted": "#BBCCE5",
+    "faint": "#8FA0B8"
+   },
+   "accent": "#D4EAFF",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#D4EAFF",
+    "#A1C6FD",
+    "#70A0E7",
+    "#D3D8DE",
+    "#ACB1B9"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB8B0",
+    "info": "#D4EAFF"
+   },
+   "contrast": {
+    "textOnBg": 6.5,
+    "mutedOnSurf": 3.9,
+    "accentOnSurf": 5.2
+   }
+  },
+  {
+   "id": "blue-8",
+   "group": "Синий",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/icons/blue-8.png",
+   "core": {
+    "bg": "#010C1D",
+    "text": "#EAEFF4"
+   },
+   "surface": {
+    "surf": "#061527",
+    "field": "#031122",
+    "sel": "#0F2135",
+    "line": "#152434",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EAEFF4",
+    "muted": "#97A3B1",
+    "faint": "#626D7A"
+   },
+   "accent": "#84A7CA",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#84A7CA",
+    "#DFECF7",
+    "#3E4D5D",
+    "#81878D",
+    "#C0C5CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#84A7CA"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 7.3
+   }
+  },
+  {
+   "id": "indigo-1",
+   "group": "Индиго",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/indigo.png#1",
+   "core": {
+    "bg": "#050A1E",
+    "text": "#EBEEFA"
+   },
+   "surface": {
+    "surf": "#0C1329",
+    "field": "#080E23",
+    "sel": "#171E37",
+    "line": "#1A2135",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EBEEFA",
+    "muted": "#9BA1B2",
+    "faint": "#656B7B"
+   },
+   "accent": "#8591DC",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#8591DC",
+    "#D4DBF9",
+    "#3A3F5F",
+    "#83868E",
+    "#C1C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#8591DC"
+   },
+   "contrast": {
+    "textOnBg": 17.0,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 6.2
+   }
+  },
+  {
+   "id": "indigo-2",
+   "group": "Индиго",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/indigo.png#2",
+   "core": {
+    "bg": "#050C22",
+    "text": "#EEEEEF"
+   },
+   "surface": {
+    "surf": "#0C152D",
+    "field": "#091127",
+    "sel": "#17213B",
+    "line": "#1B2439",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EEEEEF",
+    "muted": "#99A2B4",
+    "faint": "#646C7D"
+   },
+   "accent": "#C9C9CC",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#C9C9CC",
+    "#9A9A9C",
+    "#6D6D6F",
+    "#83868E",
+    "#C1C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#C9C9CC"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 10.9
+   }
+  },
+  {
+   "id": "indigo-3",
+   "group": "Индиго",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/indigo.png#3",
+   "core": {
+    "bg": "#DCE2F9",
+    "text": "#161B40"
+   },
+   "surface": {
+    "surf": "#E8EBF6",
+    "field": "#D5DCF5",
+    "sel": "#CBD3F0",
+    "line": "#C2C9E6",
+    "fieldBd": "#C2C9E6"
+   },
+   "ink": {
+    "text": "#161B40",
+    "muted": "#565C75",
+    "faint": "#9297AB"
+   },
+   "accent": "#32398E",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#32398E",
+    "#626EA7",
+    "#919ABF",
+    "#53555C",
+    "#84868C"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#32398E"
+   },
+   "contrast": {
+    "textOnBg": 12.9,
+    "mutedOnSurf": 5.5,
+    "accentOnSurf": 8.4
+   }
+  },
+  {
+   "id": "indigo-4",
+   "group": "Индиго",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/indigo.png#4",
+   "core": {
+    "bg": "#040A1D",
+    "text": "#EDEDFC"
+   },
+   "surface": {
+    "surf": "#0A1328",
+    "field": "#070E22",
+    "sel": "#141E35",
+    "line": "#192134",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EDEDFC",
+    "muted": "#9AA2B2",
+    "faint": "#656C7B"
+   },
+   "accent": "#8C8BC9",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#8C8BC9",
+    "#D9D9FD",
+    "#3B3A55",
+    "#83868E",
+    "#C1C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#8C8BC9"
+   },
+   "contrast": {
+    "textOnBg": 17.0,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 5.9
+   }
+  },
+  {
+   "id": "indigo-5",
+   "group": "Индиго",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/indigo.png#5",
+   "core": {
+    "bg": "#04071B",
+    "text": "#FCEBDA"
+   },
+   "surface": {
+    "surf": "#091026",
+    "field": "#060B20",
+    "sel": "#141B33",
+    "line": "#181E32",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FCEBDA",
+    "muted": "#9BA1B3",
+    "faint": "#666B7C"
+   },
+   "accent": "#6E78EA",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#6E78EA",
+    "#E8B96A",
+    "#282D5D",
+    "#83868E",
+    "#C1C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#6E78EA"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 5.0
+   }
+  },
+  {
+   "id": "indigo-6",
+   "group": "Индиго",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/indigo.png#6",
+   "core": {
+    "bg": "#05081D",
+    "text": "#E9EDFF"
+   },
+   "surface": {
+    "surf": "#0C1128",
+    "field": "#080D22",
+    "sel": "#161D36",
+    "line": "#1A2034",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E9EDFF",
+    "muted": "#9BA1B3",
+    "faint": "#666B7C"
+   },
+   "accent": "#7377EC",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#7377EC",
+    "#4E529E",
+    "#2B2D5F",
+    "#83868E",
+    "#C2C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#7377EC"
+   },
+   "contrast": {
+    "textOnBg": 17.0,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 5.0
+   }
+  },
+  {
+   "id": "indigo-7",
+   "group": "Индиго",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/indigo.png#7",
+   "core": {
+    "bg": "#32419B",
+    "text": "#E7EEFF"
+   },
+   "surface": {
+    "surf": "#3B4CAC",
+    "field": "#3747A1",
+    "sel": "#465AC0",
+    "line": "#4E61B4",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#E7EEFF",
+    "muted": "#C1CAE5",
+    "faint": "#959EB8"
+   },
+   "accent": "#DBE7FF",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#DBE7FF",
+    "#AFC1FE",
+    "#8499E8",
+    "#D5D7DE",
+    "#AEB1B9"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB8B0",
+    "info": "#DBE7FF"
+   },
+   "contrast": {
+    "textOnBg": 7.6,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.0
+   }
+  },
+  {
+   "id": "indigo-8",
+   "group": "Индиго",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/indigo.png#8",
+   "core": {
+    "bg": "#080C25",
+    "text": "#ECEEF4"
+   },
+   "surface": {
+    "surf": "#101630",
+    "field": "#0C112A",
+    "sel": "#1A213F",
+    "line": "#1E253D",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#ECEEF4",
+    "muted": "#9AA1B5",
+    "faint": "#656B7E"
+   },
+   "accent": "#6E80CF",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#6E80CF",
+    "#EFEFFD",
+    "#293052",
+    "#83868E",
+    "#C2C4CB"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#6E80CF"
+   },
+   "contrast": {
+    "textOnBg": 16.6,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 4.8
+   }
+  },
+  {
+   "id": "violet-1",
+   "group": "Фиолетовый",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/icons/violet-1.png",
+   "core": {
+    "bg": "#0F031A",
+    "text": "#F5E9FC"
+   },
+   "surface": {
+    "surf": "#190924",
+    "field": "#14061F",
+    "sel": "#251432",
+    "line": "#261931",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F5E9FC",
+    "muted": "#A79DB1",
+    "faint": "#71677A"
+   },
+   "accent": "#A771DA",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#A771DA",
+    "#E8CBF9",
+    "#442E5A",
+    "#88848C",
+    "#C6C2C9"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#A771DA"
+   },
+   "contrast": {
+    "textOnBg": 17.1,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 5.4
+   }
+  },
+  {
+   "id": "violet-2",
+   "group": "Фиолетовый",
+   "name": "Персик",
+   "type": "dark",
+   "icon": "assets/icons/violet-2.png",
+   "core": {
+    "bg": "#1E0D2A",
+    "text": "#FEE9E5"
+   },
+   "surface": {
+    "surf": "#281636",
+    "field": "#221130",
+    "sel": "#352144",
+    "line": "#352643",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FEE9E5",
+    "muted": "#A89CB3",
+    "faint": "#72667C"
+   },
+   "accent": "#CB9AA0",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#CB9AA0",
+    "#927276",
+    "#604A4D",
+    "#88848C",
+    "#C6C2C9"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#CB9AA0"
+   },
+   "contrast": {
+    "textOnBg": 15.7,
+    "mutedOnSurf": 6.4,
+    "accentOnSurf": 6.9
+   }
+  },
+  {
+   "id": "violet-3",
+   "group": "Фиолетовый",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/icons/violet-3.png",
+   "core": {
+    "bg": "#EADAF4",
+    "text": "#281439"
+   },
+   "surface": {
+    "surf": "#EEE6F3",
+    "field": "#E5D3F0",
+    "sel": "#DEC9EB",
+    "line": "#D4C0E1",
+    "fieldBd": "#D4C0E1"
+   },
+   "ink": {
+    "text": "#281439",
+    "muted": "#635870",
+    "faint": "#9D94A7"
+   },
+   "accent": "#6C2194",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#6C2194",
+    "#9C53C4",
+    "#B499C7",
+    "#58535A",
+    "#88848B"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#6C2194"
+   },
+   "contrast": {
+    "textOnBg": 12.7,
+    "mutedOnSurf": 5.5,
+    "accentOnSurf": 7.6
+   }
+  },
+  {
+   "id": "violet-4",
+   "group": "Фиолетовый",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/icons/violet-4.png",
+   "core": {
+    "bg": "#10031D",
+    "text": "#F4EAFC"
+   },
+   "surface": {
+    "surf": "#1A0A28",
+    "field": "#150622",
+    "sel": "#261536",
+    "line": "#271A34",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F4EAFC",
+    "muted": "#A79CB3",
+    "faint": "#70677C"
+   },
+   "accent": "#9A6AE4",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#9A6AE4",
+    "#E3C9F5",
+    "#3C285C",
+    "#88848C",
+    "#C5C2C9"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#9A6AE4"
+   },
+   "contrast": {
+    "textOnBg": 17.1,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 5
+   }
+  },
+  {
+   "id": "violet-5",
+   "group": "Фиолетовый",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/icons/violet-5.png",
+   "core": {
+    "bg": "#100318",
+    "text": "#FFE7E6"
+   },
+   "surface": {
+    "surf": "#1A0922",
+    "field": "#15061C",
+    "sel": "#26142F",
+    "line": "#27182F",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE7E6",
+    "muted": "#A89CAF",
+    "faint": "#726779"
+   },
+   "accent": "#9A65E0",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#9A65E0",
+    "#DE8C81",
+    "#3B2559",
+    "#89848B",
+    "#C6C2C9"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#9A65E0"
+   },
+   "contrast": {
+    "textOnBg": 17,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 4.8
+   }
+  },
+  {
+   "id": "violet-6",
+   "group": "Фиолетовый",
+   "name": "Фуксия",
+   "type": "dark",
+   "icon": "assets/icons/violet-6.png",
+   "core": {
+    "bg": "#12041C",
+    "text": "#FEE7F4"
+   },
+   "surface": {
+    "surf": "#1C0C26",
+    "field": "#170821",
+    "sel": "#281734",
+    "line": "#291B33",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FEE7F4",
+    "muted": "#A89CB1",
+    "faint": "#71677A"
+   },
+   "accent": "#CD49B1",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#CD49B1",
+    "#8A3477",
+    "#511945",
+    "#88848C",
+    "#C6C2C9"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#CD49B1"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 4.6
+   }
+  },
+  {
+   "id": "violet-7",
+   "group": "Фиолетовый",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/icons/violet-7.png",
+   "core": {
+    "bg": "#5C2990",
+    "text": "#F3EAFF"
+   },
+   "surface": {
+    "surf": "#6833A0",
+    "field": "#622F96",
+    "sel": "#7740B4",
+    "line": "#764CA9",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F3EAFF",
+    "muted": "#CFC5E1",
+    "faint": "#A399B4"
+   },
+   "accent": "#EEE1FF",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#EEE1FF",
+    "#CFB7F5",
+    "#AD8CDC",
+    "#D8D6DD",
+    "#B2AFB8"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB8B0",
+    "info": "#EEE1FF"
+   },
+   "contrast": {
+    "textOnBg": 8.3,
+    "mutedOnSurf": 5,
+    "accentOnSurf": 6.6
+   }
+  },
+  {
+   "id": "violet-8",
+   "group": "Фиолетовый",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/icons/violet-8.png",
+   "core": {
+    "bg": "#170521",
+    "text": "#F3EBF9"
+   },
+   "surface": {
+    "surf": "#210D2C",
+    "field": "#1C0926",
+    "sel": "#2E193A",
+    "line": "#2E1E39",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F3EBF9",
+    "muted": "#A99BB2",
+    "faint": "#73667B"
+   },
+   "accent": "#C39FE0",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#C39FE0",
+    "#EBD5F8",
+    "#60506C",
+    "#88848C",
+    "#C6C2C9"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#C39FE0"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 6.9,
+    "accentOnSurf": 8.1
+   }
+  },
+  {
+   "id": "rose-1",
+   "group": "Роза",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/rose.png#1",
+   "core": {
+    "bg": "#1A030B",
+    "text": "#F5ECED"
+   },
+   "surface": {
+    "surf": "#250913",
+    "field": "#1F060F",
+    "sel": "#33141F",
+    "line": "#321921",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F5ECED",
+    "muted": "#B19BA1",
+    "faint": "#7A656B"
+   },
+   "accent": "#E87196",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E87196",
+    "#FDE5E9",
+    "#683444",
+    "#8D8386",
+    "#CAC1C4"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E87196"
+   },
+   "contrast": {
+    "textOnBg": 17.1,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 6.4
+   }
+  },
+  {
+   "id": "rose-2",
+   "group": "Роза",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/rose.png#2",
+   "core": {
+    "bg": "#1C030B",
+    "text": "#FDEBDB"
+   },
+   "surface": {
+    "surf": "#270913",
+    "field": "#21060F",
+    "sel": "#35141F",
+    "line": "#341A21",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FDEBDB",
+    "muted": "#B29AA0",
+    "faint": "#7B656A"
+   },
+   "accent": "#E6A77F",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E6A77F",
+    "#A87E64",
+    "#725645",
+    "#8D8385",
+    "#CAC1C3"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E6A77F"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 9.0
+   }
+  },
+  {
+   "id": "rose-3",
+   "group": "Роза",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/rose.png#3",
+   "core": {
+    "bg": "#F6DAE1",
+    "text": "#390D19"
+   },
+   "surface": {
+    "surf": "#F5E6EA",
+    "field": "#F2D3DB",
+    "sel": "#EDC9D2",
+    "line": "#E3BFC8",
+    "fieldBd": "#E3BFC8"
+   },
+   "ink": {
+    "text": "#390D19",
+    "muted": "#725459",
+    "faint": "#AA9195"
+   },
+   "accent": "#C44062",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#C44062",
+    "#D98191",
+    "#E5ACB4",
+    "#5B5355",
+    "#8C8486"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#B54076",
+    "info": "#C44062"
+   },
+   "contrast": {
+    "textOnBg": 12.9,
+    "mutedOnSurf": 5.6,
+    "accentOnSurf": 4.1
+   }
+  },
+  {
+   "id": "rose-4",
+   "group": "Роза",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/rose.png#4",
+   "core": {
+    "bg": "#1A030B",
+    "text": "#F9EAED"
+   },
+   "surface": {
+    "surf": "#250913",
+    "field": "#1F060F",
+    "sel": "#33141F",
+    "line": "#321921",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F9EAED",
+    "muted": "#B19BA1",
+    "faint": "#7A656B"
+   },
+   "accent": "#DD5A7E",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#DD5A7E",
+    "#F5D2D9",
+    "#5B2432",
+    "#8D8386",
+    "#CAC1C4"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#DD5A7E"
+   },
+   "contrast": {
+    "textOnBg": 17.0,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 5.2
+   }
+  },
+  {
+   "id": "rose-5",
+   "group": "Роза",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/rose.png#5",
+   "core": {
+    "bg": "#180109",
+    "text": "#FFE8E1"
+   },
+   "surface": {
+    "surf": "#230612",
+    "field": "#1D040E",
+    "sel": "#31111D",
+    "line": "#301620",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE8E1",
+    "muted": "#B29AA1",
+    "faint": "#7B656C"
+   },
+   "accent": "#DA5C7C",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#DA5C7C",
+    "#E4B893",
+    "#5A2431",
+    "#8D8386",
+    "#CAC1C4"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#DA5C7C"
+   },
+   "contrast": {
+    "textOnBg": 17.1,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 5.2
+   }
+  },
+  {
+   "id": "rose-6",
+   "group": "Роза",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/rose.png#6",
+   "core": {
+    "bg": "#150108",
+    "text": "#FFE7EB"
+   },
+   "surface": {
+    "surf": "#1F0610",
+    "field": "#1A030C",
+    "sel": "#2D101C",
+    "line": "#2D151E",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE7EB",
+    "muted": "#B19BA2",
+    "faint": "#7A656C"
+   },
+   "accent": "#E3366E",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#E3366E",
+    "#98294A",
+    "#591128",
+    "#8D8386",
+    "#CAC1C4"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#E3366E"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.4,
+    "accentOnSurf": 4.6
+   }
+  },
+  {
+   "id": "rose-7",
+   "group": "Роза",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/rose.png#7",
+   "core": {
+    "bg": "#822547",
+    "text": "#FFE7EB"
+   },
+   "surface": {
+    "surf": "#912E52",
+    "field": "#882B4C",
+    "sel": "#A43A5F",
+    "line": "#9E4863",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FFE7EB",
+    "muted": "#E2C0C8",
+    "faint": "#B5959C"
+   },
+   "accent": "#FFDBE5",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#FFDBE5",
+    "#F0AFC0",
+    "#D48299",
+    "#DED5D7",
+    "#B8AEB0"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB6D4",
+    "info": "#FFDBE5"
+   },
+   "contrast": {
+    "textOnBg": 7.8,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.1
+   }
+  },
+  {
+   "id": "rose-8",
+   "group": "Роза",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/rose.png#8",
+   "core": {
+    "bg": "#1B0309",
+    "text": "#F3ECEE"
+   },
+   "surface": {
+    "surf": "#260912",
+    "field": "#20060E",
+    "sel": "#34141D",
+    "line": "#331920",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F3ECEE",
+    "muted": "#B29B9F",
+    "faint": "#7B656A"
+   },
+   "accent": "#BA6C78",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#BA6C78",
+    "#FBE9EB",
+    "#49282D",
+    "#8D8385",
+    "#CAC1C3"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#BA6C78"
+   },
+   "contrast": {
+    "textOnBg": 17.0,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 4.9
+   }
+  },
+  {
+   "id": "coffee-1",
+   "group": "Кофе",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/coffee.png#1",
+   "core": {
+    "bg": "#120A04",
+    "text": "#F4EDE6"
+   },
+   "surface": {
+    "surf": "#1C120A",
+    "field": "#170E07",
+    "sel": "#281D15",
+    "line": "#292019",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F4EDE6",
+    "muted": "#A99F98",
+    "faint": "#736A63"
+   },
+   "accent": "#B18461",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#B18461",
+    "#F3E3D1",
+    "#493627",
+    "#8C857F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#B18461"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 5.6
+   }
+  },
+  {
+   "id": "coffee-2",
+   "group": "Кофе",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/coffee.png#2",
+   "core": {
+    "bg": "#130A04",
+    "text": "#EEEEEE"
+   },
+   "surface": {
+    "surf": "#1D120A",
+    "field": "#180E07",
+    "sel": "#2A1D15",
+    "line": "#2B2019",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EEEEEE",
+    "muted": "#A99F99",
+    "faint": "#736A64"
+   },
+   "accent": "#B1B2B3",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#B1B2B3",
+    "#DCDCDC",
+    "#585959",
+    "#8C847F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#B1B2B3"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 8.7
+   }
+  },
+  {
+   "id": "coffee-3",
+   "group": "Кофе",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/coffee.png#3",
+   "core": {
+    "bg": "#ECD9C4",
+    "text": "#2D1A10"
+   },
+   "surface": {
+    "surf": "#ECE3D8",
+    "field": "#E8D3BC",
+    "sel": "#E2C9AE",
+    "line": "#D8C0A5",
+    "fieldBd": "#D8C0A5"
+   },
+   "ink": {
+    "text": "#2D1A10",
+    "muted": "#6F584C",
+    "faint": "#A99389"
+   },
+   "accent": "#522D1A",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#522D1A",
+    "#775D50",
+    "#9A8880",
+    "#5A544E",
+    "#8A8580"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#B54076",
+    "info": "#522D1A"
+   },
+   "contrast": {
+    "textOnBg": 12.1,
+    "mutedOnSurf": 5.2,
+    "accentOnSurf": 9.5
+   }
+  },
+  {
+   "id": "coffee-4",
+   "group": "Кофе",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/coffee.png#4",
+   "core": {
+    "bg": "#110803",
+    "text": "#F4EDE6"
+   },
+   "surface": {
+    "surf": "#1B1108",
+    "field": "#160C05",
+    "sel": "#271C12",
+    "line": "#281F17",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F4EDE6",
+    "muted": "#A9A098",
+    "faint": "#726A63"
+   },
+   "accent": "#B1794F",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#B1794F",
+    "#EDDDCA",
+    "#462E1C",
+    "#8C857F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#B1794F"
+   },
+   "contrast": {
+    "textOnBg": 17.1,
+    "mutedOnSurf": 7.2,
+    "accentOnSurf": 5.1
+   }
+  },
+  {
+   "id": "coffee-5",
+   "group": "Кофе",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/coffee.png#5",
+   "core": {
+    "bg": "#100702",
+    "text": "#F7EDDC"
+   },
+   "surface": {
+    "surf": "#1A0F07",
+    "field": "#150B05",
+    "sel": "#261A11",
+    "line": "#271D16",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F7EDDC",
+    "muted": "#A99F99",
+    "faint": "#736A64"
+   },
+   "accent": "#A6683D",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#A6683D",
+    "#C3AD83",
+    "#3A210F",
+    "#8C847F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#A6683D"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 4.2
+   }
+  },
+  {
+   "id": "coffee-6",
+   "group": "Кофе",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/coffee.png#6",
+   "core": {
+    "bg": "#100702",
+    "text": "#F4EDE6"
+   },
+   "surface": {
+    "surf": "#1A0F07",
+    "field": "#150B05",
+    "sel": "#261A11",
+    "line": "#271D16",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F4EDE6",
+    "muted": "#A99F99",
+    "faint": "#736A64"
+   },
+   "accent": "#EBD8C0",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#EBD8C0",
+    "#B6A999",
+    "#857C71",
+    "#8C847F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#EBD8C0"
+   },
+   "contrast": {
+    "textOnBg": 17.2,
+    "mutedOnSurf": 7.3,
+    "accentOnSurf": 13.6
+   }
+  },
+  {
+   "id": "coffee-7",
+   "group": "Кофе",
+   "name": "Насыщенная",
+   "type": "colored",
+   "icon": "assets/sheets/coffee.png#7",
+   "core": {
+    "bg": "#6C3D1E",
+    "text": "#FBEBE2"
+   },
+   "surface": {
+    "surf": "#794726",
+    "field": "#724223",
+    "sel": "#8A5431",
+    "line": "#875A3F",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FBEBE2",
+    "muted": "#E1C4B3",
+    "faint": "#B39888"
+   },
+   "accent": "#FAE3D5",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#FAE3D5",
+    "#DEBCA8",
+    "#BF947A",
+    "#DDD6D2",
+    "#B8AFAA"
+   ],
+   "status": {
+    "ok": "#A1E4AE",
+    "warn": "#F9D280",
+    "danger": "#FFB6D4",
+    "info": "#FAE3D5"
+   },
+   "contrast": {
+    "textOnBg": 7.8,
+    "mutedOnSurf": 4.6,
+    "accentOnSurf": 6.2
+   }
+  },
+  {
+   "id": "coffee-8",
+   "group": "Кофе",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/coffee.png#8",
+   "core": {
+    "bg": "#130B04",
+    "text": "#F2EEE8"
+   },
+   "surface": {
+    "surf": "#1D130A",
+    "field": "#180F07",
+    "sel": "#291F15",
+    "line": "#2B221A",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F2EEE8",
+    "muted": "#A8A098",
+    "faint": "#726A63"
+   },
+   "accent": "#D7C0A7",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#D7C0A7",
+    "#F5EADC",
+    "#71675C",
+    "#8B857F",
+    "#C9C3BE"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#D7C0A7"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 10.4
+   }
+  },
+  {
+   "id": "graphite-1",
+   "group": "Графит",
+   "name": "Классика",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#1",
+   "core": {
+    "bg": "#0D0D0D",
+    "text": "#EFEEED"
+   },
+   "surface": {
+    "surf": "#161616",
+    "field": "#111111",
+    "sel": "#212121",
+    "line": "#242424",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EFEEED",
+    "muted": "#A5A197",
+    "faint": "#6F6C62"
+   },
+   "accent": "#9C9FA7",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#9C9FA7",
+    "#D0D2D6",
+    "#47484C",
+    "#89867E",
+    "#C6C4BD"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#9C9FA7"
+   },
+   "contrast": {
+    "textOnBg": 16.8,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 6.8
+   }
+  },
+  {
+   "id": "graphite-2",
+   "group": "Графит",
+   "name": "Металл",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#2",
+   "core": {
+    "bg": "#0E0F0F",
+    "text": "#FCECD9"
+   },
+   "surface": {
+    "surf": "#171818",
+    "field": "#131414",
+    "sel": "#232424",
+    "line": "#252626",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#FCECD9",
+    "muted": "#97A5A5",
+    "faint": "#626F6F"
+   },
+   "accent": "#B97F41",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#B97F41",
+    "#7E5831",
+    "#4C3319",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#B97F41"
+   },
+   "contrast": {
+    "textOnBg": 16.6,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 5.2
+   }
+  },
+  {
+   "id": "graphite-3",
+   "group": "Графит",
+   "name": "Светлая",
+   "type": "light",
+   "icon": "assets/sheets/graphite.png#3",
+   "core": {
+    "bg": "#E6E2DD",
+    "text": "#201F1E"
+   },
+   "surface": {
+    "surf": "#EDEBE8",
+    "field": "#E0DCD7",
+    "sel": "#D8D3CD",
+    "line": "#CFC9C3",
+    "fieldBd": "#CFC9C3"
+   },
+   "ink": {
+    "text": "#201F1E",
+    "muted": "#5E5D5C",
+    "faint": "#999896"
+   },
+   "accent": "#1E1F20",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#1E1F20",
+    "#7D552C",
+    "#6E6E6F",
+    "#59544E",
+    "#8A8580"
+   ],
+   "status": {
+    "ok": "#33854A",
+    "warn": "#AF7C00",
+    "danger": "#BD413F",
+    "info": "#1E1F20"
+   },
+   "contrast": {
+    "textOnBg": 12.8,
+    "mutedOnSurf": 5.5,
+    "accentOnSurf": 13.9
+   }
+  },
+  {
+   "id": "graphite-4",
+   "group": "Графит",
+   "name": "Двухтон",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#4",
+   "core": {
+    "bg": "#0D0E0E",
+    "text": "#ECEFEF"
+   },
+   "surface": {
+    "surf": "#161717",
+    "field": "#111313",
+    "sel": "#212323",
+    "line": "#242525",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#ECEFEF",
+    "muted": "#97A5A5",
+    "faint": "#626F6F"
+   },
+   "accent": "#D1B27A",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#D1B27A",
+    "#DDDEE4",
+    "#695B43",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#D1B27A"
+   },
+   "contrast": {
+    "textOnBg": 16.7,
+    "mutedOnSurf": 7.0,
+    "accentOnSurf": 8.9
+   }
+  },
+  {
+   "id": "graphite-5",
+   "group": "Графит",
+   "name": "Искры",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#5",
+   "core": {
+    "bg": "#0C0D0D",
+    "text": "#ECEFEF"
+   },
+   "surface": {
+    "surf": "#151616",
+    "field": "#101111",
+    "sel": "#202222",
+    "line": "#232424",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#ECEFEF",
+    "muted": "#97A5A5",
+    "faint": "#626F6F"
+   },
+   "accent": "#73767D",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#73767D",
+    "#9EA1A7",
+    "#242528",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#73767D"
+   },
+   "contrast": {
+    "textOnBg": 16.8,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 4.0
+   }
+  },
+  {
+   "id": "graphite-6",
+   "group": "Графит",
+   "name": "Вариация",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#6",
+   "core": {
+    "bg": "#0B0D0B",
+    "text": "#EEEFEE"
+   },
+   "surface": {
+    "surf": "#131613",
+    "field": "#0F110F",
+    "sel": "#1F221F",
+    "line": "#212421",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EEEFEE",
+    "muted": "#9CA49C",
+    "faint": "#676E67"
+   },
+   "accent": "#DDDBDA",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#DDDBDA",
+    "#ADABAB",
+    "#7F7E7D",
+    "#828882",
+    "#C0C6C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#DDDBDA"
+   },
+   "contrast": {
+    "textOnBg": 16.9,
+    "mutedOnSurf": 7.1,
+    "accentOnSurf": 13.2
+   }
+  },
+  {
+   "id": "graphite-7",
+   "group": "Графит",
+   "name": "Насыщенная",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#7",
+   "core": {
+    "bg": "#111212",
+    "text": "#F8ECE2"
+   },
+   "surface": {
+    "surf": "#1A1B1B",
+    "field": "#161717",
+    "sel": "#262727",
+    "line": "#292A2A",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#F8ECE2",
+    "muted": "#97A5A5",
+    "faint": "#626F6F"
+   },
+   "accent": "#878686",
+   "onAccent": "#FFFFFF",
+   "chart": [
+    "#878686",
+    "#6D543D",
+    "#333333",
+    "#7E8889",
+    "#BDC6C6"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F075AA",
+    "info": "#878686"
+   },
+   "contrast": {
+    "textOnBg": 16.2,
+    "mutedOnSurf": 6.8,
+    "accentOnSurf": 4.8
+   }
+  },
+  {
+   "id": "graphite-8",
+   "group": "Графит",
+   "name": "Сияние",
+   "type": "dark",
+   "icon": "assets/sheets/graphite.png#8",
+   "core": {
+    "bg": "#111211",
+    "text": "#EEEEEE"
+   },
+   "surface": {
+    "surf": "#1A1B1A",
+    "field": "#161716",
+    "sel": "#262726",
+    "line": "#292A29",
+    "fieldBd": "transparent"
+   },
+   "ink": {
+    "text": "#EEEEEE",
+    "muted": "#9CA49C",
+    "faint": "#676E67"
+   },
+   "accent": "#E5BE86",
+   "onAccent": "#0B0F0D",
+   "chart": [
+    "#E5BE86",
+    "#AB926D",
+    "#78674E",
+    "#828882",
+    "#C0C6C0"
+   ],
+   "status": {
+    "ok": "#69BA7C",
+    "warn": "#E9B452",
+    "danger": "#F97770",
+    "info": "#E5BE86"
+   },
+   "contrast": {
+    "textOnBg": 16.2,
+    "mutedOnSurf": 6.7,
+    "accentOnSurf": 9.9
+   }
+  }
+ ]
+}

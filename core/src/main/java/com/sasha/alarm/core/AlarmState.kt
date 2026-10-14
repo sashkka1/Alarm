@@ -7,7 +7,7 @@ package com.sasha.alarm.core
  * целиком, а не россыпь ключей — иначе два процесса увидели бы разные половины.
  *
  * ⚠️ Собственного будильника здесь нет намеренно: приложение целиком построено на
- * зацепе за Sleep Cycle, своё расписание оказалось не нужно.
+ * зацепе за чужой будильник (Sleep Cycle, стандартные часы), своё расписание оказалось не нужно.
  */
 data class AlarmState(
     /**
@@ -38,6 +38,24 @@ data class AlarmState(
     val foreignRingingSinceMillis: Long?,
     /** Через сколько секунд после загрузки телефона поднимать прерванную тревогу. */
     val resumeDelaySeconds: Int,
+    /**
+     * Когда владелец последний раз прошёл испытание настоящей тревоги (не показа из
+     * настроек). По нему второй чужой будильник того же утра наш экран не поднимает
+     * ([ForeignAlarmRule.raisesScreen]). На диске — между будильниками процесс умирает.
+     */
+    val challengePassedAtMillis: Long?,
+    /**
+     * С какого момента зацеп не работает и телефон не смог его поднять ([HookHealth]).
+     * null — работает. На диске — чтобы отрезок писался в журнал один раз, а не при
+     * каждой проверке, даже если процесс между проверками умирал.
+     */
+    val hookDownSinceMillis: Long?,
+    /**
+     * Когда слушатель нашёлся отключённым, а поломка ещё не объявлена: телефон толкнул
+     * систему и ждёт повторной проверки ([HookHealth.RECHECK_MS]). На диске — процесс может
+     * умереть и между этими двумя проверками.
+     */
+    val hookSuspectSinceMillis: Long?,
 ) {
     val isRinging: Boolean get() = run != null
 
@@ -56,6 +74,9 @@ data class AlarmState(
             settingsVisited = false,
             foreignRingingSinceMillis = null,
             resumeDelaySeconds = MIN_RESUME_DELAY_SECONDS,
+            challengePassedAtMillis = null,
+            hookDownSinceMillis = null,
+            hookSuspectSinceMillis = null,
         )
 
         const val MIN_RESUME_DELAY_SECONDS = 1

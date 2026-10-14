@@ -2,89 +2,53 @@ package com.sasha.alarm.ui
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 
 /**
- * Тема приложения: тёмная, чёрно-красная. Одна, без светлого варианта —
- * приложение открывают ночью и спросонья, и белая простыня в глаза тут ни к чему.
+ * Тема приложения — одна из 96 тем дизайн-кода «Мягкий» (`Themes.kt`, генерирует `art/make_themes.py`),
+ * выбирается в окне настроек (владелец, 2026-10-14).
  *
- * ⚠️ Экран тревоги живёт по своим правилам: он сигнально-красный с чёрным текстом и
- * на полной яркости, потому что его задача не беречь глаза, а разбудить.
+ * ⚠️ Экран тревоги живёт в той же теме, что настройки (владелец, 2026-10-14: «экраны настроек и экраны,
+ * когда я просыпаюсь от будильника, будут одинаковые»). Прежний сигнально-красный экран тревоги снят.
+ * На экранах — только роли темы (`bg`, `surf`, `field`, `sel`, `text`, `muted`, `faint`, `accent`,
+ * `onAccent`, `ok`, `warn`, `danger`), ни одного цвета числом.
  */
-object AlarmColors {
-    /**
-     * Сигнальный красный экрана тревоги.
-     *
-     * Лежит здесь, а не только на самом экране: тем же цветом красится фон окна до
-     * первого кадра Compose (`app/res/values/themes.xml`) и заслонка-оверлей. Иначе в
-     * стыке между ними мелькает посторонний цвет — а он читается как поломка.
-     */
-    val Signal = Color(0xFFFF0026)
+val LocalAppTheme = staticCompositionLocalOf { Themes.byId(Themes.DEFAULT_ID) }
 
-    /** Фон экрана — тёплый чёрный, а не синеватый. */
-    val Background = Color(0xFF14110F)
-
-    /** Карточки и строки списка. */
-    val Surface = Color(0xFF1D1815)
-
-    /** То, что лежит поверх карточки: кнопки, плашки, значения. */
-    val SurfaceRaised = Color(0xFF241E1A)
-
-    val Outline = Color(0xFF302A26)
-
-    /** Дорожка ползунка — светлее рамки, иначе её не видно. */
-    val Track = Color(0xFF3A332E)
-
-    /** Обожжённый оранжевый. Единственный яркий цвет во всём приложении. */
-    val Accent = Color(0xFFC24A32)
-
-    /** Фон плашки, которая должна тревожить: почти чёрный с краснотой. */
-    val AccentSoft = Color(0xFF211613)
-
-    val TextPrimary = Color(0xFFECE5E0)
-    val TextSecondary = Color(0xFF8A7E77)
-
-    /** Совсем тихие подписи — пояснения под настройками. */
-    val TextDim = Color(0xFF6B625C)
-
-    /** Числовые значения рядом с ползунками. */
-    val Value = Color(0xFFC08A6E)
-
-    val Good = Color(0xFF00E07A)
-
-    /**
-     * Погасшая точка состояния.
-     *
-     * Серая, а не красная: невыданное разрешение — это «ещё не сделано», а не авария.
-     * Красным в этом приложении кричит только то, что и правда требует внимания.
-     */
-    val DotOff = Color(0xFF4A423C)
-}
-
-private val Scheme = darkColorScheme(
-    primary = AlarmColors.Accent,
-    // По акценту пишем чёрным, а не белым: он светлый, и белое по нему не читается.
-    onPrimary = Color.Black,
-    primaryContainer = AlarmColors.AccentSoft,
-    onPrimaryContainer = AlarmColors.TextPrimary,
-    secondary = AlarmColors.Accent,
-    onSecondary = Color.Black,
-    background = AlarmColors.Background,
-    onBackground = AlarmColors.TextPrimary,
-    surface = AlarmColors.Surface,
-    onSurface = AlarmColors.TextPrimary,
-    surfaceVariant = AlarmColors.SurfaceRaised,
-    onSurfaceVariant = AlarmColors.TextSecondary,
-    surfaceContainer = AlarmColors.Surface,
-    surfaceContainerHigh = AlarmColors.SurfaceRaised,
-    outline = AlarmColors.Outline,
-    outlineVariant = AlarmColors.Outline,
-    error = AlarmColors.Accent,
-    onError = Color.Black,
-)
+/** Текущая тема экрана. */
+val theme: AppTheme
+    @Composable @ReadOnlyComposable get() = LocalAppTheme.current
 
 @Composable
-fun AlarmTheme(content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = Scheme, content = content)
+fun AlarmTheme(current: AppTheme, content: @Composable () -> Unit) {
+    val scheme = if (current.dark) {
+        darkColorScheme(
+            primary = current.accent, onPrimary = current.onAccent,
+            secondary = current.accent, onSecondary = current.onAccent,
+            background = current.bg, onBackground = current.text,
+            surface = current.surf, onSurface = current.text,
+            surfaceVariant = current.field, onSurfaceVariant = current.muted,
+            surfaceContainer = current.surf, surfaceContainerHigh = current.surf,
+            outline = current.sel, outlineVariant = current.sel,
+            error = current.danger, onError = current.onAccent,
+        )
+    } else {
+        lightColorScheme(
+            primary = current.accent, onPrimary = current.onAccent,
+            secondary = current.accent, onSecondary = current.onAccent,
+            background = current.bg, onBackground = current.text,
+            surface = current.surf, onSurface = current.text,
+            surfaceVariant = current.field, onSurfaceVariant = current.muted,
+            surfaceContainer = current.surf, surfaceContainerHigh = current.surf,
+            outline = current.sel, outlineVariant = current.sel,
+            error = current.danger, onError = current.onAccent,
+        )
+    }
+    CompositionLocalProvider(LocalAppTheme provides current) {
+        MaterialTheme(colorScheme = scheme, content = content)
+    }
 }

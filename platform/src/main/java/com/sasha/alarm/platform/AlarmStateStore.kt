@@ -197,6 +197,9 @@ class AlarmStateStore(context: Context) {
                 json.optInt(KEY_RESUME_DELAY, AlarmState.MIN_RESUME_DELAY_SECONDS)
                     .coerceIn(AlarmState.MIN_RESUME_DELAY_SECONDS, AlarmState.MAX_RESUME_DELAY_SECONDS)
             },
+            challengePassedAtMillis = json.optLong(KEY_CHALLENGE_PASSED, 0L).takeIf { it > 0L },
+            hookDownSinceMillis = json.optLong(KEY_HOOK_DOWN, 0L).takeIf { it > 0L },
+            hookSuspectSinceMillis = json.optLong(KEY_HOOK_SUSPECT, 0L).takeIf { it > 0L },
         )
     }
 
@@ -318,6 +321,9 @@ class AlarmStateStore(context: Context) {
         put(KEY_SETTINGS_VISITED, state.settingsVisited)
         put(KEY_FOREIGN_RINGING, state.foreignRingingSinceMillis ?: 0L)
         put(KEY_RESUME_DELAY, state.resumeDelaySeconds)
+        put(KEY_CHALLENGE_PASSED, state.challengePassedAtMillis ?: 0L)
+        put(KEY_HOOK_DOWN, state.hookDownSinceMillis ?: 0L)
+        put(KEY_HOOK_SUSPECT, state.hookSuspectSinceMillis ?: 0L)
     }
 
     private fun <T> withLock(block: () -> T): T {
@@ -379,5 +385,8 @@ class AlarmStateStore(context: Context) {
         const val KEY_SETTINGS_VISITED = "settingsVisited"
         const val KEY_FOREIGN_RINGING = "foreignRingingSince"
         const val KEY_RESUME_DELAY = "resumeDelaySeconds"
+        const val KEY_CHALLENGE_PASSED = "challengePassedAt"
+        const val KEY_HOOK_DOWN = "hookDownSince"
+        const val KEY_HOOK_SUSPECT = "hookSuspectSince"
     }
 }
